@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 
 function Cities() {
     return (
-        <div>
+        <div className="container">
             Cities
             <br />
             <Link to="/">Home</Link>

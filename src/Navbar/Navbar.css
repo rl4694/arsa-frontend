@@ -5,6 +5,8 @@
     position: sticky;
     width: 100%;
     background-color: var(--color-surface);
+    z-index: 1000;
+    overflow: visible;
 }
 
 .navbar > * {

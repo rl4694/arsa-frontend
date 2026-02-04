@@ -19,7 +19,7 @@ function Navbar() {
     }
 
     return (
-        <navbar className="navbar">
+        <div className="navbar">
             <div className="left">
                 <Link to="/" className="item">Arsa</Link>
                 <div
@@ -36,7 +36,7 @@ function Navbar() {
                 <Link to="/login" className="item">Login</Link>
                 <Link to="/register" className="item">Sign Up</Link>
             </div>
-        </navbar>
+        </div>
     )
 }
 

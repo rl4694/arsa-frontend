@@ -81,13 +81,14 @@ button:focus-visible {
   font-size: 14pt;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: 1rem;
-    width: 100%;
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.page {
+  flex: 1;
 }
 
 .down-caret {

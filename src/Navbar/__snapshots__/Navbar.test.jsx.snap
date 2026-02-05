@@ -1,0 +1,49 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Navbar > matches snapshot 1`] = `
+<div>
+  <div
+    class="navbar"
+  >
+    <div
+      class="left"
+    >
+      <a
+        class="item"
+        data-discover="true"
+        href="/"
+      >
+        Arsa
+      </a>
+      <div
+        class="item dropdown"
+      >
+        Data
+        <span
+          class="down-caret"
+        >
+          ▼
+        </span>
+      </div>
+    </div>
+    <div
+      class="right"
+    >
+      <a
+        class="item"
+        data-discover="true"
+        href="/login"
+      >
+        Login
+      </a>
+      <a
+        class="item"
+        data-discover="true"
+        href="/register"
+      >
+        Sign Up
+      </a>
+    </div>
+  </div>
+</div>
+`;

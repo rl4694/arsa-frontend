@@ -7,6 +7,7 @@ import "./Home.css"
 function Home() {
     return (
         <div className="page">
+            <h1 className="map-title">World Map</h1>
             <MapContainer center={[30.0, 10.0]} zoom={3} scrollWheelZoom={true}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

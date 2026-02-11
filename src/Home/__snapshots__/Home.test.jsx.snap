@@ -5,6 +5,11 @@ exports[`Home > matches snapshot 1`] = `
   <div
     class="page"
   >
+    <h1
+      class="map-title"
+    >
+      World Map
+    </h1>
     <div
       class="leaflet-container leaflet-touch leaflet-grab leaflet-touch-drag leaflet-touch-zoom"
       style="position: relative;"
@@ -39,25 +44,142 @@ exports[`Home > matches snapshot 1`] = `
         />
         <div
           class="leaflet-pane leaflet-shadow-pane"
-        >
-          <img
-            alt=""
-            class="leaflet-marker-shadow leaflet-zoom-hide"
-            src="marker-shadow.png"
-            style="margin-left: -12px; margin-top: -41px; width: 41px; height: 41px; left: -478px; top: -75px;"
-          />
-        </div>
+        />
         <div
           class="leaflet-pane leaflet-marker-pane"
         >
-          <img
-            alt="Marker"
-            class="leaflet-marker-icon leaflet-zoom-hide leaflet-interactive"
+          <div
+            class="leaflet-marker-icon custom-marker leaflet-zoom-hide leaflet-interactive"
             role="button"
-            src="marker-icon.png"
-            style="margin-left: -12px; margin-top: -41px; width: 25px; height: 41px; left: -478px; top: -75px; z-index: -75;"
+            style="margin-left: -20px; margin-top: -52px; width: 40px; height: 52px; left: -478px; top: -75px; z-index: -75;"
             tabindex="0"
-          />
+          >
+            
+            
+            <div
+              class="marker-pin"
+              style="
+                --marker-color: #e74c3c;
+                --marker-width: 40px;
+                --marker-height: 52px;
+                --marker-font-size: 20px;
+            "
+            >
+              
+                
+              <div
+                class="marker-inner"
+              />
+              
+            
+            </div>
+            
+            
+            <div
+              class="marker-shadow"
+            />
+            
+        
+          </div>
+          <div
+            class="leaflet-marker-icon custom-marker leaflet-zoom-hide leaflet-interactive"
+            role="button"
+            style="margin-left: -16px; margin-top: -42px; width: 32px; height: 42px; left: -58px; top: -164px; z-index: -164;"
+            tabindex="0"
+          >
+            
+            
+            <div
+              class="marker-pin"
+              style="
+                --marker-color: #3498db;
+                --marker-width: 32px;
+                --marker-height: 42px;
+                --marker-font-size: 16px;
+            "
+            >
+              
+                
+              <div
+                class="marker-inner"
+              />
+              
+            
+            </div>
+            
+            
+            <div
+              class="marker-shadow"
+            />
+            
+        
+          </div>
+          <div
+            class="leaflet-marker-icon custom-marker leaflet-zoom-hide leaflet-interactive"
+            role="button"
+            style="margin-left: -16px; margin-top: -42px; width: 32px; height: 42px; left: -44px; top: -140px; z-index: -140;"
+            tabindex="0"
+          >
+            
+            
+            <div
+              class="marker-pin"
+              style="
+                --marker-color: #9b59b6;
+                --marker-width: 32px;
+                --marker-height: 42px;
+                --marker-font-size: 16px;
+            "
+            >
+              
+                
+              <div
+                class="marker-inner"
+              />
+              
+            
+            </div>
+            
+            
+            <div
+              class="marker-shadow"
+            />
+            
+        
+          </div>
+          <div
+            class="leaflet-marker-icon custom-marker leaflet-zoom-hide leaflet-interactive"
+            role="button"
+            style="margin-left: -12px; margin-top: -32px; width: 24px; height: 32px; left: 738px; top: -39px; z-index: -39;"
+            tabindex="0"
+          >
+            
+            
+            <div
+              class="marker-pin"
+              style="
+                --marker-color: #27ae60;
+                --marker-width: 24px;
+                --marker-height: 32px;
+                --marker-font-size: 12px;
+            "
+            >
+              
+                
+              <div
+                class="marker-inner"
+              />
+              
+            
+            </div>
+            
+            
+            <div
+              class="marker-shadow"
+            />
+            
+        
+          </div>
         </div>
         <div
           class="leaflet-pane leaflet-tooltip-pane"

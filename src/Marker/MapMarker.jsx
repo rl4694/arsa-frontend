@@ -1,27 +1,22 @@
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
-import { MarkerColors } from './markerColors'
 import './MapMarker.css'
 
-// Create custom marker icon using divIcon
-const createCustomIcon = (color = '#e74c3c', size = 'medium') => {
-    const sizes = {
-        small: { width: 24, height: 32, fontSize: 12 },
-        medium: { width: 32, height: 42, fontSize: 16 },
-        large: { width: 40, height: 52, fontSize: 20 }
-    }
-    
-    const { width, height, fontSize } = sizes[size] || sizes.medium
+// Size configurations for icon anchor points
+const sizeConfig = {
+    small: { width: 24, height: 32 },
+    medium: { width: 32, height: 42 },
+    large: { width: 40, height: 52 }
+}
+
+// Create custom marker icon using divIcon with CSS classes
+const createCustomIcon = (color = 'red', size = 'medium') => {
+    const { width, height } = sizeConfig[size] || sizeConfig.medium
     
     return L.divIcon({
-        className: 'custom-marker',
+        className: `custom-marker marker-${color} marker-${size}`,
         html: `
-            <div class="marker-pin" style="
-                --marker-color: ${color};
-                --marker-width: ${width}px;
-                --marker-height: ${height}px;
-                --marker-font-size: ${fontSize}px;
-            ">
+            <div class="marker-pin">
                 <div class="marker-inner"></div>
             </div>
             <div class="marker-shadow"></div>
@@ -34,7 +29,7 @@ const createCustomIcon = (color = '#e74c3c', size = 'medium') => {
 
 function MapMarker({ 
     position, 
-    color = MarkerColors.red, 
+    color = 'red',
     size = 'medium',
     children,
     popupContent,

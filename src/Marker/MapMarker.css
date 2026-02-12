@@ -5,13 +5,27 @@
 }
 
 .marker-pin {
-    width: var(--marker-width, 32px);
-    height: var(--marker-height, 42px);
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     animation: marker-bounce 0.3s ease-out;
+}
+
+/* Size classes */
+.marker-small .marker-pin {
+    width: 24px;
+    height: 32px;
+}
+
+.marker-medium .marker-pin {
+    width: 32px;
+    height: 42px;
+}
+
+.marker-large .marker-pin {
+    width: 40px;
+    height: 52px;
 }
 
 .marker-pin::before {
@@ -21,7 +35,6 @@
     left: 0;
     width: 100%;
     height: calc(100% - 8px);
-    background: linear-gradient(135deg, var(--marker-color, #e74c3c) 0%, color-mix(in srgb, var(--marker-color, #e74c3c) 70%, black) 100%);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     box-shadow: 
         0 3px 8px rgba(0, 0, 0, 0.3),
@@ -40,8 +53,64 @@
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 12px solid color-mix(in srgb, var(--marker-color, #e74c3c) 70%, black);
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+}
+
+/* Color classes */
+.marker-red .marker-pin::before {
+    background: linear-gradient(135deg, #e74c3c 0%, #a93226 100%);
+}
+.marker-red .marker-pin::after {
+    border-top: 12px solid #a93226;
+}
+
+.marker-blue .marker-pin::before {
+    background: linear-gradient(135deg, #3498db 0%, #2471a3 100%);
+}
+.marker-blue .marker-pin::after {
+    border-top: 12px solid #2471a3;
+}
+
+.marker-green .marker-pin::before {
+    background: linear-gradient(135deg, #27ae60 0%, #1d8348 100%);
+}
+.marker-green .marker-pin::after {
+    border-top: 12px solid #1d8348;
+}
+
+.marker-orange .marker-pin::before {
+    background: linear-gradient(135deg, #f39c12 0%, #b9770e 100%);
+}
+.marker-orange .marker-pin::after {
+    border-top: 12px solid #b9770e;
+}
+
+.marker-purple .marker-pin::before {
+    background: linear-gradient(135deg, #9b59b6 0%, #76448a 100%);
+}
+.marker-purple .marker-pin::after {
+    border-top: 12px solid #76448a;
+}
+
+.marker-teal .marker-pin::before {
+    background: linear-gradient(135deg, #1abc9c 0%, #148f77 100%);
+}
+.marker-teal .marker-pin::after {
+    border-top: 12px solid #148f77;
+}
+
+.marker-pink .marker-pin::before {
+    background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+}
+.marker-pink .marker-pin::after {
+    border-top: 12px solid #ad1457;
+}
+
+.marker-indigo .marker-pin::before {
+    background: linear-gradient(135deg, #3f51b5 0%, #2c387e 100%);
+}
+.marker-indigo .marker-pin::after {
+    border-top: 12px solid #2c387e;
 }
 
 .marker-inner {

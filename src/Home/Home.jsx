@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { MapContainer, TileLayer } from 'react-leaflet'
-import MapMarker, { MarkerColors } from '../Marker/MapMarker'
+import MapMarker from '../Marker/MapMarker'
 import "leaflet/dist/leaflet.css"
 import "./Home.css"
 
@@ -16,7 +16,7 @@ function Home() {
                 {/* Example markers with different colors and sizes */}
                 <MapMarker 
                     position={[40.7, -74.0]} 
-                    color={MarkerColors.red}
+                    color="red"
                     size="large"
                 >
                     <strong>New York City</strong>
@@ -26,7 +26,7 @@ function Home() {
                 
                 <MapMarker 
                     position={[51.5, -0.1]} 
-                    color={MarkerColors.blue}
+                    color="blue"
                 >
                     <strong>London</strong>
                     <br />
@@ -35,7 +35,7 @@ function Home() {
                 
                 <MapMarker 
                     position={[48.8, 2.3]} 
-                    color={MarkerColors.purple}
+                    color="purple"
                 >
                     <strong>Paris</strong>
                     <br />
@@ -44,7 +44,7 @@ function Home() {
                 
                 <MapMarker 
                     position={[35.7, 139.7]} 
-                    color={MarkerColors.green}
+                    color="green"
                     size="small"
                 >
                     <strong>Tokyo</strong>

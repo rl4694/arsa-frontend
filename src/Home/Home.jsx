@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom"
 import { MapContainer, TileLayer } from 'react-leaflet'
 import MapMarker from '../Marker/MapMarker'
-import { MarkerColors } from '../Marker/markerColors'
 import "leaflet/dist/leaflet.css"
 import "./Home.css"
 

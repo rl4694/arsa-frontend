@@ -1,3 +1,6 @@
+/*
+ * This file renders the React App into a root DOM node
+ */
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'

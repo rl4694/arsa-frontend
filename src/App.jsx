@@ -1,3 +1,6 @@
+/*
+ * This file provides the top-level app component
+ */
 import { Route, Routes } from 'react-router-dom'
 import Home from './Home/Home'
 import Cities from './Cities/Cities'

@@ -23,7 +23,7 @@
 }
 
 .navbar .item {
-    color: var(--color-text);
+    color: var(--color-text-inverted);
     padding: 0.5rem 0.75rem;
 }
 

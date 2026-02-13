@@ -14,6 +14,7 @@ function Navbar() {
                 <Link to="/cities" className="item">Cities</Link>
                 <Link to="/states" className="item">States</Link>
                 <Link to="/nations" className="item">Nations</Link>
+                <Link to="/disasters" className="item">Disasters</Link>
             </div>
         )
     }

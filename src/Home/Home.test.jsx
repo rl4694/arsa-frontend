@@ -3,22 +3,21 @@ import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import Home from "./Home";
 
-vi.mock("../api", () => ({
-    default: {
-        get: vi.fn(() => Promise.resolve({
-            data: {
-                disasters: {
-                    one: {
-                        name: "Big Earthquake",
-                        type: "earthquake",
-                        location: "10.0, 20.0",
-                        date: "2024-02-01",
-                        description: "Major event",
-                    },
+vi.mock("../hooks/useRecord", () => ({
+    default: vi.fn(() => {
+        return [
+            [
+                {
+                    name: "Big Earthquake",
+                    type: "earthquake",
+                    location: "10.0, 20.0",
+                    date: "2024-02-01",
+                    description: "Major event",
                 },
-            },
-        })),
-    }
+            ],
+            vi.fn(),
+        ]
+    }),
 }))
 
 vi.mock("react-leaflet", () => ({

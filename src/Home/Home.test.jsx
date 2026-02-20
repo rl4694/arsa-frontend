@@ -25,7 +25,7 @@ vi.mock("react-leaflet", () => ({
     TileLayer: () => <div data-testid="tile" />,
 }));
 
-vi.mock("../Marker/MapMarker", () => ({
+vi.mock("../components/Marker/MapMarker", () => ({
     default: ({ children }) => (
         <div data-testid="marker">{children}</div>
     ),

@@ -3,13 +3,13 @@
  */
 import { Route, Routes } from 'react-router-dom'
 import Home from './Home/Home'
-import Login from './Login/Login'
-import Register from './Register/Register'
-import Navbar from './Navbar/Navbar'
-import CityList from './Cities/CityList'
-import StatesList from './States/StatesList'
-import NationsList from './Nations/NationsList'
-import DisastersList from './Disasters/DisasterList'
+import Login from './Users/Login/Login'
+import Register from './Users/Register/Register'
+import Navbar from './components/Navbar/Navbar'
+import CityList from './Cities/CityList/CityList'
+import StateList from './States/StateList/StateList'
+import NationList from './Nations/NationList/NationList'
+import DisasterList from './Disasters/DisasterList/DisasterList'
 
 function App() {
   return (
@@ -18,9 +18,9 @@ function App() {
         <Routes>
             <Route path='/' element={<Home />} />
             <Route path='/cities' element={<CityList />} />
-            <Route path='/states' element={<StatesList />} />
-            <Route path='/nations' element={<NationsList />} />
-            <Route path='/disasters' element={<DisastersList />} />
+            <Route path='/states' element={<StateList />} />
+            <Route path='/nations' element={<NationList />} />
+            <Route path='/disasters' element={<DisasterList />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
         </Routes>

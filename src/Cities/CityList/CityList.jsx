@@ -1,5 +1,5 @@
-import Table from "../Table/Table"
-import useRecord from '../hooks/useRecord'
+import Table from "../../components/Table/Table"
+import useRecord from '../../hooks/useRecord'
 
 function CityList() {
     const [cities] = useRecord("/cities")

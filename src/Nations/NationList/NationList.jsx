@@ -1,7 +1,7 @@
-import useRecord from "../hooks/useRecord"
-import Table from "../Table/Table"
+import useRecord from "../../hooks/useRecord"
+import Table from "../../components/Table/Table"
 
-function NationsList() {
+function NationList() {
     const [nations] = useRecord("/nations")
     const cols = [
         { attribute: "name", display: "Nation Name" },
@@ -16,4 +16,4 @@ function NationsList() {
     )
 }
 
-export default NationsList
+export default NationList

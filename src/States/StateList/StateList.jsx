@@ -1,5 +1,5 @@
-import useRecord from "../hooks/useRecord"
-import Table from "../Table/Table"
+import useRecord from "../../hooks/useRecord"
+import Table from "../../components/Table/Table"
 
 function StatesList() {
     const [states] = useRecord("/states")

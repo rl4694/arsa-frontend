@@ -1,5 +1,5 @@
 import { MapContainer, TileLayer } from 'react-leaflet'
-import MapMarker from '../Marker/MapMarker'
+import MapMarker from '../components/Marker/MapMarker'
 import "leaflet/dist/leaflet.css"
 import "./Home.css"
 import useRecord from '../hooks/useRecord'

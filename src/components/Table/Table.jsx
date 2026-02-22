@@ -1,13 +1,29 @@
 import './Table.css'
 
-function Table(props) {
+function Table({ data, cols, onDelete }) {
+    const handleDelete = (record) => {
+        if (onDelete) {
+            onDelete(record)
+        }
+    }
+
     const renderRows = () => {
-        return props.data.map(record => {
+        return data.map(record => {
             return (
                 <tr key={record._id}>
-                    {props.cols.map(col => (
+                    {cols.map(col => (
                         <td key={col.attribute}>{record[col.attribute]}</td>
                     ))}
+                    {onDelete && (
+                        <td className="actions-cell">
+                            <button 
+                                className="delete-btn"
+                                onClick={() => handleDelete(record)}
+                            >
+                                Delete
+                            </button>
+                        </td>
+                    )}
                 </tr>
             )
         })
@@ -17,9 +33,10 @@ function Table(props) {
         <table>
             <thead>
                 <tr className="header">
-                    {props.cols.map(col => (
+                    {cols.map(col => (
                         <td key={col.attribute}>{col.display}</td>
                     ))}
+                    {onDelete && <td>Actions</td>}
                 </tr>
             </thead>
             <tbody>

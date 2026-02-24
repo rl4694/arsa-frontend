@@ -14,14 +14,11 @@ function Home() {
 
     const renderMarkers = () => {
         return disasters.map(disaster => {
-            // Get the latitude and longitude from coordinates
-            const [ latitude, longitude ] = disaster.location.split(", ").map(parseFloat)
-
             return (
                 <MapMarker 
-                    position={[latitude, longitude]} 
+                    position={[disaster.latitude, disaster.longitude]} 
                     color={color_code[disaster.type]}
-                    key={disaster.location}
+                    key={disaster._id}
                 >
                     <strong>{disaster.name}</strong>
                     <br />

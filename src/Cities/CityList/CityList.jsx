@@ -8,6 +8,8 @@ function CityList() {
         { attribute: "name", display: "City Name" },
         { attribute: "state_name", display: "State Name" },
         { attribute: "nation_name", display: "Nation Name" },
+        { attribute: "latitude", display: "Latitude" },
+        { attribute: "longitude", display: "Longitude" },
     ]
 
     const formFields = [

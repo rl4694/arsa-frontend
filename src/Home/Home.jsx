@@ -13,10 +13,13 @@ function Home() {
     }
 
     const renderMarkers = () => {
-        return disasters.map(disaster => {
+        return disasters.flatMap(disaster => {
+            const lat = disaster.latitude ?? parseFloat(disaster.location?.split(',')[0])
+            const lon = disaster.longitude ?? parseFloat(disaster.location?.split(',')[1])
+            if (isNaN(lat) || isNaN(lon)) return []
             return (
-                <MapMarker 
-                    position={[disaster.latitude, disaster.longitude]} 
+                <MapMarker
+                    position={[lat, lon]}
                     color={color_code[disaster.type]}
                     key={disaster._id}
                 >

@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import useRecord from "../../hooks/useRecord"
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
+import UpdateForm from '../../UpdateForm/UpdateForm'
 
 function DisastersList() {
-    const [disasters, , refetch] = useRecord("/natural_disasters")
+    const [disasters, setDisasters, refetch] = useRecord("/natural_disasters")
+    const [selectedRecord, setSelectedRecord] = useState(null)
+
     const cols = [
         { attribute: "name", display: "Name" },
         { attribute: "type", display: "Type" },
@@ -20,6 +24,23 @@ function DisastersList() {
         { name: "description", label: "Description", placeholder: "Brief description" },
     ]
 
+    const fields = [
+        { attribute: "name", display: "Name", type: "text" },
+        {
+            attribute: "type",
+            display: "Type",
+            type: "select",
+            options: ["earthquake", "tsunami", "landslide", "hurricane"],
+        },
+        { attribute: "date", display: "Date", type: "date" },
+        { attribute: "location", display: "Coordinates", type: "text" },
+        { attribute: "description", display: "Description", type: "text" },
+    ]
+
+    const handleUpdate = (updated) => {
+        setDisasters(prev => prev.map(d => d._id === updated._id ? updated : d))
+    }
+
     return (
         <div className="background">
             <div className="title">Disasters</div>
@@ -29,7 +50,16 @@ function DisastersList() {
                 endpoint="/natural_disasters"
                 onSuccess={refetch}
             />
-            <Table data={disasters} cols={cols} />
+            <Table data={disasters} cols={cols} onEdit={setSelectedRecord} />
+            {selectedRecord && (
+                <UpdateForm
+                    record={selectedRecord}
+                    fields={fields}
+                    endpoint="/natural_disasters"
+                    onClose={() => setSelectedRecord(null)}
+                    onSuccess={handleUpdate}
+                />
+            )}
         </div>
     )
 }

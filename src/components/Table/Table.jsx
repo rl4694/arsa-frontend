@@ -1,6 +1,6 @@
 import './Table.css'
 
-function Table({ data, cols, onDelete }) {
+function Table({ data, cols, onDelete, onEdit }) {
     const handleDelete = (record) => {
         if (onDelete) {
             onDelete(record)
@@ -14,14 +14,19 @@ function Table({ data, cols, onDelete }) {
                     {cols.map(col => (
                         <td key={col.attribute}>{record[col.attribute]}</td>
                     ))}
-                    {onDelete && (
+                    {(onEdit || onDelete) && (
                         <td className="actions-cell">
-                            <button 
-                                className="delete-btn"
-                                onClick={() => handleDelete(record)}
-                            >
-                                Delete
-                            </button>
+                            {onEdit && (
+                                <button onClick={() => onEdit(record)}>Edit</button>
+                            )}
+                            {onDelete && (
+                                <button
+                                    className="delete-btn"
+                                    onClick={() => handleDelete(record)}
+                                >
+                                    Delete
+                                </button>
+                            )}
                         </td>
                     )}
                 </tr>
@@ -36,7 +41,7 @@ function Table({ data, cols, onDelete }) {
                     {cols.map(col => (
                         <td key={col.attribute}>{col.display}</td>
                     ))}
-                    {onDelete && <td>Actions</td>}
+                    {(onEdit || onDelete) && <td>Actions</td>}
                 </tr>
             </thead>
             <tbody>

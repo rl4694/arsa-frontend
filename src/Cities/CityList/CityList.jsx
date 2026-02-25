@@ -1,9 +1,13 @@
+import { useState } from 'react'
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
+import UpdateForm from '../../UpdateForm/UpdateForm'
 import useRecord from '../../hooks/useRecord'
 
 function CityList() {
-    const [cities, , refetch] = useRecord("/cities")
+    const [cities, setCities, refetch] = useRecord("/cities")
+    const [selectedRecord, setSelectedRecord] = useState(null)
+
     const cols = [
         { attribute: "name", display: "City Name" },
         { attribute: "state_name", display: "State Name" },
@@ -17,6 +21,18 @@ function CityList() {
         { name: "state_id", label: "State ID", placeholder: "Enter state ID" },
     ]
 
+    const fields = [
+        { attribute: "name", display: "City Name", type: "text" },
+        { attribute: "state_name", display: "State Name", type: "text" },
+        { attribute: "nation_name", display: "Nation Name", type: "text" },
+        { attribute: "latitude", display: "Latitude", type: "number" },
+        { attribute: "longitude", display: "Longitude", type: "number" },
+    ]
+
+    const handleUpdate = (updated) => {
+        setCities(prev => prev.map(c => c._id === updated._id ? updated : c))
+    }
+
     return (
         <div className="background">
             <div className="title">Cities</div>
@@ -26,7 +42,16 @@ function CityList() {
                 endpoint="/cities"
                 onSuccess={refetch}
             />
-            <Table data={cities} cols={cols} />
+            <Table data={cities} cols={cols} onEdit={setSelectedRecord} />
+            {selectedRecord && (
+                <UpdateForm
+                    record={selectedRecord}
+                    fields={fields}
+                    endpoint="/cities"
+                    onClose={() => setSelectedRecord(null)}
+                    onSuccess={handleUpdate}
+                />
+            )}
         </div>
     )
 }

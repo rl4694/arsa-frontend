@@ -3,6 +3,7 @@ import useRecord from "../../hooks/useRecord"
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
 import UpdateForm from '../../UpdateForm/UpdateForm'
+import api from '../../api'
 
 function NationList() {
     const [nations, setNations, refetch] = useRecord("/nations")
@@ -27,6 +28,18 @@ function NationList() {
         setNations(prev => prev.map(n => n._id === updated._id ? updated : n))
     }
 
+    const handleDelete = async (record) => {
+        if (!window.confirm(`Are you sure you want to delete "${record.name}"?`)) {
+            return
+        }
+        try {
+            await api.delete(`/nations/${record._id}`)
+            refetch()
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to delete')
+        }
+    }
+
     return (
         <div className="background">
             <div className="title">Nations</div>
@@ -36,7 +49,7 @@ function NationList() {
                 endpoint="/nations"
                 onSuccess={refetch}
             />
-            <Table data={nations} cols={cols} onEdit={setSelectedRecord} />
+            <Table data={nations} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

@@ -3,6 +3,7 @@ import useRecord from "../../hooks/useRecord"
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
 import UpdateForm from '../../UpdateForm/UpdateForm'
+import api from '../../api'
 
 function StatesList() {
     const [states, setStates, refetch] = useRecord("/states")
@@ -27,6 +28,18 @@ function StatesList() {
         setStates(prev => prev.map(s => s._id === updated._id ? updated : s))
     }
 
+    const handleDelete = async (record) => {
+        if (!window.confirm(`Are you sure you want to delete "${record.name}"?`)) {
+            return
+        }
+        try {
+            await api.delete(`/states/${record._id}`)
+            refetch()
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to delete')
+        }
+    }
+
     return (
         <div className="background">
             <div className="title">States</div>
@@ -36,7 +49,7 @@ function StatesList() {
                 endpoint="/states"
                 onSuccess={refetch}
             />
-            <Table data={states} cols={cols} onEdit={setSelectedRecord} />
+            <Table data={states} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

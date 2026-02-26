@@ -3,6 +3,7 @@ import useRecord from "../../hooks/useRecord"
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
 import UpdateForm from '../../UpdateForm/UpdateForm'
+import api from '../../api'
 
 function DisastersList() {
     const [disasters, setDisasters, refetch] = useRecord("/natural_disasters")
@@ -41,6 +42,18 @@ function DisastersList() {
         setDisasters(prev => prev.map(d => d._id === updated._id ? updated : d))
     }
 
+    const handleDelete = async (record) => {
+        if (!window.confirm(`Are you sure you want to delete "${record.name}"?`)) {
+            return
+        }
+        try {
+            await api.delete(`/natural_disasters/${record._id}`)
+            refetch()
+        } catch (err) {
+            alert(err.response?.data?.message || 'Failed to delete')
+        }
+    }
+
     return (
         <div className="background">
             <div className="title">Disasters</div>
@@ -50,7 +63,7 @@ function DisastersList() {
                 endpoint="/natural_disasters"
                 onSuccess={refetch}
             />
-            <Table data={disasters} cols={cols} onEdit={setSelectedRecord} />
+            <Table data={disasters} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

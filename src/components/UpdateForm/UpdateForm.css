@@ -1,0 +1,82 @@
+.update-form-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.update-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+    background-color: var(--color-bg);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.update-form h2 {
+    margin: 0 0 4px 0;
+    font-size: 22px;
+}
+
+.update-form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.update-form-field label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-surface);
+}
+
+.update-form-field input,
+.update-form-field select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.update-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.update-form-actions button {
+    padding: 8px 18px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.update-form-actions button[type="button"] {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.update-form-actions button[type="submit"] {
+    background-color: var(--color-surface);
+    color: var(--color-text-inverted);
+}
+
+.update-form-actions button[type="submit"]:hover {
+    background-color: var(--color-surface-hover);
+}
+
+.update-form-error {
+    color: red;
+    font-size: 14px;
+    margin: 0;
+}

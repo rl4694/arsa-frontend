@@ -47,14 +47,14 @@ function CreateForm({ title, fields, endpoint, onSuccess }) {
                 {success && <p className="create-form-success">{success}</p>}
 
                 {fields.map(field => (
-                    <div key={field.name} className="create-form-field">
-                        <label htmlFor={field.name}>{field.label}</label>
+                    <div key={field.attribute} className="create-form-field">
+                        <label htmlFor={field.attribute}>{field.display}</label>
                         <input
-                            id={field.name}
-                            name={field.name}
+                            id={field.attribute}
+                            name={field.attribute}
                             type={field.type || 'text'}
-                            placeholder={field.placeholder || field.label}
-                            value={formData[field.name]}
+                            placeholder={field.display}
+                            value={formData[field.attribute]}
                             onChange={handleChange}
                             required={field.required !== false}
                         />

@@ -2,22 +2,12 @@ import { useState } from 'react'
 import useRecord from "../../hooks/useRecord"
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
-import UpdateForm from '../../UpdateForm/UpdateForm'
+import UpdateForm from '../../components/UpdateForm/UpdateForm'
 import api from '../../api'
 
 function NationList() {
     const [nations, setNations, refetch] = useRecord("/nations")
     const [selectedRecord, setSelectedRecord] = useState(null)
-
-    const cols = [
-        { attribute: "name", display: "Nation Name" },
-        { attribute: "code", display: "Nation Code" },
-    ]
-
-    const formFields = [
-        { name: "name", label: "Nation Name", placeholder: "Enter nation name" },
-        { name: "code", label: "Nation Code", placeholder: "Enter nation code (e.g. US)" },
-    ]
 
     const fields = [
         { attribute: "name", display: "Nation Name", type: "text" },
@@ -45,11 +35,11 @@ function NationList() {
             <div className="title">Nations</div>
             <CreateForm
                 title="Add New Nation"
-                fields={formFields}
+                fields={fields}
                 endpoint="/nations"
                 onSuccess={refetch}
             />
-            <Table data={nations} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            <Table data={nations} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

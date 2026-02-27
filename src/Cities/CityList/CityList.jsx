@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
-import UpdateForm from '../../UpdateForm/UpdateForm'
+import UpdateForm from '../../components/UpdateForm/UpdateForm'
 import useRecord from '../../hooks/useRecord'
 import api from '../../api'
 
@@ -12,24 +12,11 @@ const sampleData = [
 ]
 
 function CityList() {
-    const [apiCities, , refetch] = useRecord("/cities")
+    const [apiCities, _, refetch] = useRecord("/cities")
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [localCities, setLocalCities] = useState(sampleData)
     
     const cities = apiCities.length > 0 ? apiCities : localCities
-
-    const cols = [
-        { attribute: "name", display: "City Name" },
-        { attribute: "state_name", display: "State Name" },
-        { attribute: "nation_name", display: "Nation Name" },
-        { attribute: "latitude", display: "Latitude" },
-        { attribute: "longitude", display: "Longitude" },
-    ]
-
-    const formFields = [
-        { name: "name", label: "City Name", placeholder: "Enter city name" },
-        { name: "state_id", label: "State ID", placeholder: "Enter state ID" },
-    ]
 
     const fields = [
         { attribute: "name", display: "City Name", type: "text" },
@@ -60,11 +47,11 @@ function CityList() {
             <div className="title">Cities</div>
             <CreateForm
                 title="Add New City"
-                fields={formFields}
+                fields={fields}
                 endpoint="/cities"
                 onSuccess={refetch}
             />
-            <Table data={cities} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            <Table data={cities} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

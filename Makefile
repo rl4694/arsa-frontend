@@ -1,7 +1,11 @@
-.PHONY: install lint test build dev preview clean all prod local
+.PHONY: github dev_env lint test build dev preview clean all prod local
 
-install:
-	npm install
+dev:
+	npm run dev
+
+github:
+	- git commit -a
+	git push origin master
 
 lint:
 	npm run lint
@@ -9,8 +13,11 @@ lint:
 test:
 	npm run test -- --run
 
-dev:
-	npm run dev
+# CI pipeline style full
+all_tests: lint test
+
+dev_env:
+	npm install
 
 build:
 	npm run build
@@ -18,14 +25,8 @@ build:
 preview:
 	npm run preview
 
-# CI pipeline style full
-all: lint test
-
 # Production pipeline
-prod: install lint test build
-
-# Local dev pipelne
-local: install dev
+prod: all_tests github
 
 clean:
 	rm -rf node_modules

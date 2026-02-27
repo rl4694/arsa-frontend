@@ -22,10 +22,10 @@ function Table({ data, cols, onDelete, onEdit }) {
                     <td className="actions-cell">
                         {showActions && (
                             <div className="actions">
-                                <button className="edit-btn" onClick={() => onEdit(record)}>
+                                <button className="edit-btn" onClick={() => onEdit(record)} aria-label="edit">
                                     <FaPencilAlt />
                                 </button>
-                                <button className="delete-btn" onClick={() => onDelete(record)}>
+                                <button className="delete-btn" onClick={() => onDelete(record)} aria-label="delete">
                                     <FaTrash />
                                 </button>
                             </div>

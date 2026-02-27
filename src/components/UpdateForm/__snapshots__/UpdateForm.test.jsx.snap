@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`UpdateForm > matches snapshot 1`] = `
+<div>
+  <div
+    class="update-form-overlay"
+  >
+    <form
+      class="update-form"
+    >
+      <h2>
+        Edit
+      </h2>
+      <div
+        class="update-form-field"
+      >
+        <label>
+          First
+        </label>
+        <input
+          type="text"
+          value="One"
+        />
+      </div>
+      <div
+        class="update-form-field"
+      >
+        <label>
+          Second
+        </label>
+        <input
+          type="text"
+          value="Two"
+        />
+      </div>
+      <div
+        class="update-form-field"
+      >
+        <label>
+          Third
+        </label>
+        <input
+          type="text"
+          value="Three"
+        />
+      </div>
+      <div
+        class="update-form-actions"
+      >
+        <button
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+`;

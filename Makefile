@@ -1,4 +1,4 @@
-.PHONY: github dev_env lint test build dev preview clean all prod local
+.PHONY: dev github lint test all_tests dev_env build preview prod clean
 
 dev:
 	npm run dev

@@ -1,12 +1,19 @@
-.create-form-container {
-    padding: 20px;
+.create-form-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .create-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    max-width: 400px;
+    width: 100%;
+    max-width: 360px;
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -29,11 +36,13 @@
     font-weight: 500;
 }
 
-.create-form-field input {
+.create-form-field input,
+.create-form-field select {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
+    font-family: inherit;
 }
 
 .create-form-field input:focus {

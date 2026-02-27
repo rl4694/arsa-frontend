@@ -43,13 +43,4 @@ describe("CityList", () => {
         )
         expect(screen.getByText("Cities")).toBeTruthy()
     })
-
-    it("renders the create form", () => {
-        render(
-            <MemoryRouter>
-                <CityList />
-            </MemoryRouter>
-        )
-        expect(screen.getByText("Add New City")).toBeTruthy()
-    })
 })

@@ -7,6 +7,7 @@ import api from '../../api'
 
 function StatesList() {
     const [states, setStates, refetch] = useRecord("/states")
+    const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
 
     const fields = [
@@ -33,13 +34,17 @@ function StatesList() {
     return (
         <div className="background">
             <div className="title">States</div>
-            <CreateForm
-                title="Add New State"
-                fields={fields}
-                endpoint="/states"
-                onSuccess={refetch}
-            />
+            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
             <Table data={states} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            {showCreate && (
+                <CreateForm
+                    title="Add New State"
+                    fields={fields}
+                    endpoint="/states"
+                    onClose={() => setShowCreate(false)}
+                    onSuccess={refetch}
+                />
+            )}
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

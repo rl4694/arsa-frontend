@@ -24,6 +24,7 @@
   --color-link-clicked: #535bf2;
   --color-delete: #fc4545;
   --color-edit: #fbac2e;
+  --color-create: #3a96ff;
 }
 
 a {
@@ -110,7 +111,10 @@ button:focus-visible {
   margin: 1rem 0;
 }
 
-.down-caret {
-  font-size: 8pt;
-  margin: 0 0.5rem;
+.create-btn {
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-create);
+  color: var(--color-text-inverted);
+  margin-bottom: 1rem;
 }

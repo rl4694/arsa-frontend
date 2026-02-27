@@ -2,7 +2,7 @@ import { useState } from 'react'
 import api from '../../api'
 import './CreateForm.css'
 
-function CreateForm({ title, fields, endpoint, onSuccess }) {
+function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
     const initialState = fields.reduce((acc, field) => {
         acc[field.name] = ''
         return acc
@@ -38,9 +38,35 @@ function CreateForm({ title, fields, endpoint, onSuccess }) {
         }
     }
 
+    const renderInput = (field) => {
+        if (field.type === 'select') {
+            return (
+                <select
+                    value={formData[field.attribute]}
+                    onChange={e => handleChange(field.attribute, e.target.value)}
+                >
+                    {field.options.map(opt => (
+                        <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                </select>
+            )
+        }
+        return (
+            <input
+                type={field.type || 'text'}
+                value={formData[field.attribute]}
+                onChange={e => handleChange(field.attribute, e.target.value)}
+            />
+        )
+    }
+
     return (
-        <div className="create-form-container">
-            <form onSubmit={handleSubmit} className="create-form">
+        <div className="create-form-overlay" onClick={onClose}>
+            <form
+                className="create-form"
+                onSubmit={handleSubmit}
+                onClick={e => e.stopPropagation()}
+            >
                 {title && <h2>{title}</h2>}
                 
                 {error && <p className="create-form-error">{error}</p>}
@@ -49,15 +75,7 @@ function CreateForm({ title, fields, endpoint, onSuccess }) {
                 {fields.map(field => (
                     <div key={field.attribute} className="create-form-field">
                         <label htmlFor={field.attribute}>{field.display}</label>
-                        <input
-                            id={field.attribute}
-                            name={field.attribute}
-                            type={field.type || 'text'}
-                            placeholder={field.display}
-                            value={formData[field.attribute]}
-                            onChange={handleChange}
-                            required={field.required !== false}
-                        />
+                        {renderInput(field)}
                     </div>
                 ))}
 

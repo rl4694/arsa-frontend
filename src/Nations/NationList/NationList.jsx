@@ -7,6 +7,7 @@ import api from '../../api'
 
 function NationList() {
     const [nations, setNations, refetch] = useRecord("/nations")
+    const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
 
     const fields = [
@@ -33,13 +34,17 @@ function NationList() {
     return (
         <div className="background">
             <div className="title">Nations</div>
-            <CreateForm
-                title="Add New Nation"
-                fields={fields}
-                endpoint="/nations"
-                onSuccess={refetch}
-            />
+            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
             <Table data={nations} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            {showCreate && (
+                <CreateForm
+                    title="Add New Nation"
+                    fields={fields}
+                    endpoint="/nations"
+                    onClose={() => setShowCreate(false)}
+                    onSuccess={refetch}
+                />
+            )}
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

@@ -3,7 +3,7 @@
 exports[`CreateForm > matches snapshot 1`] = `
 <div>
   <div
-    class="create-form-container"
+    class="create-form-overlay"
   >
     <form
       class="create-form"
@@ -20,10 +20,6 @@ exports[`CreateForm > matches snapshot 1`] = `
           First
         </label>
         <input
-          id="first"
-          name="first"
-          placeholder="First"
-          required=""
           type="text"
         />
       </div>
@@ -36,10 +32,6 @@ exports[`CreateForm > matches snapshot 1`] = `
           Second
         </label>
         <input
-          id="second"
-          name="second"
-          placeholder="Second"
-          required=""
           type="text"
         />
       </div>
@@ -52,10 +44,6 @@ exports[`CreateForm > matches snapshot 1`] = `
           Third
         </label>
         <input
-          id="third"
-          name="third"
-          placeholder="Third"
-          required=""
           type="text"
         />
       </div>

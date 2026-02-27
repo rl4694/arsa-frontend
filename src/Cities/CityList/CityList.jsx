@@ -13,6 +13,7 @@ const sampleData = [
 
 function CityList() {
     const [apiCities, _, refetch] = useRecord("/cities")
+    const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [localCities, setLocalCities] = useState(sampleData)
     
@@ -45,13 +46,17 @@ function CityList() {
     return (
         <div className="background">
             <div className="title">Cities</div>
-            <CreateForm
-                title="Add New City"
-                fields={fields}
-                endpoint="/cities"
-                onSuccess={refetch}
-            />
+            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
             <Table data={cities} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            {showCreate && (
+                <CreateForm
+                    title="Add New City"
+                    fields={fields}
+                    endpoint="/cities"
+                    onClose={() => setShowCreate(false)}
+                    onSuccess={refetch}
+                />
+            )}
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

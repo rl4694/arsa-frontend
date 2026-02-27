@@ -7,6 +7,7 @@ import api from '../../api'
 
 function DisastersList() {
     const [disasters, setDisasters, refetch] = useRecord("/natural_disasters")
+    const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
 
     const fields = [
@@ -41,13 +42,17 @@ function DisastersList() {
     return (
         <div className="background">
             <div className="title">Disasters</div>
-            <CreateForm
-                title="Add New Disaster"
-                fields={fields}
-                endpoint="/natural_disasters"
-                onSuccess={refetch}
-            />
+            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
             <Table data={disasters} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            {showCreate && (
+                <CreateForm
+                    title="Add New Disaster"
+                    fields={fields}
+                    endpoint="/natural_disasters"
+                    onClose={() => setShowCreate(false)}
+                    onSuccess={refetch}
+                />
+            )}
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

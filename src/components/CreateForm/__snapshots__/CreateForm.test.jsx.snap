@@ -21,6 +21,7 @@ exports[`CreateForm > matches snapshot 1`] = `
         </label>
         <input
           type="text"
+          value=""
         />
       </div>
       <div
@@ -33,6 +34,7 @@ exports[`CreateForm > matches snapshot 1`] = `
         </label>
         <input
           type="text"
+          value=""
         />
       </div>
       <div
@@ -45,6 +47,7 @@ exports[`CreateForm > matches snapshot 1`] = `
         </label>
         <input
           type="text"
+          value=""
         />
       </div>
       <button

@@ -3,19 +3,24 @@ import api from '../../api'
 import './CreateForm.css'
 
 function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
-    const initialState = fields.reduce((acc, field) => {
-        acc[field.name] = ''
-        return acc
-    }, {})
+    const initializeFormData = () => {
+        const data = {}
+        fields.forEach(field => {
+            data[field.attribute] = ''
+        })
+        return data
+    }
 
-    const [formData, setFormData] = useState(initialState)
+    const [formData, setFormData] = useState(() => initializeFormData())
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+    const handleChange = (field, value) => {
+        if (field.type === 'number' && value.length > 0) {
+            value = parseFloat(value)
+        }
+        setFormData(prev => ({ ...prev, [field.attribute]: value }))
     }
 
     const handleSubmit = async (e) => {
@@ -27,10 +32,9 @@ function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
         try {
             const response = await api.post(endpoint, formData)
             setSuccess('Created successfully!')
-            setFormData(initialState)
-            if (onSuccess) {
-                onSuccess(response.data)
-            }
+            setFormData(initializeFormData())
+            onSuccess(response.data.records)
+            onClose()
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to create')
         } finally {
@@ -43,7 +47,7 @@ function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
             return (
                 <select
                     value={formData[field.attribute]}
-                    onChange={e => handleChange(field.attribute, e.target.value)}
+                    onChange={e => handleChange(field, e.target.value)}
                 >
                     {field.options.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>
@@ -55,7 +59,7 @@ function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
             <input
                 type={field.type || 'text'}
                 value={formData[field.attribute]}
-                onChange={e => handleChange(field.attribute, e.target.value)}
+                onChange={e => handleChange(field, e.target.value)}
             />
         )
     }

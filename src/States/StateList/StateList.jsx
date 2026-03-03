@@ -15,6 +15,10 @@ function StatesList() {
         { attribute: "nation_name", display: "Nation Name", type: "text" },
     ]
 
+    const handleCreate = (created) => {
+        setStates(prev => [...prev, created])
+    }
+
     const handleUpdate = (updated) => {
         setStates(prev => prev.map(s => s._id === updated._id ? updated : s))
     }
@@ -42,7 +46,7 @@ function StatesList() {
                     fields={fields}
                     endpoint="/states"
                     onClose={() => setShowCreate(false)}
-                    onSuccess={refetch}
+                    onSuccess={handleCreate}
                 />
             )}
             {selectedRecord && (

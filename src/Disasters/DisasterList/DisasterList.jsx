@@ -19,9 +19,14 @@ function DisastersList() {
             options: ["earthquake", "tsunami", "landslide", "hurricane"],
         },
         { attribute: "date", display: "Date", type: "date" },
-        { attribute: "location", display: "Coordinates", type: "text" },
+        { attribute: "latitude", display: "Latitude", type: "number" },
+        { attribute: "longitude", display: "Longitude", type: "number" },
         { attribute: "description", display: "Description", type: "text" },
     ]
+
+    const handleCreate = (created) => {
+        setDisasters(prev => [...prev, created])
+    }
 
     const handleUpdate = (updated) => {
         setDisasters(prev => prev.map(d => d._id === updated._id ? updated : d))
@@ -50,7 +55,7 @@ function DisastersList() {
                     fields={fields}
                     endpoint="/natural_disasters"
                     onClose={() => setShowCreate(false)}
-                    onSuccess={refetch}
+                    onSuccess={handleCreate}
                 />
             )}
             {selectedRecord && (

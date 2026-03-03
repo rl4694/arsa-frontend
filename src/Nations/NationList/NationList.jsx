@@ -15,6 +15,10 @@ function NationList() {
         { attribute: "code", display: "Nation Code", type: "text" },
     ]
 
+    const handleCreate = (created) => {
+        setNations(prev => [...prev, created])
+    }
+
     const handleUpdate = (updated) => {
         setNations(prev => prev.map(n => n._id === updated._id ? updated : n))
     }
@@ -42,7 +46,7 @@ function NationList() {
                     fields={fields}
                     endpoint="/nations"
                     onClose={() => setShowCreate(false)}
-                    onSuccess={refetch}
+                    onSuccess={handleCreate}
                 />
             )}
             {selectedRecord && (

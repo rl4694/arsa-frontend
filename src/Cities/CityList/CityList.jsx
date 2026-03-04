@@ -9,6 +9,7 @@ function CityList() {
     const [cities, setCities, refetch] = useRecord("/cities")
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
+    const [success, setSuccess] = useState('')
 
     const fields = [
         { attribute: "name", display: "City Name", type: "text" },
@@ -20,10 +21,12 @@ function CityList() {
 
     const handleCreate = (created) => {
         setCities(prev => [...prev, created])
+        setSuccess('Successfully Created')
     }
 
     const handleUpdate = (updated) => {
         setCities(prev => prev.map(c => c._id === updated._id ? updated : c))
+        setSuccess('Successfully Updated')
     }
 
     const handleDelete = async (record) => {
@@ -33,6 +36,7 @@ function CityList() {
         try {
             await api.delete(`/cities/${record._id}`)
             refetch()
+            setSuccess('Successfully Deleted')
         } catch {
             console.log("Error deleting")
         }
@@ -42,6 +46,7 @@ function CityList() {
         <div className="background">
             <div className="title">Cities</div>
             <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
+            {success && <p className="form-success">{success}</p>}
             <Table data={cities} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {showCreate && (
                 <CreateForm

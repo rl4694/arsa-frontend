@@ -9,6 +9,7 @@ function DisastersList() {
     const [disasters, setDisasters, refetch] = useRecord("/natural_disasters")
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
+    const [success, setSuccess] = useState('')
 
     const fields = [
         { attribute: "name", display: "Name", type: "text" },
@@ -26,10 +27,12 @@ function DisastersList() {
 
     const handleCreate = (created) => {
         setDisasters(prev => [...prev, created])
+        setSuccess('Successfully Created')
     }
 
     const handleUpdate = (updated) => {
         setDisasters(prev => prev.map(d => d._id === updated._id ? updated : d))
+        setSuccess('Successfully Updated')
     }
 
     const handleDelete = async (record) => {
@@ -39,6 +42,7 @@ function DisastersList() {
         try {
             await api.delete(`/natural_disasters/${record._id}`)
             refetch()
+            setSuccess('Successfully Deleted')
         } catch (err) {
             alert(err.response?.data?.message || 'Failed to delete')
         }
@@ -48,6 +52,7 @@ function DisastersList() {
         <div className="background">
             <div className="title">Disasters</div>
             <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
+            {success && <p className="form-success">{success}</p>}
             <Table data={disasters} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {showCreate && (
                 <CreateForm

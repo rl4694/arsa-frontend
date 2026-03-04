@@ -1,9 +1,12 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import "./Navbar.css"
 import { useState } from "react"
+import { useAuth } from "../../context/AuthContext"
 
 function Navbar() {
     const [dropdownOpen, setDropdownOpen] = useState(false)
+    const { user, logout } = useAuth()
+    const navigate = useNavigate()
 
     const renderDropdown = () => {
         if (!dropdownOpen) {
@@ -17,6 +20,11 @@ function Navbar() {
                 <Link to="/disasters" className="item">Disasters</Link>
             </div>
         )
+    }
+
+    const handleLogout = () => {
+        logout()
+        navigate('/')
     }
 
     return (
@@ -34,8 +42,17 @@ function Navbar() {
                 </div>
             </div>
             <div className="right">
-                <Link to="/login" className="item">Login</Link>
-                <Link to="/register" className="item">Sign Up</Link>
+                {user ? (
+                    <>
+                        <span className="item navbar-username">{user.name}</span>
+                        <button className="item navbar-logout" onClick={handleLogout}>Logout</button>
+                    </>
+                ) : (
+                    <>
+                        <Link to="/login" className="item">Login</Link>
+                        <Link to="/register" className="item">Sign Up</Link>
+                    </>
+                )}
             </div>
         </div>
     )

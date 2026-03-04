@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../api'
+import { useAuth } from '../../context/AuthContext'
 import './Login.css'
 
 function Login() {
@@ -8,6 +9,7 @@ function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -16,8 +18,9 @@ function Login() {
     setIsLoading(true)
     try {
       const response = await api.post('/users/login', { email, password })
-      const { token } = response.data
+      const { token, name } = response.data
       localStorage.setItem('token', token)
+      login({ name, email })
       navigate('/')
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed')

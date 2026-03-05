@@ -50,3 +50,12 @@ api.interceptors.response.use(
 )
 
 export default api
+
+export const loginUser = async (email, password) => {
+    const response = await api.post("/users/login", {
+        email: email,
+        password: password
+    })
+
+    return response.data
+}

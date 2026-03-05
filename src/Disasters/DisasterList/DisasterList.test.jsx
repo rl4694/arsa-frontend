@@ -1,9 +1,14 @@
+/**
+ * Unit tests for DisastersList component
+ * Tests rendering, user interactions, and API calls
+ */
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
 import DisastersList from "./DisasterList";
 
+// Mock the useRecord hook with sample disaster data
 vi.mock("../../hooks/useRecord", () => ({
     default: vi.fn(() => {
         return [
@@ -31,10 +36,12 @@ vi.mock("../../UpdateForm/UpdateForm", () => ({
 }))
 
 describe("DisastersList", () => {
+    // Reset mocks before each test
     beforeEach(() => {
         vi.clearAllMocks()
     })
 
+    // Test basic rendering
     it("renders the title", () => {
         render(
             <MemoryRouter>
@@ -96,6 +103,7 @@ describe("DisastersList", () => {
         expect(editButtons.length).toBe(3)
     })
 
+    // Test delete functionality
     it("shows confirm dialog when delete is clicked", () => {
         const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(false)
         

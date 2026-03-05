@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Table > matches snapshot 1`] = `
+<div>
+  <table>
+    <thead>
+      <tr
+        class="header"
+      >
+        <td>
+          First
+        </td>
+        <td>
+          Second
+        </td>
+        <td>
+          Third
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          One
+        </td>
+        <td>
+          Two
+        </td>
+        <td>
+          Three
+        </td>
+        <td
+          class="actions-cell"
+        />
+      </tr>
+      <tr>
+        <td>
+          Four
+        </td>
+        <td>
+          Five
+        </td>
+        <td>
+          Six
+        </td>
+        <td
+          class="actions-cell"
+        />
+      </tr>
+    </tbody>
+  </table>
+</div>
+`;

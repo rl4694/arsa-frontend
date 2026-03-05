@@ -1,35 +1,15 @@
 import { useState } from 'react'
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
-import UpdateForm from '../../UpdateForm/UpdateForm'
+import UpdateForm from '../../components/UpdateForm/UpdateForm'
 import useRecord from '../../hooks/useRecord'
 import api from '../../api'
 
-const sampleData = [
-    { _id: "1", name: "New York", state_name: "New York", nation_name: "USA", latitude: 40.7, longitude: -74.0 },
-    { _id: "2", name: "Los Angeles", state_name: "California", nation_name: "USA", latitude: 34.0, longitude: -118.2 },
-    { _id: "3", name: "Chicago", state_name: "Illinois", nation_name: "USA", latitude: 41.9, longitude: -87.6 },
-]
-
 function CityList() {
-    const [apiCities, , refetch] = useRecord("/cities")
+    const [cities, setCities, refetch] = useRecord("/cities")
+    const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
-    const [localCities, setLocalCities] = useState(sampleData)
-    
-    const cities = apiCities.length > 0 ? apiCities : localCities
-
-    const cols = [
-        { attribute: "name", display: "City Name" },
-        { attribute: "state_name", display: "State Name" },
-        { attribute: "nation_name", display: "Nation Name" },
-        { attribute: "latitude", display: "Latitude" },
-        { attribute: "longitude", display: "Longitude" },
-    ]
-
-    const formFields = [
-        { name: "name", label: "City Name", placeholder: "Enter city name" },
-        { name: "state_id", label: "State ID", placeholder: "Enter state ID" },
-    ]
+    const [success, setSuccess] = useState('')
 
     const fields = [
         { attribute: "name", display: "City Name", type: "text" },
@@ -39,8 +19,14 @@ function CityList() {
         { attribute: "longitude", display: "Longitude", type: "number" },
     ]
 
+    const handleCreate = (created) => {
+        setCities(prev => [...prev, created])
+        setSuccess('Successfully Created')
+    }
+
     const handleUpdate = (updated) => {
-        setLocalCities(prev => prev.map(c => c._id === updated._id ? updated : c))
+        setCities(prev => prev.map(c => c._id === updated._id ? updated : c))
+        setSuccess('Successfully Updated')
     }
 
     const handleDelete = async (record) => {
@@ -50,21 +36,27 @@ function CityList() {
         try {
             await api.delete(`/cities/${record._id}`)
             refetch()
+            setSuccess('Successfully Deleted')
         } catch {
-            setLocalCities(prev => prev.filter(c => c._id !== record._id))
+            console.log("Error deleting")
         }
     }
 
     return (
         <div className="background">
             <div className="title">Cities</div>
-            <CreateForm
-                title="Add New City"
-                fields={formFields}
-                endpoint="/cities"
-                onSuccess={refetch}
-            />
-            <Table data={cities} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
+            {success && <p className="form-success">{success}</p>}
+            <Table data={cities} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            {showCreate && (
+                <CreateForm
+                    title="Add New City"
+                    fields={fields}
+                    endpoint="/cities"
+                    onClose={() => setShowCreate(false)}
+                    onSuccess={handleCreate}
+                />
+            )}
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

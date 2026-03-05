@@ -2,20 +2,25 @@ import { useState } from 'react'
 import api from '../../api'
 import './CreateForm.css'
 
-function CreateForm({ title, fields, endpoint, onSuccess }) {
-    const initialState = fields.reduce((acc, field) => {
-        acc[field.name] = ''
-        return acc
-    }, {})
+function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
+    const initializeFormData = () => {
+        const data = {}
+        fields.forEach(field => {
+            data[field.attribute] = ''
+        })
+        return data
+    }
 
-    const [formData, setFormData] = useState(initialState)
+    const [formData, setFormData] = useState(() => initializeFormData())
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
     const [loading, setLoading] = useState(false)
 
-    const handleChange = (e) => {
-        const { name, value } = e.target
-        setFormData(prev => ({ ...prev, [name]: value }))
+    const handleChange = (field, value) => {
+        if (field.type === 'number' && value.length > 0) {
+            value = parseFloat(value)
+        }
+        setFormData(prev => ({ ...prev, [field.attribute]: value }))
     }
 
     const handleSubmit = async (e) => {
@@ -27,10 +32,9 @@ function CreateForm({ title, fields, endpoint, onSuccess }) {
         try {
             const response = await api.post(endpoint, formData)
             setSuccess('Created successfully!')
-            setFormData(initialState)
-            if (onSuccess) {
-                onSuccess(response.data)
-            }
+            setFormData(initializeFormData())
+            onSuccess(response.data.records)
+            onClose()
         } catch (err) {
             setError(err.response?.data?.message || 'Failed to create')
         } finally {
@@ -38,26 +42,44 @@ function CreateForm({ title, fields, endpoint, onSuccess }) {
         }
     }
 
+    const renderInput = (field) => {
+        if (field.type === 'select') {
+            return (
+                <select
+                    value={formData[field.attribute]}
+                    onChange={e => handleChange(field, e.target.value)}
+                >
+                    {field.options.map(opt => (
+                        <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                </select>
+            )
+        }
+        return (
+            <input
+                type={field.type || 'text'}
+                value={formData[field.attribute]}
+                onChange={e => handleChange(field, e.target.value)}
+            />
+        )
+    }
+
     return (
-        <div className="create-form-container">
-            <form onSubmit={handleSubmit} className="create-form">
+        <div className="create-form-overlay" onClick={onClose}>
+            <form
+                className="create-form"
+                onSubmit={handleSubmit}
+                onClick={e => e.stopPropagation()}
+            >
                 {title && <h2>{title}</h2>}
                 
                 {error && <p className="create-form-error">{error}</p>}
                 {success && <p className="create-form-success">{success}</p>}
 
                 {fields.map(field => (
-                    <div key={field.name} className="create-form-field">
-                        <label htmlFor={field.name}>{field.label}</label>
-                        <input
-                            id={field.name}
-                            name={field.name}
-                            type={field.type || 'text'}
-                            placeholder={field.placeholder || field.label}
-                            value={formData[field.name]}
-                            onChange={handleChange}
-                            required={field.required !== false}
-                        />
+                    <div key={field.attribute} className="create-form-field">
+                        <label htmlFor={field.attribute}>{field.display}</label>
+                        {renderInput(field)}
                     </div>
                 ))}
 

@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`CreateForm > matches snapshot 1`] = `
+<div>
+  <div
+    class="create-form-overlay"
+  >
+    <form
+      class="create-form"
+    >
+      <h2>
+        Test
+      </h2>
+      <div
+        class="create-form-field"
+      >
+        <label
+          for="first"
+        >
+          First
+        </label>
+        <input
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="create-form-field"
+      >
+        <label
+          for="second"
+        >
+          Second
+        </label>
+        <input
+          type="text"
+          value=""
+        />
+      </div>
+      <div
+        class="create-form-field"
+      >
+        <label
+          for="third"
+        >
+          Third
+        </label>
+        <input
+          type="text"
+          value=""
+        />
+      </div>
+      <button
+        type="submit"
+      >
+        Create
+      </button>
+    </form>
+  </div>
+</div>
+`;

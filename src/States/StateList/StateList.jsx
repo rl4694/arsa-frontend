@@ -2,30 +2,28 @@ import { useState } from 'react'
 import useRecord from "../../hooks/useRecord"
 import Table from "../../components/Table/Table"
 import CreateForm from "../../components/CreateForm/CreateForm"
-import UpdateForm from '../../UpdateForm/UpdateForm'
+import UpdateForm from '../../components/UpdateForm/UpdateForm'
 import api from '../../api'
 
 function StatesList() {
     const [states, setStates, refetch] = useRecord("/states")
+    const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
-
-    const cols = [
-        { attribute: "name", display: "State Name" },
-        { attribute: "nation_name", display: "Nation Name" },
-    ]
-
-    const formFields = [
-        { name: "name", label: "State Name", placeholder: "Enter state name" },
-        { name: "nation_id", label: "Nation ID", placeholder: "Enter nation ID" },
-    ]
+    const [success, setSuccess] = useState('')
 
     const fields = [
         { attribute: "name", display: "State Name", type: "text" },
         { attribute: "nation_name", display: "Nation Name", type: "text" },
     ]
 
+    const handleCreate = (created) => {
+        setStates(prev => [...prev, created])
+        setSuccess('Successfully Created')
+    }
+
     const handleUpdate = (updated) => {
         setStates(prev => prev.map(s => s._id === updated._id ? updated : s))
+        setSuccess('Successfully Updated')
     }
 
     const handleDelete = async (record) => {
@@ -35,6 +33,7 @@ function StatesList() {
         try {
             await api.delete(`/states/${record._id}`)
             refetch()
+            setSuccess('Successfully Deleted')
         } catch (err) {
             alert(err.response?.data?.message || 'Failed to delete')
         }
@@ -43,13 +42,18 @@ function StatesList() {
     return (
         <div className="background">
             <div className="title">States</div>
-            <CreateForm
-                title="Add New State"
-                fields={formFields}
-                endpoint="/states"
-                onSuccess={refetch}
-            />
-            <Table data={states} cols={cols} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
+            {success && <p className="form-success">{success}</p>}
+            <Table data={states} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            {showCreate && (
+                <CreateForm
+                    title="Add New State"
+                    fields={fields}
+                    endpoint="/states"
+                    onClose={() => setShowCreate(false)}
+                    onSuccess={handleCreate}
+                />
+            )}
             {selectedRecord && (
                 <UpdateForm
                     record={selectedRecord}

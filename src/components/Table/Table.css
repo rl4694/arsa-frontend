@@ -16,20 +16,31 @@ th, td {
 }
 
 .actions-cell {
-    width: 100px;
-    text-align: center;
+    border: 0;
+    padding: 0;
+    position: relative;
+}
+
+.actions-cell .actions {
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.actions-cell .actions button {
+    padding: 0.25rem;
+    padding-bottom: 0;
+    margin: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.actions .edit-btn {
+    background-color: var(--color-edit);
+    color: var(--color-text-inverted);
 }
 
 .delete-btn {
-    padding: 5px 12px;
-    background-color: #d32f2f;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.delete-btn:hover {
-    background-color: #b71c1c;
+    background-color: var(--color-delete);
+    color: var(--color-text-inverted);
 }

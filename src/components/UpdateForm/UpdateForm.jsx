@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import api from '../api'
+import api from '../../api'
 import './UpdateForm.css'
 
 function UpdateForm({ record, fields, endpoint, onClose, onSuccess }) {
@@ -10,20 +10,18 @@ function UpdateForm({ record, fields, endpoint, onClose, onSuccess }) {
     })
     const [error, setError] = useState('')
 
-    const handleChange = (attribute, value) => {
-        setFormData(prev => ({ ...prev, [attribute]: value }))
+    const handleChange = (field, value) => {
+        if (field.type === 'number' && value.length > 0) {
+            value = parseFloat(value)
+        }
+        setFormData(prev => ({ ...prev, [field.attribute]: value }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setError('')
-        const processedData = {}
-        fields.forEach(f => {
-            const val = formData[f.attribute]
-            processedData[f.attribute] = f.type === 'number' ? parseFloat(val) : val
-        })
         try {
-            const res = await api.put(`${endpoint}/${record._id}`, processedData)
+            const res = await api.put(`${endpoint}/${record._id}`, formData)
             onSuccess(res.data.records)
             onClose()
         } catch (err) {
@@ -36,7 +34,7 @@ function UpdateForm({ record, fields, endpoint, onClose, onSuccess }) {
             return (
                 <select
                     value={formData[field.attribute]}
-                    onChange={e => handleChange(field.attribute, e.target.value)}
+                    onChange={e => handleChange(field, e.target.value)}
                 >
                     {field.options.map(opt => (
                         <option key={opt} value={opt}>{opt}</option>
@@ -48,7 +46,7 @@ function UpdateForm({ record, fields, endpoint, onClose, onSuccess }) {
             <input
                 type={field.type || 'text'}
                 value={formData[field.attribute]}
-                onChange={e => handleChange(field.attribute, e.target.value)}
+                onChange={e => handleChange(field, e.target.value)}
             />
         )
     }

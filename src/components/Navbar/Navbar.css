@@ -45,3 +45,30 @@
     top: 2.75rem;
     background-color: var(--color-surface);
 }
+
+.down-caret {
+  font-size: 8pt;
+  margin: 0 0.5rem;
+}
+
+.navbar .navbar-username {
+    display: flex;
+    align-items: center;
+    cursor: default;
+}
+
+.navbar .navbar-username:hover {
+    background-color: transparent;
+}
+
+.navbar .navbar-logout {
+    background: none;
+    border: none;
+    border-radius: 0;
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}

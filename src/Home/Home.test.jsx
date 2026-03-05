@@ -8,6 +8,7 @@ vi.mock("../hooks/useRecord", () => ({
         return [
             [
                 {
+                    _id: "66170c5af3d27e919f30b100",
                     name: "Big Earthquake",
                     type: "earthquake",
                     location: "10.0, 20.0",

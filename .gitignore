@@ -1,3 +1,7 @@
+# Script files (local only)
+run-local.*
+run-cloud.*
+
 # Logs
 logs
 *.log

@@ -1,16 +1,26 @@
+import { useState, useEffect } from 'react'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import MapMarker from '../components/Marker/MapMarker'
+import api from "../api"
 import "leaflet/dist/leaflet.css"
 import "./Home.css"
-import useRecord from '../hooks/useRecord'
 
 function Home() {
-    const [disasters] = useRecord("/natural_disasters")
+    const [disasters, setDisasters] = useState([])
     const color_code = {
         "earthquake": "red",
         "tsunami": "blue",
         "landslide": "purple",
     }
+
+    useEffect(() => {
+        api.get("/natural_disasters").then(res => {
+            if (!res.data.records) {
+                return
+            }
+            setDisasters(Object.values(res.data.records))
+        })
+    }, [])
 
     const renderMarkers = () => {
         return disasters.flatMap(disaster => {

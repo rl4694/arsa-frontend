@@ -1,31 +1,38 @@
-import { useState } from 'react'
-import Table from "../../components/Table/Table"
-import CreateForm from "../../components/CreateForm/CreateForm"
-import UpdateForm from '../../components/UpdateForm/UpdateForm'
-import useRecord from '../../hooks/useRecord'
-import api from '../../api'
+import { useState, useEffect, useCallback } from 'react'
+import Table from "../components/Table/Table"
+import CreateForm from "../components/CreateForm/CreateForm"
+import UpdateForm from '../components/UpdateForm/UpdateForm'
+import api from '../api'
+import "./RecordList.css";
 
-function CityList() {
-    const [cities, setCities, refetch] = useRecord("/cities")
+function RecordList({ title, api_path, fields }) {
+    const [records, setRecords] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [success, setSuccess] = useState('')
 
-    const fields = [
-        { attribute: "name", display: "City Name", type: "text" },
-        { attribute: "state_name", display: "State Name", type: "text" },
-        { attribute: "nation_name", display: "Nation Name", type: "text" },
-        { attribute: "latitude", display: "Latitude", type: "number" },
-        { attribute: "longitude", display: "Longitude", type: "number" },
-    ]
+    // Prevent fetchRecords from being re-rendered except if api_path changes
+    const fetchRecords = useCallback(() => {
+        api.get(api_path).then(res => {
+            if (!res.data.records) {
+                return
+            }
+            setRecords(Object.values(res.data.records))
+        })
+    }, [api_path])
+
+    // Run fetchRecords on load
+    useEffect(() => {
+        fetchRecords()
+    }, [fetchRecords])
 
     const handleCreate = (created) => {
-        setCities(prev => [...prev, created])
+        setRecords(prev => [...prev, created])
         setSuccess('Successfully Created')
     }
 
     const handleUpdate = (updated) => {
-        setCities(prev => prev.map(c => c._id === updated._id ? updated : c))
+        setRecords(prev => prev.map(c => c._id === updated._id ? updated : c))
         setSuccess('Successfully Updated')
     }
 
@@ -34,8 +41,8 @@ function CityList() {
             return
         }
         try {
-            await api.delete(`/cities/${record._id}`)
-            refetch()
+            await api.delete(`${api_path}/${record._id}`)
+            fetchRecords()
             setSuccess('Successfully Deleted')
         } catch {
             console.log("Error deleting")
@@ -44,15 +51,15 @@ function CityList() {
 
     return (
         <div className="background">
-            <div className="title">Cities</div>
+            <div className="title">{title}</div>
             <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
             {success && <p className="form-success">{success}</p>}
-            <Table data={cities} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
+            <Table data={records} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {showCreate && (
                 <CreateForm
                     title="Add New City"
                     fields={fields}
-                    endpoint="/cities"
+                    endpoint={api_path}
                     onClose={() => setShowCreate(false)}
                     onSuccess={handleCreate}
                 />
@@ -61,7 +68,7 @@ function CityList() {
                 <UpdateForm
                     record={selectedRecord}
                     fields={fields}
-                    endpoint="/cities"
+                    endpoint={api_path}
                     onClose={() => setSelectedRecord(null)}
                     onSuccess={handleUpdate}
                 />
@@ -70,4 +77,4 @@ function CityList() {
     )
 }
 
-export default CityList
+export default RecordList

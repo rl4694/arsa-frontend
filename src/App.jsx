@@ -6,10 +6,8 @@ import Home from './Home/Home'
 import Login from './Users/Login/Login'
 import Register from './Users/Register/Register'
 import Navbar from './components/Navbar/Navbar'
-import CityList from './Cities/CityList/CityList'
-import StateList from './States/StateList/StateList'
-import NationList from './Nations/NationList/NationList'
-import DisasterList from './Disasters/DisasterList/DisasterList'
+import RecordList from './RecordList/RecordList'
+import { cityFields, stateFields, nationFields, disasterFields } from './RecordList/fields'
 
 function App() {
   return (
@@ -17,10 +15,10 @@ function App() {
         <Navbar />
         <Routes>
             <Route path='/' element={<Home />} />
-            <Route path='/cities' element={<CityList />} />
-            <Route path='/states' element={<StateList />} />
-            <Route path='/nations' element={<NationList />} />
-            <Route path='/disasters' element={<DisasterList />} />
+            <Route path='/cities' element={<RecordList title="Cities" api_path="/cities" fields={cityFields} />} />
+            <Route path='/states' element={<RecordList title="States" api_path="/states" fields={stateFields} />} />
+            <Route path='/nations' element={<RecordList title="Nations" api_path="/nations" fields={nationFields} />} />
+            <Route path='/disasters' element={<RecordList title="Disasters" api_path="/natural_disasters" fields={disasterFields} />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
         </Routes>

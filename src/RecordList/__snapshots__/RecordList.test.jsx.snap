@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`RecordList > matches snapshot 1`] = `
+<div>
+  <div
+    class="background"
+  >
+    <div
+      class="title"
+    >
+      Test
+    </div>
+    <button
+      class="create-btn"
+    >
+      + Create
+    </button>
+    <table>
+      <thead>
+        <tr
+          class="header"
+        >
+          <td>
+            State Name
+          </td>
+          <td>
+            Nation Name
+          </td>
+        </tr>
+      </thead>
+      <tbody />
+    </table>
+  </div>
+</div>
+`;

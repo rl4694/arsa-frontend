@@ -1,0 +1,69 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`NationList > matches snapshot 1`] = `
+<div>
+  <div
+    class="background"
+  >
+    <div
+      class="title"
+    >
+      Nations
+    </div>
+    <button
+      class="create-btn"
+    >
+      + Create
+    </button>
+    <table>
+      <thead>
+        <tr
+          class="header"
+        >
+          <td>
+            Nation Name
+          </td>
+          <td>
+            Nation Code
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            United States
+          </td>
+          <td>
+            US
+          </td>
+          <td
+            class="actions-cell"
+          />
+        </tr>
+        <tr>
+          <td>
+            Canada
+          </td>
+          <td>
+            CA
+          </td>
+          <td
+            class="actions-cell"
+          />
+        </tr>
+        <tr>
+          <td>
+            Mexico
+          </td>
+          <td>
+            MX
+          </td>
+          <td
+            class="actions-cell"
+          />
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+`;

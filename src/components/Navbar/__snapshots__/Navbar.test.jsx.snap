@@ -29,20 +29,16 @@ exports[`Navbar > matches snapshot 1`] = `
     <div
       class="right"
     >
-      <a
-        class="item"
-        data-discover="true"
-        href="/login"
+      <span
+        class="item navbar-username"
       >
-        Login
-      </a>
-      <a
-        class="item"
-        data-discover="true"
-        href="/register"
+        test
+      </span>
+      <button
+        class="item navbar-logout"
       >
-        Sign Up
-      </a>
+        Logout
+      </button>
     </div>
   </div>
 </div>

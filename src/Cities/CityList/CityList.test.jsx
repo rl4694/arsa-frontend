@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
@@ -35,12 +35,12 @@ describe("CityList", () => {
         vi.clearAllMocks()
     })
 
-    it("renders the title", () => {
-        render(
+    it('matches snapshot', () => {
+        const { container } = render(
             <MemoryRouter>
                 <CityList />
             </MemoryRouter>
         )
-        expect(screen.getByText("Cities")).toBeTruthy()
+        expect(container).toMatchSnapshot();
     })
 })

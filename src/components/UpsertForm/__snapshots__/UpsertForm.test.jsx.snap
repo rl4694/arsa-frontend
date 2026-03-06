@@ -1,18 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CreateForm > matches snapshot 1`] = `
+exports[`UpsertForm > matches snapshot 1`] = `
 <div>
   <div
-    class="create-form-overlay"
+    class="upsert-form-overlay"
   >
     <form
-      class="create-form"
+      class="upsert-form"
     >
       <h2>
         Test
       </h2>
       <div
-        class="create-form-field"
+        class="upsert-form-field"
       >
         <label
           for="first"
@@ -21,11 +21,11 @@ exports[`CreateForm > matches snapshot 1`] = `
         </label>
         <input
           type="text"
-          value=""
+          value="One"
         />
       </div>
       <div
-        class="create-form-field"
+        class="upsert-form-field"
       >
         <label
           for="second"
@@ -34,11 +34,11 @@ exports[`CreateForm > matches snapshot 1`] = `
         </label>
         <input
           type="text"
-          value=""
+          value="Two"
         />
       </div>
       <div
-        class="create-form-field"
+        class="upsert-form-field"
       >
         <label
           for="third"
@@ -47,14 +47,23 @@ exports[`CreateForm > matches snapshot 1`] = `
         </label>
         <input
           type="text"
-          value=""
+          value="Three"
         />
       </div>
-      <button
-        type="submit"
+      <div
+        class="upsert-form-actions"
       >
-        Create
-      </button>
+        <button
+          type="button"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+        >
+          Save
+        </button>
+      </div>
     </form>
   </div>
 </div>

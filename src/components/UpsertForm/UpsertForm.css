@@ -1,4 +1,4 @@
-.update-form-overlay {
+.upsert-form-overlay {
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
@@ -8,7 +8,7 @@
     z-index: 1000;
 }
 
-.update-form {
+.upsert-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -20,25 +20,25 @@
     border-radius: 4px;
 }
 
-.update-form h2 {
+.upsert-form h2 {
     margin: 0 0 4px 0;
     font-size: 22px;
 }
 
-.update-form-field {
+.upsert-form-field {
     display: flex;
     flex-direction: column;
     gap: 4px;
 }
 
-.update-form-field label {
+.upsert-form-field label {
     font-size: 13px;
     font-weight: 500;
     color: var(--color-surface);
 }
 
-.update-form-field input,
-.update-form-field select {
+.upsert-form-field input,
+.upsert-form-field select {
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 4px;
@@ -46,14 +46,14 @@
     font-family: inherit;
 }
 
-.update-form-actions {
+.upsert-form-actions {
     display: flex;
     justify-content: flex-end;
     gap: 10px;
     margin-top: 4px;
 }
 
-.update-form-actions button {
+.upsert-form-actions button {
     padding: 8px 18px;
     font-size: 14px;
     border-radius: 4px;
@@ -61,22 +61,25 @@
     border: none;
 }
 
-.update-form-actions button[type="button"] {
+.upsert-form-actions button[type="button"] {
     background-color: #e0e0e0;
     color: #333;
 }
 
-.update-form-actions button[type="submit"] {
+.upsert-form-actions button[type="submit"] {
     background-color: var(--color-surface);
     color: var(--color-text-inverted);
 }
 
-.update-form-actions button[type="submit"]:hover {
+.upsert-form-actions button[type="submit"]:hover {
     background-color: var(--color-surface-hover);
 }
 
-.update-form-error {
-    color: red;
+.upsert-form-error {
+    color: #d32f2f;
     font-size: 14px;
     margin: 0;
+    padding: 8px;
+    background: #ffebee;
+    border-radius: 4px;
 }

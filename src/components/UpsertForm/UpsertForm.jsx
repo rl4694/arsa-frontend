@@ -1,19 +1,27 @@
 import { useState } from 'react'
-import api from '../../api'
-import './CreateForm.css'
+import './UpsertForm.css'
 
-function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
+function UpsertForm({ title, record, fields, onSubmit, onClose }) {
     const initializeFormData = () => {
         const data = {}
         fields.forEach(field => {
-            data[field.attribute] = ''
+            // Field value defaults to empty string
+            let value = ''
+            // If attribute exists in record, use it
+            if (record && record[field.attribute]) {
+                value = record[field.attribute]
+            }
+            // If field type is select, use the first option
+            else if (field.type == 'select' && field.options?.length > 0) {
+                value = field.options[0]
+            }
+            data[field.attribute] = value
         })
         return data
     }
 
     const [formData, setFormData] = useState(() => initializeFormData())
     const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
     const [loading, setLoading] = useState(false)
 
     const handleChange = (field, value) => {
@@ -24,19 +32,23 @@ function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
     }
 
     const handleSubmit = async (e) => {
+        // Stop browser from reloading page
         e.preventDefault()
+
+        // Update state variables
         setError('')
-        setSuccess('')
         setLoading(true)
 
         try {
-            const response = await api.post(endpoint, formData)
-            setSuccess('Created successfully!')
-            setFormData(initializeFormData())
-            onSuccess(response.data.records)
+            // Submit form
+            await onSubmit(formData, record)
+            // Close and clear form
             onClose()
+            setFormData(initializeFormData())
         } catch (err) {
-            setError(err.response?.data?.message || 'Failed to create')
+            // Show error message
+            const message = err.response?.data?.error
+            setError(message ? `Error: ${message}` : 'Failed to save')
         } finally {
             setLoading(false)
         }
@@ -65,30 +77,31 @@ function CreateForm({ title, fields, endpoint, onClose, onSuccess }) {
     }
 
     return (
-        <div className="create-form-overlay" onClick={onClose}>
+        <div className="upsert-form-overlay" onClick={onClose}>
             <form
-                className="create-form"
+                className="upsert-form"
                 onSubmit={handleSubmit}
                 onClick={e => e.stopPropagation()}
             >
                 {title && <h2>{title}</h2>}
                 
-                {error && <p className="create-form-error">{error}</p>}
-                {success && <p className="create-form-success">{success}</p>}
+                {error && <p className="upsert-form-error">{error}</p>}
 
                 {fields.map(field => (
-                    <div key={field.attribute} className="create-form-field">
+                    <div key={field.attribute} className="upsert-form-field">
                         <label htmlFor={field.attribute}>{field.display}</label>
                         {renderInput(field)}
                     </div>
                 ))}
-
-                <button type="submit" disabled={loading}>
-                    {loading ? 'Creating...' : 'Create'}
-                </button>
+                <div className="upsert-form-actions">
+                    <button type="button" onClick={onClose}>Cancel</button>
+                    <button type="submit" disabled={loading}>
+                        {loading ? 'Saving...' : 'Save'}
+                    </button>
+                </div>
             </form>
         </div>
     )
 }
 
-export default CreateForm
+export default UpsertForm

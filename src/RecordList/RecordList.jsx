@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Table from "../components/Table/Table"
-import CreateForm from "../components/CreateForm/CreateForm"
-import UpdateForm from '../components/UpdateForm/UpdateForm'
+import UpsertForm from '../components/UpsertForm/UpsertForm'
 import api from '../api'
 import "./RecordList.css";
 
@@ -26,13 +25,17 @@ function RecordList({ title, api_path, fields }) {
         fetchRecords()
     }, [fetchRecords])
 
-    const handleCreate = (created) => {
+    const handleCreate = async (formData) => {
+        const res = await api.post(api_path, formData)
+        const created = res.data.records
         setRecords(prev => [...prev, created])
         setSuccess('Successfully Created')
     }
 
-    const handleUpdate = (updated) => {
-        setRecords(prev => prev.map(c => c._id === updated._id ? updated : c))
+    const handleUpdate = async (formData, record) => {
+        const res = await api.put(`${api_path}/${record._id}`, formData)
+        const updated = res.data.records
+        setRecords(prev => prev.map(r => r._id === updated._id ? updated : r))
         setSuccess('Successfully Updated')
     }
 
@@ -42,7 +45,7 @@ function RecordList({ title, api_path, fields }) {
         }
         try {
             await api.delete(`${api_path}/${record._id}`)
-            fetchRecords()
+            setRecords(prev => prev.filter(r => r._id !== record._id))
             setSuccess('Successfully Deleted')
         } catch {
             console.log("Error deleting")
@@ -56,21 +59,20 @@ function RecordList({ title, api_path, fields }) {
             {success && <p className="form-success">{success}</p>}
             <Table data={records} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {showCreate && (
-                <CreateForm
-                    title="Add New City"
+                <UpsertForm
+                    title={`Add New ${title}`}
                     fields={fields}
-                    endpoint={api_path}
+                    onSubmit={handleCreate}
                     onClose={() => setShowCreate(false)}
-                    onSuccess={handleCreate}
                 />
             )}
             {selectedRecord && (
-                <UpdateForm
+                <UpsertForm
+                    title={`Edit`}
                     record={selectedRecord}
                     fields={fields}
-                    endpoint={api_path}
+                    onSubmit={handleUpdate}
                     onClose={() => setSelectedRecord(null)}
-                    onSuccess={handleUpdate}
                 />
             )}
         </div>

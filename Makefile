@@ -1,7 +1,10 @@
-.PHONY: dev github lint test all_tests dev_env build preview prod clean
+.PHONY: dev dev-pa github lint test all_tests dev_env build preview prod clean
 
 dev:
-	npm run dev
+	. scripts/dev_env.sh && npm run dev
+
+dev-pa:
+	. scripts/prod_env.sh && npm run dev
 
 github:
 	- git commit -a
@@ -20,7 +23,7 @@ dev_env:
 	npm install
 
 build:
-	npm run build
+	. scripts/prod_env.sh && npm run build
 
 preview:
 	npm run preview

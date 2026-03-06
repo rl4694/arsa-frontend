@@ -3,8 +3,8 @@
  */
 import { Route, Routes } from 'react-router-dom'
 import Home from './Home/Home'
-import Login from './Users/Login/Login'
-import Register from './Users/Register/Register'
+import Login from './Auth/Login/Login'
+import Register from './Auth/Register/Register'
 import Navbar from './components/Navbar/Navbar'
 import RecordList from './RecordList/RecordList'
 import { cityFields, stateFields, nationFields, disasterFields } from './RecordList/fields'

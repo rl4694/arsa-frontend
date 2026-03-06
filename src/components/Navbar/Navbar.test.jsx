@@ -2,7 +2,7 @@ import { render } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi } from "vitest";
 import Navbar from "./Navbar";
-import { AuthContext } from "../../hooks/useAuth";
+import { AuthContext } from "../../Auth/AuthProvider/useAuth";
 
 describe('Navbar', () => {
     it('matches snapshot', () => {

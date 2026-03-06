@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import "./Navbar.css"
 import { useState } from "react"
-import { useAuth } from "../../hooks/useAuth"
+import { useAuth } from "../../Auth/AuthProvider/useAuth"
 
 function Navbar() {
     const [dropdownOpen, setDropdownOpen] = useState(false)

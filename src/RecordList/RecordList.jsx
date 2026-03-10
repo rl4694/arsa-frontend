@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Table from "../components/Table/Table"
 import UpsertForm from '../components/UpsertForm/UpsertForm'
 import api from '../api'
+import { useAuth } from '../Auth/AuthProvider/useAuth'
 import "./RecordList.css";
 
 function RecordList({ title, api_path, fields }) {
@@ -9,6 +11,10 @@ function RecordList({ title, api_path, fields }) {
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [success, setSuccess] = useState('')
+    const navigate = useNavigate()
+    const location = useLocation()
+    const { user } = useAuth()
+    const isLoggedIn = Boolean(user || localStorage.getItem('token'))
 
     // Prevent fetchRecords from being re-rendered except if api_path changes
     const fetchRecords = useCallback(() => {
@@ -52,10 +58,18 @@ function RecordList({ title, api_path, fields }) {
         }
     }
 
+    const handleOpenCreate = () => {
+        if (!isLoggedIn) {
+            navigate('/login', { state: { from: location.pathname } })
+            return
+        }
+        setShowCreate(true)
+    }
+
     return (
         <div className="background">
             <div className="title">{title}</div>
-            <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>
+            <button className="create-btn" onClick={handleOpenCreate}>+ Create</button>
             {success && <p className="form-success">{success}</p>}
             <Table data={records} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} />
             {showCreate && (

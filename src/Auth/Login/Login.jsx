@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import api from '../../api'
 import { useAuth } from '../../Auth/AuthProvider/useAuth'
 import './Login.css'
@@ -10,7 +10,9 @@ function Login() {
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
+  const location = useLocation()
   const navigate = useNavigate()
+  const redirectPath = location.state?.from || '/'
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -21,7 +23,7 @@ function Login() {
       const { token, name } = response.data
       localStorage.setItem('token', token)
       login({ name, email })
-      navigate('/')
+      navigate(redirectPath)
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed')
     } finally {

@@ -13,7 +13,8 @@ function RecordList({ title, api_path, fields }) {
     const [success, setSuccess] = useState('')
     const navigate = useNavigate()
     const location = useLocation()
-    const { user } = useAuth()
+    const auth = useAuth() || {}
+    const { user } = auth
     const isLoggedIn = Boolean(user || localStorage.getItem('token'))
 
     // Prevent fetchRecords from being re-rendered except if api_path changes

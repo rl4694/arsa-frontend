@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import './Table.css'
 
-function Table({ data, cols, onDelete, onEdit }) {
+function Table({ data, cols, onDelete, onEdit, isLoggedIn }) {
     const [active, setActive] = useState("")
 
     const renderRows = () => {
         return data.map(record => {
-            const showActions = active == record._id
+            const showActions = isLoggedIn && active == record._id
 
             return (
                 <tr
@@ -18,7 +18,7 @@ function Table({ data, cols, onDelete, onEdit }) {
                     {cols.map(col => (
                         <td key={col.attribute}>{record[col.attribute]}</td>
                     ))}
-                    
+
                     <td className="actions-cell">
                         {showActions && (
                             <div className="actions">

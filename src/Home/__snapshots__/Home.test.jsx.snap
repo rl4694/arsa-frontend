@@ -18,15 +18,7 @@ exports[`Home > matches snapshot 1`] = `
       />
       <div
         data-testid="marker"
-      >
-        <strong>
-          Big Earthquake
-        </strong>
-        <br />
-        2024-02-01
-        <br />
-        Major event
-      </div>
+      />
     </div>
   </div>
 </div>

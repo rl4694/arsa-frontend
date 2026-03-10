@@ -10,11 +10,6 @@ exports[`RecordList > matches snapshot 1`] = `
     >
       Test
     </div>
-    <button
-      class="create-btn"
-    >
-      + Create
-    </button>
     <table>
       <thead>
         <tr

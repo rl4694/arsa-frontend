@@ -30,8 +30,8 @@ vi.mock("react-leaflet", () => ({
 }));
 
 vi.mock("../components/Marker/MapMarker", () => ({
-    default: ({ children }) => (
-        <div data-testid="marker">{children}</div>
+    default: ({ eventHandlers }) => (
+        <div data-testid="marker" onClick={() => eventHandlers?.click()} />
     ),
 }));
 
@@ -42,7 +42,7 @@ describe('Home', () => {
                 <Home />
             </MemoryRouter>
         )
-        await screen.findByText("Big Earthquake");
+        await screen.findByTestId("marker");
         expect(container).toMatchSnapshot();
     })
 })

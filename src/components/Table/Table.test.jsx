@@ -26,6 +26,7 @@ beforeEach(() => {
             data={sampleData}
             onDelete={deleteMock}
             onEdit={editMock}
+            isLoggedIn={true}
         />
     )
     container = result.container

@@ -7,10 +7,12 @@ import "./Home.css"
 
 function Home() {
     const [disasters, setDisasters] = useState([])
+    const [selectedDisaster, setSelectedDisaster] = useState(null)
     const color_code = {
         "earthquake": "red",
         "tsunami": "blue",
         "landslide": "purple",
+        "hurricane": "orange",
     }
 
     useEffect(() => {
@@ -32,13 +34,8 @@ function Home() {
                     position={[lat, lon]}
                     color={color_code[disaster.type]}
                     key={disaster._id}
-                >
-                    <strong>{disaster.name}</strong>
-                    <br />
-                    {disaster.date}
-                    <br />
-                    {disaster.description}
-                </MapMarker>
+                    eventHandlers={{ click: () => setSelectedDisaster(disaster) }}
+                />
             )
         })
     }
@@ -53,6 +50,15 @@ function Home() {
                 />
                 {renderMarkers()}
             </MapContainer>
+            {selectedDisaster && (
+                <div className="disaster-panel">
+                    <button className="panel-close" onClick={() => setSelectedDisaster(null)}>×</button>
+                    <span className="panel-type">{selectedDisaster.type}</span>
+                    <h2 className="panel-name">{selectedDisaster.name}</h2>
+                    <p className="panel-date">{selectedDisaster.date}</p>
+                    <p className="panel-description">{selectedDisaster.description}</p>
+                </div>
+            )}
         </div>
     )
 }

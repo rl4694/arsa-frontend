@@ -28,3 +28,68 @@
 .leaflet-control-attribution {
   filter: invert(100%) hue-rotate(180deg);
 }
+
+.disaster-panel {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    background-color: var(--color-surface);
+    color: var(--color-text-inverted);
+    border-radius: 0.75rem;
+    padding: 1.25rem 1.5rem;
+    width: 280px;
+    max-height: 60vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.panel-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    color: var(--color-text-inverted);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+}
+
+.panel-close:hover {
+    color: var(--color-delete);
+    border-color: transparent;
+}
+
+.panel-type {
+    display: inline-block;
+    background-color: var(--color-surface-hover);
+    color: var(--color-text-inverted);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.panel-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0.25rem 0;
+}
+
+.panel-date {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin: 0.25rem 0 0.75rem;
+}
+
+.panel-description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.9;
+}

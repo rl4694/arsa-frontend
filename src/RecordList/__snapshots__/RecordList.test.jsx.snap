@@ -23,7 +23,41 @@ exports[`RecordList > matches snapshot 1`] = `
           </td>
         </tr>
       </thead>
-      <tbody />
+      <tbody>
+        <tr>
+          <td>
+            California
+          </td>
+          <td>
+            USA
+          </td>
+          <td
+            class="actions-cell"
+          />
+        </tr>
+        <tr>
+          <td>
+            Texas
+          </td>
+          <td>
+            USA
+          </td>
+          <td
+            class="actions-cell"
+          />
+        </tr>
+        <tr>
+          <td>
+            New York
+          </td>
+          <td>
+            USA
+          </td>
+          <td
+            class="actions-cell"
+          />
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

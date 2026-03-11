@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom";
@@ -23,6 +23,10 @@ vi.mock("../api", () => ({
     },
 }))
 
+vi.mock("../Auth/AuthProvider/useAuth", () => ({
+    useAuth: () => ({ user: null }),
+}))
+
 vi.mock("../components/CreateForm/CreateForm", () => ({
     default: () => <div data-testid="create-form">Create Form</div>,
 }))
@@ -36,7 +40,7 @@ describe("RecordList", () => {
         vi.clearAllMocks()
     })
 
-    it('matches snapshot', () => {
+    it('matches snapshot', async () => {
         const sampleFields = [
             { attribute: "name", display: "State Name", type: "text" },
             { attribute: "nation_name", display: "Nation Name", type: "text" },
@@ -46,6 +50,11 @@ describe("RecordList", () => {
                 <RecordList title="Test" api_path="/test" fields={sampleFields}  />
             </MemoryRouter>
         )
+        
+        await waitFor(() => {
+            expect(container.querySelector('.background')).toBeInTheDocument()
+        })
+        
         expect(container).toMatchSnapshot();
     })
 })

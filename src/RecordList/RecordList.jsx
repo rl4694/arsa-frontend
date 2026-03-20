@@ -15,29 +15,41 @@ function RecordList({ title, api_path, fields }) {
     const { user } = auth
     const isLoggedIn = Boolean(user)
 
-    const clearMessages = () => {
-        setSuccess('')
-        setError('')
-    }
+    // Define useCallback functions that are used in useEffect and should not
+    // be re-rendered unnecessarily
+    const stripHTML = useCallback((record) => {
+        const htmlColumns = ["description"]
+        htmlColumns.forEach(col => {
+            if (Object.hasOwn(record, col)) {
+                // Remove any possible HTML tags in the format <...>
+                record[col] = record[col].replace(/<[^>]*>/g, '')
+            }
+        })
+        return record
+    }, [])
 
-    // Prevent fetchRecords from being re-rendered except if api_path changes
     const fetchRecords = useCallback(() => {
         api.get(api_path)
             .then(res => {
                 if (!res.data.records) {
                     return
                 }
-                setRecords(Object.values(res.data.records))
+                setRecords(Object.values(res.data.records).map(stripHTML))
             })
             .catch(err => {
                 setError(err.response?.data?.error || 'Failed to load records')
             })
-    }, [api_path])
+    }, [api_path, stripHTML])
 
     // Run fetchRecords on load
     useEffect(() => {
         fetchRecords()
     }, [fetchRecords])
+
+    const clearMessages = () => {
+        setSuccess('')
+        setError('')
+    }
 
     const handleCreate = async (formData) => {
         clearMessages()

@@ -1,7 +1,8 @@
 .background {
-    padding: 1rem 20%;
+    padding: 1rem 10%;
     background-color: var(--color-bg);
     flex: 1;
+    overflow-x: auto;
 }
 
 @media (max-width: 768px) {

@@ -17,6 +17,41 @@
     pointer-events: none;
 }
 
+.map-filters {
+    position: absolute;
+    top: 125px;
+    left: 16px;
+    z-index: 1000;
+    width: 260px;
+    background: rgba(0, 0, 0, 0.78);
+    color: #fff;
+    padding: 0.9rem;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.map-filters h2 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.filter-summary {
+    margin: 0 0 0.25rem;
+    font-size: 0.8rem;
+    opacity: 0.85;
+}
+
+.map-filters label {
+    font-size: 0.8rem;
+}
+
+.map-filters input[type="range"] {
+    width: 100%;
+    margin: 0;
+}
+
 .leaflet-container {
     height: 100%;
     width: 100%;

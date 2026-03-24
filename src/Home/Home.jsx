@@ -9,8 +9,26 @@ function Home() {
     const [disasters, setDisasters] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)
     const [typeIndex, setTypeIndex] = useState(0)
+
+    const allDates = useMemo(() => {
+        const dates = []
+        const start = new Date("2000-01-01T00:00:00")
+        const end = new Date()
+        const current = new Date(start)
+
+        while (current <= end) {
+            const year = current.getFullYear()
+            const month = String(current.getMonth() + 1).padStart(2, "0")
+            const day = String(current.getDate()).padStart(2, "0")
+            dates.push(`${year}-${month}-${day}`)
+            current.setDate(current.getDate() + 1)
+        }
+
+        return dates
+    }, [])
+
     const [dateStartIndex, setDateStartIndex] = useState(0)
-    const [dateEndIndex, setDateEndIndex] = useState(0)
+    const [dateEndIndex, setDateEndIndex] = useState(allDates.length - 1)
 
     const color_code = {
         "earthquake": "red",
@@ -20,41 +38,31 @@ function Home() {
     }
     const disasterTypes = ["all", "earthquake", "landslide", "tsunami", "hurricane"]
 
+    const selectedType = disasterTypes[typeIndex] ?? "all"
+    const startDate = allDates[dateStartIndex] ?? "2000-01-01"
+    const endDate = allDates[dateEndIndex] ?? allDates[allDates.length - 1]
+
     useEffect(() => {
-        api.get("/natural_disasters").then(res => {
-            if (!res.data.records) {
+        api.get("/natural_disasters")
+        // api.get("/natural_disasters", {
+        //     params: {
+        //         start_date: startDate,
+        //         end_date: endDate
+        //     }
+        // })
+        .then(res => {
+            const records = res?.data?.records
+
+            if (!records) {
+                setDisasters([])
                 return
             }
-            setDisasters(Object.values(res.data.records))
+
+            setDisasters(Array.isArray(records) ? records : Object.values(records))
+        }).catch(() => {
+            setDisasters([])
         })
     }, [])
-
-    const availableDates = useMemo(() => {
-        const validDates = disasters
-            .map((disaster) => disaster.date)
-            .filter((date) => typeof date === "string" && date.length > 0)
-        return [...new Set(validDates)].sort()
-    }, [disasters])
-
-    useEffect(() => {
-        if (availableDates.length === 0) {
-            setDateStartIndex(0)
-            setDateEndIndex(0)
-            return
-        }
-        setDateStartIndex(0)
-        setDateEndIndex(availableDates.length - 1)
-    }, [availableDates.length])
-
-    const selectedType = disasterTypes[typeIndex] ?? "all"
-
-    const dateIndexByValue = useMemo(() => {
-        const indexMap = {}
-        availableDates.forEach((date, index) => {
-            indexMap[date] = index
-        })
-        return indexMap
-    }, [availableDates])
 
     const filteredDisasters = useMemo(() => {
         return disasters.filter((disaster) => {
@@ -62,16 +70,13 @@ function Home() {
                 return false
             }
 
-            if (availableDates.length > 0) {
-                const idx = dateIndexByValue[disaster.date]
-                if (idx === undefined || idx < dateStartIndex || idx > dateEndIndex) {
-                    return false
-                }
+            if (!disaster.date || disaster.date < startDate || disaster.date > endDate) {
+                return false
             }
 
             return true
         })
-    }, [disasters, selectedType, availableDates.length, dateIndexByValue, dateStartIndex, dateEndIndex])
+    }, [disasters, selectedType, startDate, endDate])
 
     useEffect(() => {
         if (!selectedDisaster) {
@@ -124,16 +129,16 @@ function Home() {
                 />
 
                 <label htmlFor="date-start-slider">
-                    Start: <strong>{availableDates[dateStartIndex] ?? "N/A"}</strong>
+                    Start: <strong>{startDate}</strong>
                 </label>
                 <input
                     id="date-start-slider"
                     type="range"
                     min={0}
-                    max={Math.max(availableDates.length - 1, 0)}
+                    max={Math.max(allDates.length - 1, 0)}
                     step={1}
                     value={dateStartIndex}
-                    disabled={availableDates.length <= 1}
+                    disabled={allDates.length <= 1}
                     onChange={(e) => {
                         const nextStart = Number(e.target.value)
                         setDateStartIndex(nextStart)
@@ -144,16 +149,16 @@ function Home() {
                 />
 
                 <label htmlFor="date-end-slider">
-                    End: <strong>{availableDates[dateEndIndex] ?? "N/A"}</strong>
+                    End: <strong>{endDate}</strong>
                 </label>
                 <input
                     id="date-end-slider"
                     type="range"
                     min={dateStartIndex}
-                    max={Math.max(availableDates.length - 1, 0)}
+                    max={Math.max(allDates.length - 1, 0)}
                     step={1}
                     value={dateEndIndex}
-                    disabled={availableDates.length <= 1}
+                    disabled={allDates.length <= 1}
                     onChange={(e) => setDateEndIndex(Number(e.target.value))}
                 />
             </div>

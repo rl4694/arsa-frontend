@@ -34,9 +34,9 @@ function Login() {
   return (
     <div className="login-container">
       <form onSubmit={handleSubmit} className="login-form">
-        <h1>Login</h1>
+        <h2>Login</h2>
         {error && <p className="login-error">{error}</p>}
-        <div className="form-group">
+        <div className="login-form-field">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -47,7 +47,7 @@ function Login() {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="login-form-field">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -58,9 +58,11 @@ function Login() {
             required
           />
         </div>
-        <button type="submit" className="login-button" disabled={isLoading}>
-          {isLoading ? 'Signing In...' : 'Sign In'}
-        </button>
+        <div className="login-form-actions">
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? 'Signing In...' : 'Sign In'}
+          </button>
+        </div>
       </form>
     </div>
   )

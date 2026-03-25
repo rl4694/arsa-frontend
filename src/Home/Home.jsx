@@ -9,6 +9,7 @@ function Home() {
     const [disasters, setDisasters] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)
     const [typeIndex, setTypeIndex] = useState(0)
+    const [filtersOpen, setFiltersOpen] = useState(true)
 
     const allDates = useMemo(() => {
         const dates = []
@@ -110,57 +111,66 @@ function Home() {
         <div className="page">
             <h1 className="map-title">World Map</h1>
             <div className="map-filters">
-                <h2>Filters</h2>
-                <p className="filter-summary">
-                    Showing {filteredDisasters.length} of {disasters.length}
-                </p>
+                <div className="filters-header">
+                    <h2>Filters</h2>
+                    <button className="filters-toggle" onClick={() => setFiltersOpen(o => !o)}>
+                        {filtersOpen ? '▲' : '▼'}
+                    </button>
+                </div>
+                {filtersOpen && (
+                    <>
+                        <p className="filter-summary">
+                            Showing {filteredDisasters.length} of {disasters.length}
+                        </p>
 
-                <label htmlFor="type-slider">
-                    Type: <strong>{selectedType}</strong>
-                </label>
-                <input
-                    id="type-slider"
-                    type="range"
-                    min={0}
-                    max={disasterTypes.length - 1}
-                    step={1}
-                    value={typeIndex}
-                    onChange={(e) => setTypeIndex(Number(e.target.value))}
-                />
+                        <label htmlFor="type-slider">
+                            Type: <strong>{selectedType}</strong>
+                        </label>
+                        <input
+                            id="type-slider"
+                            type="range"
+                            min={0}
+                            max={disasterTypes.length - 1}
+                            step={1}
+                            value={typeIndex}
+                            onChange={(e) => setTypeIndex(Number(e.target.value))}
+                        />
 
-                <label htmlFor="date-start-slider">
-                    Start: <strong>{startDate}</strong>
-                </label>
-                <input
-                    id="date-start-slider"
-                    type="range"
-                    min={0}
-                    max={Math.max(allDates.length - 1, 0)}
-                    step={1}
-                    value={dateStartIndex}
-                    disabled={allDates.length <= 1}
-                    onChange={(e) => {
-                        const nextStart = Number(e.target.value)
-                        setDateStartIndex(nextStart)
-                        if (nextStart > dateEndIndex) {
-                            setDateEndIndex(nextStart)
-                        }
-                    }}
-                />
+                        <label htmlFor="date-start-slider">
+                            Start: <strong>{startDate}</strong>
+                        </label>
+                        <input
+                            id="date-start-slider"
+                            type="range"
+                            min={0}
+                            max={Math.max(allDates.length - 1, 0)}
+                            step={1}
+                            value={dateStartIndex}
+                            disabled={allDates.length <= 1}
+                            onChange={(e) => {
+                                const nextStart = Number(e.target.value)
+                                setDateStartIndex(nextStart)
+                                if (nextStart > dateEndIndex) {
+                                    setDateEndIndex(nextStart)
+                                }
+                            }}
+                        />
 
-                <label htmlFor="date-end-slider">
-                    End: <strong>{endDate}</strong>
-                </label>
-                <input
-                    id="date-end-slider"
-                    type="range"
-                    min={dateStartIndex}
-                    max={Math.max(allDates.length - 1, 0)}
-                    step={1}
-                    value={dateEndIndex}
-                    disabled={allDates.length <= 1}
-                    onChange={(e) => setDateEndIndex(Number(e.target.value))}
-                />
+                        <label htmlFor="date-end-slider">
+                            End: <strong>{endDate}</strong>
+                        </label>
+                        <input
+                            id="date-end-slider"
+                            type="range"
+                            min={dateStartIndex}
+                            max={Math.max(allDates.length - 1, 0)}
+                            step={1}
+                            value={dateEndIndex}
+                            disabled={allDates.length <= 1}
+                            onChange={(e) => setDateEndIndex(Number(e.target.value))}
+                        />
+                    </>
+                )}
             </div>
             <MapContainer center={[30.0, 10.0]} zoom={3} scrollWheelZoom={true}>
                 <TileLayer

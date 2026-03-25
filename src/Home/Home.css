@@ -19,8 +19,8 @@
 
 .map-filters {
     position: absolute;
-    top: 125px;
-    left: 16px;
+    top: 80px;
+    right: 16px;
     z-index: 900;
     width: 260px;
     background: rgba(0, 0, 0, 0.78);
@@ -32,9 +32,25 @@
     gap: 0.45rem;
 }
 
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .map-filters h2 {
     margin: 0;
     font-size: 1rem;
+}
+
+.filters-toggle {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
 }
 
 .filter-summary {

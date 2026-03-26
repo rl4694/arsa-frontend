@@ -14,7 +14,7 @@
   max-width: 360px;
   padding: 24px;
   background-color: var(--color-bg);
-  border: 1px solid #ccc;
+  border: 1px solid var(--color-border-muted);
   border-radius: 4px;
 }
 
@@ -37,7 +37,7 @@
 
 .login-form-field input {
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border-subtle);
   border-radius: 4px;
   font-size: 14px;
   font-family: inherit;
@@ -57,7 +57,7 @@
   border: none;
   cursor: pointer;
   background-color: var(--color-surface);
-  color: #fff;
+  color: var(--color-text-inverted);
 }
 
 .login-form-actions button[type="submit"]:hover {
@@ -70,10 +70,10 @@
 }
 
 .login-error {
-  color: #d32f2f;
+  color: var(--color-error);
   font-size: 14px;
   margin: 0;
   padding: 8px;
-  background: #ffebee;
+  background: var(--color-error-bg);
   border-radius: 4px;
 }

@@ -37,9 +37,9 @@
     height: calc(100% - 8px);
     border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
     box-shadow: 
-        0 3px 8px rgba(0, 0, 0, 0.3),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.2),
-        inset 0 3px 6px rgba(255, 255, 255, 0.2);
+        0 3px 8px var(--color-shadow-30),
+        inset 0 -3px 6px var(--color-shadow-20),
+        inset 0 3px 6px var(--color-white-20);
     transform-origin: bottom center;
 }
 
@@ -53,64 +53,64 @@
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.2));
+    filter: drop-shadow(0 2px 2px var(--color-shadow-20));
 }
 
 /* Color classes */
 .marker-red .marker-pin::before {
-    background: linear-gradient(135deg, #e74c3c 0%, #a93226 100%);
+    background: linear-gradient(135deg, var(--color-marker-red-start) 0%, var(--color-marker-red-end) 100%);
 }
 .marker-red .marker-pin::after {
-    border-top: 12px solid #a93226;
+    border-top: 12px solid var(--color-marker-red-end);
 }
 
 .marker-blue .marker-pin::before {
-    background: linear-gradient(135deg, #3498db 0%, #2471a3 100%);
+    background: linear-gradient(135deg, var(--color-marker-blue-start) 0%, var(--color-marker-blue-end) 100%);
 }
 .marker-blue .marker-pin::after {
-    border-top: 12px solid #2471a3;
+    border-top: 12px solid var(--color-marker-blue-end);
 }
 
 .marker-green .marker-pin::before {
-    background: linear-gradient(135deg, #27ae60 0%, #1d8348 100%);
+    background: linear-gradient(135deg, var(--color-marker-green-start) 0%, var(--color-marker-green-end) 100%);
 }
 .marker-green .marker-pin::after {
-    border-top: 12px solid #1d8348;
+    border-top: 12px solid var(--color-marker-green-end);
 }
 
 .marker-orange .marker-pin::before {
-    background: linear-gradient(135deg, #f39c12 0%, #b9770e 100%);
+    background: linear-gradient(135deg, var(--color-marker-orange-start) 0%, var(--color-marker-orange-end) 100%);
 }
 .marker-orange .marker-pin::after {
-    border-top: 12px solid #b9770e;
+    border-top: 12px solid var(--color-marker-orange-end);
 }
 
 .marker-purple .marker-pin::before {
-    background: linear-gradient(135deg, #9b59b6 0%, #76448a 100%);
+    background: linear-gradient(135deg, var(--color-marker-purple-start) 0%, var(--color-marker-purple-end) 100%);
 }
 .marker-purple .marker-pin::after {
-    border-top: 12px solid #76448a;
+    border-top: 12px solid var(--color-marker-purple-end);
 }
 
 .marker-teal .marker-pin::before {
-    background: linear-gradient(135deg, #1abc9c 0%, #148f77 100%);
+    background: linear-gradient(135deg, var(--color-marker-teal-start) 0%, var(--color-marker-teal-end) 100%);
 }
 .marker-teal .marker-pin::after {
-    border-top: 12px solid #148f77;
+    border-top: 12px solid var(--color-marker-teal-end);
 }
 
 .marker-pink .marker-pin::before {
-    background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+    background: linear-gradient(135deg, var(--color-marker-pink-start) 0%, var(--color-marker-pink-end) 100%);
 }
 .marker-pink .marker-pin::after {
-    border-top: 12px solid #ad1457;
+    border-top: 12px solid var(--color-marker-pink-end);
 }
 
 .marker-indigo .marker-pin::before {
-    background: linear-gradient(135deg, #3f51b5 0%, #2c387e 100%);
+    background: linear-gradient(135deg, var(--color-marker-indigo-start) 0%, var(--color-marker-indigo-end) 100%);
 }
 .marker-indigo .marker-pin::after {
-    border-top: 12px solid #2c387e;
+    border-top: 12px solid var(--color-marker-indigo-end);
 }
 
 .marker-inner {
@@ -118,10 +118,10 @@
     z-index: 1;
     width: 40%;
     height: 30%;
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--color-white-90);
     border-radius: 50%;
     margin-bottom: 8px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 1px 3px var(--color-shadow-20);
 }
 
 .marker-shadow {
@@ -131,7 +131,7 @@
     transform: translateX(-50%);
     width: 60%;
     height: 6px;
-    background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.3) 0%, transparent 70%);
+    background: radial-gradient(ellipse at center, var(--color-shadow-30) 0%, var(--color-transparent) 70%);
     border-radius: 50%;
 }
 
@@ -139,9 +139,9 @@
 .leaflet-marker-icon:hover .marker-pin::before {
     transform: scale(1.05);
     box-shadow: 
-        0 5px 15px rgba(0, 0, 0, 0.4),
-        inset 0 -3px 6px rgba(0, 0, 0, 0.2),
-        inset 0 3px 6px rgba(255, 255, 255, 0.3);
+        0 5px 15px var(--color-shadow-40),
+        inset 0 -3px 6px var(--color-shadow-20),
+        inset 0 3px 6px var(--color-white-30);
 }
 
 /* Bounce animation on load */
@@ -161,9 +161,9 @@
 
 /* Custom Popup Styles */
 .custom-popup .leaflet-popup-content-wrapper {
-    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-popup-surface-soft) 100%);
     border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px var(--color-shadow-15);
     padding: 0;
     overflow: hidden;
 }
@@ -172,17 +172,17 @@
     margin: 12px 16px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     font-size: 14px;
-    color: #333;
+    color: var(--color-neutral-700);
     line-height: 1.5;
 }
 
 .custom-popup .leaflet-popup-tip {
-    background: #f8f9fa;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    background: var(--color-popup-surface-soft);
+    box-shadow: 0 2px 6px var(--color-shadow-10);
 }
 
 .custom-popup .leaflet-popup-close-button {
-    color: #666;
+    color: var(--color-neutral-600);
     font-size: 20px;
     padding: 8px;
     top: 4px;
@@ -190,5 +190,5 @@
 }
 
 .custom-popup .leaflet-popup-close-button:hover {
-    color: #e74c3c;
+    color: var(--color-marker-red-start);
 }

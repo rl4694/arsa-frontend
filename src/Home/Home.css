@@ -8,8 +8,8 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
+    background: var(--color-overlay-dark-70);
+    color: var(--color-text-inverted);
     padding: 8px 20px;
     border-radius: 8px;
     font-size: 18px;
@@ -23,8 +23,8 @@
     right: 16px;
     z-index: 900;
     width: 260px;
-    background: rgba(0, 0, 0, 0.78);
-    color: #fff;
+    background: var(--color-overlay-dark-78);
+    color: var(--color-text-inverted);
     padding: 0.9rem;
     border-radius: 8px;
     display: flex;
@@ -46,7 +46,7 @@
 .filters-toggle {
     background: none;
     border: none;
-    color: #fff;
+    color: var(--color-text-inverted);
     font-size: 0.75rem;
     cursor: pointer;
     padding: 0;
@@ -92,7 +92,7 @@
     width: 280px;
     max-height: 60vh;
     overflow-y: auto;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 20px var(--color-shadow-40);
 }
 
 .panel-close {

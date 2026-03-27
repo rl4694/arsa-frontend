@@ -5,8 +5,9 @@ import api from '../api'
 import { useAuth } from '../Auth/AuthProvider/useAuth'
 import "./RecordList.css";
 
-function RecordList({ title, api_path, fields }) {
+function RecordList({ title, api_path }) {
     const [records, setRecords] = useState([])
+    const [fields, setFields] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [success, setSuccess] = useState('')
@@ -44,7 +45,10 @@ function RecordList({ title, api_path, fields }) {
     // Run fetchRecords on load
     useEffect(() => {
         fetchRecords()
-    }, [fetchRecords])
+        api.get(`${api_path}/fields`)
+            .then(res => setFields(res.data))
+            .catch(err => setError(err.response?.data?.error || 'Failed to load fields'))
+    }, [api_path, fetchRecords])
 
     const clearMessages = () => {
         setSuccess('')

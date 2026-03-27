@@ -11,25 +11,10 @@ function Home() {
     const [typeIndex, setTypeIndex] = useState(0)
     const [filtersOpen, setFiltersOpen] = useState(true)
 
-    const allDates = useMemo(() => {
-        const dates = []
-        const start = new Date("2000-01-01T00:00:00")
-        const end = new Date()
-        const current = new Date(start)
-
-        while (current <= end) {
-            const year = current.getFullYear()
-            const month = String(current.getMonth() + 1).padStart(2, "0")
-            const day = String(current.getDate()).padStart(2, "0")
-            dates.push(`${year}-${month}-${day}`)
-            current.setDate(current.getDate() + 1)
-        }
-
-        return dates
-    }, [])
-
-    const [dateStartIndex, setDateStartIndex] = useState(0)
-    const [dateEndIndex, setDateEndIndex] = useState(allDates.length - 1)
+    const dateMin = new Date("2000-01-01T00:00:00")
+    const dateMax = new Date()
+    const [dateStart, setDateStart] = useState(dateMin)
+    const [dateEnd, setDateEnd] = useState(dateMax)
 
     const color_code = {
         "earthquake": "red",
@@ -38,31 +23,19 @@ function Home() {
         "hurricane": "orange",
     }
     const disasterTypes = ["all", "earthquake", "landslide", "tsunami", "hurricane"]
-
     const selectedType = disasterTypes[typeIndex] ?? "all"
-    const startDate = allDates[dateStartIndex] ?? "2000-01-01"
-    const endDate = allDates[dateEndIndex] ?? allDates[allDates.length - 1]
 
     useEffect(() => {
         api.get("/natural_disasters")
-        // api.get("/natural_disasters", {
-        //     params: {
-        //         start_date: startDate,
-        //         end_date: endDate
-        //     }
-        // })
-        .then(res => {
-            const records = res?.data?.records
-
-            if (!records) {
-                setDisasters([])
-                return
-            }
-
-            setDisasters(Array.isArray(records) ? records : Object.values(records))
-        }).catch(() => {
-            setDisasters([])
-        })
+            .then(res => {
+                const records = res?.data?.records
+                if (!records) {
+                    setDisasters([])
+                    return
+                }
+                setDisasters(Array.isArray(records) ? records : Object.values(records))
+            })
+            .catch(() => setDisasters([]))
     }, [])
 
     const filteredDisasters = useMemo(() => {
@@ -70,35 +43,33 @@ function Home() {
             if (selectedType !== "all" && disaster.type !== selectedType) {
                 return false
             }
-
-            if (!disaster.date || disaster.date < startDate || disaster.date > endDate) {
+            const disasterDate = new Date(disaster.date)
+            if (!disasterDate || disasterDate.getTime() < dateStart || disasterDate.getTime() > dateEnd) {
                 return false
             }
 
             return true
         })
-    }, [disasters, selectedType, startDate, endDate])
+    }, [disasters, selectedType, dateStart, dateEnd])
 
-    useEffect(() => {
-        if (!selectedDisaster) {
-            return
-        }
-        const stillVisible = filteredDisasters.some(
-            (disaster) => disaster._id === selectedDisaster._id
-        )
-        if (!stillVisible) {
-            setSelectedDisaster(null)
-        }
-    }, [filteredDisasters, selectedDisaster])
+    // useEffect(() => {
+    //     if (!selectedDisaster) {
+    //         return
+    //     }
+    //     const stillVisible = filteredDisasters.some(
+    //         (disaster) => disaster._id === selectedDisaster._id
+    //     )
+    //     if (!stillVisible) {
+    //         setSelectedDisaster(null)
+    //     }
+    // }, [filteredDisasters, selectedDisaster])
 
     const renderMarkers = () => {
         return filteredDisasters.flatMap(disaster => {
-            const lat = disaster.latitude ?? parseFloat(disaster.location?.split(',')[0])
-            const lon = disaster.longitude ?? parseFloat(disaster.location?.split(',')[1])
-            if (isNaN(lat) || isNaN(lon)) return []
+            if (isNaN(disaster.latitude) || isNaN(disaster.longitude)) return []
             return (
                 <MapMarker
-                    position={[lat, lon]}
+                    position={[disaster.latitude, disaster.longitude]}
                     color={color_code[disaster.type]}
                     key={disaster._id}
                     eventHandlers={{ click: () => setSelectedDisaster(disaster) }}
@@ -133,41 +104,43 @@ function Home() {
                             max={disasterTypes.length - 1}
                             step={1}
                             value={typeIndex}
-                            onChange={(e) => setTypeIndex(Number(e.target.value))}
+                            onChange={(e) => {
+                                setTypeIndex(Number(e.target.value))
+                            }}
                         />
 
                         <label htmlFor="date-start-slider">
-                            Start: <strong>{startDate}</strong>
+                            Start: <strong>{dateStart.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
                         </label>
                         <input
                             id="date-start-slider"
                             type="range"
-                            min={0}
-                            max={Math.max(allDates.length - 1, 0)}
-                            step={1}
-                            value={dateStartIndex}
-                            disabled={allDates.length <= 1}
+                            min={dateMin.getTime()}
+                            max={dateMax.getTime()}
+                            step={(dateMax.getTime() - dateMin.getTime()) / 100}
+                            value={dateStart.getTime()}
                             onChange={(e) => {
-                                const nextStart = Number(e.target.value)
-                                setDateStartIndex(nextStart)
-                                if (nextStart > dateEndIndex) {
-                                    setDateEndIndex(nextStart)
+                                if (!isNaN(e.target.value)) {
+                                    setDateStart(new Date(parseInt(e.target.value)))
                                 }
                             }}
                         />
 
                         <label htmlFor="date-end-slider">
-                            End: <strong>{endDate}</strong>
+                            End: <strong>{dateEnd.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
                         </label>
                         <input
                             id="date-end-slider"
                             type="range"
-                            min={dateStartIndex}
-                            max={Math.max(allDates.length - 1, 0)}
-                            step={1}
-                            value={dateEndIndex}
-                            disabled={allDates.length <= 1}
-                            onChange={(e) => setDateEndIndex(Number(e.target.value))}
+                            min={dateMin.getTime()}
+                            max={dateMax.getTime()}
+                            step={(dateMax.getTime() - dateMin.getTime()) / 100}
+                            value={dateEnd.getTime()}
+                            onChange={(e) => {
+                                if (!isNaN(e.target.value)) {
+                                    setDateEnd(new Date(parseInt(e.target.value)))
+                                }
+                            }}
                         />
                     </>
                 )}

@@ -13,7 +13,8 @@ vi.mock("../api", () => ({
                             _id: "66170c5af3d27e919f30b100",
                             name: "Big Earthquake",
                             type: "earthquake",
-                            location: "10.0, 20.0",
+                            latitude: 10.0,
+                            longitude: 20.0,
                             date: "2024-02-01",
                             description: "Major event",
                         }
@@ -34,6 +35,8 @@ vi.mock("../components/Marker/MapMarker", () => ({
         <div data-testid="marker" onClick={() => eventHandlers?.click()} />
     ),
 }));
+
+vi.setSystemTime(new Date(2026, 0, 1));
 
 describe('Home', () => {
     it('matches snapshot', async () => {

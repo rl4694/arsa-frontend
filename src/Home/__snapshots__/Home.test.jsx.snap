@@ -11,6 +11,78 @@ exports[`Home > matches snapshot 1`] = `
       World Map
     </h1>
     <div
+      class="map-filters"
+    >
+      <div
+        class="filters-header"
+      >
+        <h2>
+          Filters
+        </h2>
+        <button
+          class="filters-toggle"
+        >
+          ▲
+        </button>
+      </div>
+      <p
+        class="filter-summary"
+      >
+        Showing 
+        1
+         of 
+        1
+      </p>
+      <label
+        for="type-slider"
+      >
+        Type: 
+        <strong>
+          all
+        </strong>
+      </label>
+      <input
+        id="type-slider"
+        max="4"
+        min="0"
+        step="1"
+        type="range"
+        value="0"
+      />
+      <label
+        for="date-start-slider"
+      >
+        Start: 
+        <strong>
+          Jan 1, 2000
+        </strong>
+      </label>
+      <input
+        id="date-start-slider"
+        max="1767243600000"
+        min="946702800000"
+        step="8205408000"
+        type="range"
+        value="946702800000"
+      />
+      <label
+        for="date-end-slider"
+      >
+        End: 
+        <strong>
+          Jan 1, 2026
+        </strong>
+      </label>
+      <input
+        id="date-end-slider"
+        max="1767243600000"
+        min="946702800000"
+        step="8205408000"
+        type="range"
+        value="1767243600000"
+      />
+    </div>
+    <div
       data-testid="map"
     >
       <div

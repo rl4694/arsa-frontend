@@ -73,14 +73,14 @@ function Home() {
     const renderMarkers = () => {
         return filteredDisasters.flatMap(disaster => {
             if (isNaN(disaster.latitude) || isNaN(disaster.longitude)) return []
-            return (
+            return [-360, 0, 360].map(offset => (
                 <MapMarker
-                    position={[disaster.latitude, disaster.longitude]}
+                    position={[disaster.latitude, disaster.longitude + offset]}
                     color={color_code[disaster.type]}
-                    key={disaster._id}
+                    key={`${disaster._id}_${offset}`}
                     eventHandlers={{ click: () => setSelectedDisaster(disaster) }}
                 />
-            )
+            ))
         })
     }
 
@@ -151,7 +151,7 @@ function Home() {
                     </>
                 )}
             </div>
-            <MapContainer center={[30.0, 10.0]} zoom={3} scrollWheelZoom={true}>
+            <MapContainer center={[30.0, 10.0]} zoom={3} scrollWheelZoom={true} worldCopyJump={true}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

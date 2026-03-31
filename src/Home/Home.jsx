@@ -8,7 +8,12 @@ import "./Home.css"
 function Home() {
     const [disasters, setDisasters] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)
-    const [typeIndex, setTypeIndex] = useState(0)
+    const [selectedTypes, setSelectedTypes] = useState({
+        earthquake: true,
+        landslide: true,
+        tsunami: true,
+        hurricane: true,
+    })
     const [filtersOpen, setFiltersOpen] = useState(true)
 
     const dateMin = new Date("2000-01-01T00:00:00")
@@ -22,9 +27,6 @@ function Home() {
         "landslide": "purple",
         "hurricane": "orange",
     }
-    const disasterTypes = ["all", "earthquake", "landslide", "tsunami", "hurricane"]
-    const selectedType = disasterTypes[typeIndex] ?? "all"
-
     useEffect(() => {
         api.get("/natural_disasters")
             .then(res => {
@@ -38,9 +40,13 @@ function Home() {
             .catch(() => setDisasters([]))
     }, [])
 
+    const toggleType = (type) => {
+        setSelectedTypes(prev => ({ ...prev, [type]: !prev[type] }))
+    }
+
     const filteredDisasters = useMemo(() => {
         return disasters.filter((disaster) => {
-            if (selectedType !== "all" && disaster.type !== selectedType) {
+            if (!selectedTypes[disaster.type]) {
                 return false
             }
             const disasterDate = new Date(disaster.date)
@@ -50,7 +56,7 @@ function Home() {
 
             return true
         })
-    }, [disasters, selectedType, dateStart, dateEnd])
+    }, [disasters, selectedTypes, dateStart, dateEnd])
 
     // useEffect(() => {
     //     if (!selectedDisaster) {
@@ -94,20 +100,20 @@ function Home() {
                             Showing {filteredDisasters.length} of {disasters.length}
                         </p>
 
-                        <label htmlFor="type-slider">
-                            Type: <strong>{selectedType}</strong>
-                        </label>
-                        <input
-                            id="type-slider"
-                            type="range"
-                            min={0}
-                            max={disasterTypes.length - 1}
-                            step={1}
-                            value={typeIndex}
-                            onChange={(e) => {
-                                setTypeIndex(Number(e.target.value))
-                            }}
-                        />
+                        <label className="filter-label">Type</label>
+                        <div className="type-checkboxes">
+                            {["earthquake", "landslide", "tsunami", "hurricane"].map(type => (
+                                <label key={type} className="type-checkbox-label">
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTypes[type]}
+                                        onChange={() => toggleType(type)}
+                                    />
+                                    <span className={`type-dot type-dot-${type}`}></span>
+                                    {type}
+                                </label>
+                            ))}
+                        </div>
 
                         <label htmlFor="date-start-slider">
                             Start: <strong>{dateStart.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>

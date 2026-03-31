@@ -63,6 +63,43 @@
     font-size: 0.8rem;
 }
 
+.filter-label {
+    font-size: 0.8rem;
+}
+
+.type-checkboxes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 0.25rem;
+}
+
+.type-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-transform: capitalize;
+}
+
+.type-checkbox-label input[type="checkbox"] {
+    cursor: pointer;
+    margin: 0;
+}
+
+.type-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.type-dot-earthquake { background: var(--color-marker-red-start); }
+.type-dot-landslide  { background: var(--color-marker-purple-start); }
+.type-dot-tsunami    { background: var(--color-marker-blue-start); }
+.type-dot-hurricane  { background: var(--color-marker-orange-start); }
+
 .map-filters input[type="range"] {
     width: 100%;
     margin: 0;

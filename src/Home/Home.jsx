@@ -114,8 +114,14 @@ function Home() {
             <div className="map-filters">
                 <div className="filters-header">
                     <h2>Filters</h2>
-                    <button className="filters-toggle" onClick={() => setFiltersOpen(o => !o)}>
-                        {filtersOpen ? '▲' : '▼'}
+                    <button
+                        type="button"
+                        className={`filters-toggle ${filtersOpen ? "filters-toggle-open" : ""}`}
+                        onClick={() => setFiltersOpen((o) => !o)}
+                        aria-expanded={filtersOpen}
+                        aria-label={filtersOpen ? "Hide filters" : "Show filters"}
+                    >
+                        <span className="filters-toggle-icon" aria-hidden />
                     </button>
                 </div>
                 {filtersOpen && (

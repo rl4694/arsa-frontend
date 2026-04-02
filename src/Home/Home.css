@@ -44,13 +44,36 @@
 }
 
 .filters-toggle {
-    background: none;
+    background: transparent;
     border: none;
-    color: var(--color-text-inverted);
-    font-size: 0.75rem;
+    padding: 0.25rem;
     cursor: pointer;
-    padding: 0;
-    line-height: 1;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: transparent;
+}
+
+.filters-toggle:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* White downward-pointing triangle (▾); rotates up when panel is open */
+.filters-toggle-icon {
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #fff;
+    transition: transform 0.15s ease;
+}
+
+.filters-toggle-open .filters-toggle-icon {
+    transform: rotate(180deg);
 }
 
 .filter-summary {

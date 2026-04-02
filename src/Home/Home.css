@@ -105,6 +105,22 @@
     margin: 0;
 }
 
+.filter-date-input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--color-text-inverted);
+    font-size: 0.85rem;
+}
+
+.filter-date-input:focus {
+    outline: 2px solid rgba(255, 255, 255, 0.35);
+    outline-offset: 1px;
+}
+
 .leaflet-container {
     height: 100%;
     width: 100%;

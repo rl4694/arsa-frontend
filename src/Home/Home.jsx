@@ -21,6 +21,30 @@ function Home() {
     const [dateStart, setDateStart] = useState(dateMin)
     const [dateEnd, setDateEnd] = useState(dateMax)
 
+    const toInputDateValue = (d) => {
+        const y = d.getFullYear()
+        const m = String(d.getMonth() + 1).padStart(2, "0")
+        const day = String(d.getDate()).padStart(2, "0")
+        return `${y}-${m}-${day}`
+    }
+
+    const parseInputDate = (s) => {
+        if (!s || typeof s !== "string") return null
+        const parts = s.split("-").map(Number)
+        if (parts.length !== 3 || parts.some(Number.isNaN)) return null
+        const [y, m, d] = parts
+        return new Date(y, m - 1, d, 0, 0, 0, 0)
+    }
+
+    const clampDate = (d) => {
+        const t = d.getTime()
+        const minT = dateMin.getTime()
+        const maxT = dateMax.getTime()
+        if (t < minT) return new Date(minT)
+        if (t > maxT) return new Date(maxT)
+        return d
+    }
+
     const color_code = {
         "earthquake": "red",
         "tsunami": "blue",
@@ -115,6 +139,27 @@ function Home() {
                             ))}
                         </div>
 
+                        <label className="filter-label" htmlFor="date-start-input">
+                            Start date
+                        </label>
+                        <input
+                            id="date-start-input"
+                            className="filter-date-input"
+                            type="date"
+                            min={toInputDateValue(dateMin)}
+                            max={toInputDateValue(dateMax)}
+                            value={toInputDateValue(dateStart)}
+                            onChange={(e) => {
+                                const parsed = parseInputDate(e.target.value)
+                                if (!parsed) return
+                                const next = clampDate(parsed)
+                                setDateStart(next)
+                                if (next.getTime() > dateEnd.getTime()) {
+                                    setDateEnd(next)
+                                }
+                            }}
+                        />
+
                         <label htmlFor="date-start-slider">
                             Start: <strong>{dateStart.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
                         </label>
@@ -127,7 +172,32 @@ function Home() {
                             value={dateStart.getTime()}
                             onChange={(e) => {
                                 if (!isNaN(e.target.value)) {
-                                    setDateStart(new Date(parseInt(e.target.value)))
+                                    const next = clampDate(new Date(parseInt(e.target.value, 10)))
+                                    setDateStart(next)
+                                    if (next.getTime() > dateEnd.getTime()) {
+                                        setDateEnd(next)
+                                    }
+                                }
+                            }}
+                        />
+
+                        <label className="filter-label" htmlFor="date-end-input">
+                            End date
+                        </label>
+                        <input
+                            id="date-end-input"
+                            className="filter-date-input"
+                            type="date"
+                            min={toInputDateValue(dateMin)}
+                            max={toInputDateValue(dateMax)}
+                            value={toInputDateValue(dateEnd)}
+                            onChange={(e) => {
+                                const parsed = parseInputDate(e.target.value)
+                                if (!parsed) return
+                                const next = clampDate(parsed)
+                                setDateEnd(next)
+                                if (next.getTime() < dateStart.getTime()) {
+                                    setDateStart(next)
                                 }
                             }}
                         />
@@ -144,7 +214,11 @@ function Home() {
                             value={dateEnd.getTime()}
                             onChange={(e) => {
                                 if (!isNaN(e.target.value)) {
-                                    setDateEnd(new Date(parseInt(e.target.value)))
+                                    const next = clampDate(new Date(parseInt(e.target.value, 10)))
+                                    setDateEnd(next)
+                                    if (next.getTime() < dateStart.getTime()) {
+                                        setDateStart(next)
+                                    }
                                 }
                             }}
                         />

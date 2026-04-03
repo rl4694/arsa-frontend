@@ -45,7 +45,7 @@ describe('Home', () => {
                 <Home />
             </MemoryRouter>
         )
-        await screen.findByTestId("marker");
+        await screen.findAllByTestId("marker");
         expect(container).toMatchSnapshot();
     })
 })

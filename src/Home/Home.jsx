@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import { useDebounced } from '../hooks/useDebounced'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import MapMarker from '../components/Marker/MapMarker'
 import api from "../api"
@@ -20,6 +21,8 @@ function Home() {
     const dateMax = new Date()
     const [dateStart, setDateStart] = useState(dateMin)
     const [dateEnd, setDateEnd] = useState(dateMax)
+    const dateStartDebounced = useDebounced(dateStart, 200)
+    const dateEndDebounced = useDebounced(dateEnd, 200)
 
     const toInputDateValue = (d) => {
         const y = d.getFullYear()
@@ -74,25 +77,13 @@ function Home() {
                 return false
             }
             const disasterDate = new Date(disaster.date)
-            if (!disasterDate || disasterDate.getTime() < dateStart || disasterDate.getTime() > dateEnd) {
+            if (!disasterDate || disasterDate.getTime() < dateStartDebounced || disasterDate.getTime() > dateEndDebounced) {
                 return false
             }
 
             return true
         })
-    }, [disasters, selectedTypes, dateStart, dateEnd])
-
-    // useEffect(() => {
-    //     if (!selectedDisaster) {
-    //         return
-    //     }
-    //     const stillVisible = filteredDisasters.some(
-    //         (disaster) => disaster._id === selectedDisaster._id
-    //     )
-    //     if (!stillVisible) {
-    //         setSelectedDisaster(null)
-    //     }
-    // }, [filteredDisasters, selectedDisaster])
+    }, [disasters, selectedTypes, dateStartDebounced, dateEndDebounced])
 
     const renderMarkers = () => {
         return filteredDisasters.flatMap(disaster => {
@@ -164,6 +155,7 @@ function Home() {
                                     setDateEnd(next)
                                 }
                             }}
+                            on
                         />
 
                         <label htmlFor="date-start-slider">

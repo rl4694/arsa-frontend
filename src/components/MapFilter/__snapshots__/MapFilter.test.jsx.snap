@@ -90,7 +90,7 @@ exports[`MapFilter > matches snapshot 1`] = `
     <input
       class="filter-date-input"
       id="date-start-input"
-      max="2026-04-07"
+      max="2026-01-01"
       min="2000-01-01"
       type="date"
       value="2000-01-01"
@@ -105,9 +105,9 @@ exports[`MapFilter > matches snapshot 1`] = `
     </label>
     <input
       id="date-start-slider"
-      max="1775587688142"
+      max="1767243600000"
       min="946702800000"
-      step="8288848881.42"
+      step="8205408000"
       type="range"
       value="946702800000"
     />
@@ -120,26 +120,26 @@ exports[`MapFilter > matches snapshot 1`] = `
     <input
       class="filter-date-input"
       id="date-end-input"
-      max="2026-04-07"
+      max="2026-01-01"
       min="2000-01-01"
       type="date"
-      value="2026-04-07"
+      value="2026-01-01"
     />
     <label
       for="date-end-slider"
     >
       End: 
       <strong>
-        Apr 7, 2026
+        Jan 1, 2026
       </strong>
     </label>
     <input
       id="date-end-slider"
-      max="1775587688142"
+      max="1767243600000"
       min="946702800000"
-      step="8288848881.42"
+      step="8205408000"
       type="range"
-      value="1775587688142"
+      value="1767243600000"
     />
   </div>
 </div>

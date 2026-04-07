@@ -34,10 +34,7 @@ exports[`Home > matches snapshot 1`] = `
       <p
         class="filter-summary"
       >
-        Showing 
-        1
-         of 
-        1
+        Showing 1 of 1
       </p>
       <label
         class="filter-label"

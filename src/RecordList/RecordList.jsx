@@ -55,9 +55,14 @@ function RecordList({ title, api_path }) {
         setError('')
     }
 
+    const getAuthHeader = () => {
+        const token = localStorage.getItem('token')
+        return token ? { Authorization: `Bearer ${token}` } : {}
+    }
+
     const handleCreate = async (formData) => {
         clearMessages()
-        const res = await api.post(api_path, formData)
+        const res = await api.post(api_path, formData, { headers: getAuthHeader() })
         const created = res.data.records
         setRecords(prev => [...prev, created])
         setSuccess('Successfully Created')
@@ -65,7 +70,7 @@ function RecordList({ title, api_path }) {
 
     const handleUpdate = async (formData, record) => {
         clearMessages()
-        const res = await api.put(`${api_path}/${record._id}`, formData)
+        const res = await api.put(`${api_path}/${record._id}`, formData, { headers: getAuthHeader() })
         const updated = res.data.records
         setRecords(prev => prev.map(r => r._id === updated._id ? updated : r))
         setSuccess('Successfully Updated')
@@ -77,7 +82,7 @@ function RecordList({ title, api_path }) {
         }
         clearMessages()
         try {
-            await api.delete(`${api_path}/${record._id}`)
+            await api.delete(`${api_path}/${record._id}`, { headers: getAuthHeader() })
             setRecords(prev => prev.filter(r => r._id !== record._id))
             setSuccess('Successfully Deleted')
         } catch (err) {

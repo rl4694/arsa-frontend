@@ -10,6 +10,7 @@ import MapFilter from '../components/MapFilter/MapFilter'
 // Constants
 const startPosition = [30.0, 10.0]
 const affectedRadius = 0.1
+const minMapZoom = 2
 const maxMapZoom = 8
 const colorCode = {
     earthquake: "red",
@@ -127,9 +128,10 @@ function Home() {
                 setDateStart={setDateStart}
                 setDateEnd={setDateEnd}
             />
-            <MapContainer center={startPosition} zoom={3} maxZoom={maxMapZoom} scrollWheelZoom={true} worldCopyJump={true}>
+            <MapContainer center={startPosition} zoom={3} minZoom={minMapZoom} maxZoom={maxMapZoom} scrollWheelZoom={true} worldCopyJump={true}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                    minZoom={minMapZoom}
                     maxZoom={maxMapZoom}
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />

@@ -37,56 +37,143 @@ function Home() {
     const [dateStart, setDateStart] = useState(dateMin)
     const [dateEnd, setDateEnd] = useState(dateMax)
 
+    // Report focus state
+    const [focusedEventId, setFocusedEventId] = useState(null)
+    const [focusedReports, setFocusedReports] = useState([])
+    const [loadingReports, setLoadingReports] = useState(false)
+
     // Derived state
     const dateStartDebounced = useDebounced(dateStart, 200)
     const dateEndDebounced = useDebounced(dateEnd, 200)
-    const filteredDisasters = useMemo(() => {
+
+    const filteredMainDisasters = useMemo(() => {
         return disasters.filter((disaster) => {
             const disasterDate = new Date(disaster.date)
             return (
+                disaster.show !== false &&
                 selectedTypes[disaster.type] &&
                 disasterDate &&
-                disasterDate.getTime() >= dateStartDebounced &&
-                disasterDate.getTime() <= dateEndDebounced
+                !isNaN(disasterDate.getTime()) &&
+                disasterDate.getTime() >= dateStartDebounced.getTime() &&
+                disasterDate.getTime() <= dateEndDebounced.getTime()
             )
         })
     }, [disasters, selectedTypes, dateStartDebounced, dateEndDebounced])
+
+    const visibleDisasters = useMemo(() => {
+        if (!focusedEventId) {
+            return filteredMainDisasters
+        }
+
+        const mainEvent = filteredMainDisasters.find(
+            (disaster) => disaster._id === focusedEventId
+        ) || disasters.find(
+            (disaster) => disaster._id === focusedEventId
+        )
+
+        const filteredReports = focusedReports.filter((report) => {
+            const reportDate = new Date(report.date)
+            return (
+                selectedTypes[report.type] &&
+                reportDate &&
+                !isNaN(reportDate.getTime()) &&
+                reportDate.getTime() >= dateStartDebounced.getTime() &&
+                reportDate.getTime() <= dateEndDebounced.getTime()
+            )
+        })
+
+        return [mainEvent, ...filteredReports].filter(Boolean)
+    }, [
+        focusedEventId,
+        filteredMainDisasters,
+        disasters,
+        focusedReports,
+        selectedTypes,
+        dateStartDebounced,
+        dateEndDebounced,
+    ])
 
     // Lifecycle functions
     useEffect(() => {
         api.get("/natural_disasters")
             .then(res => {
                 const records = res?.data?.records
-                const data = records ? Object.values(records) : []
+                const data = Array.isArray(records) ? records : Object.values(records || {})
                 setDisasters(data)
             })
             .catch(() => setDisasters([]))
+
         api.get("/cities")
             .then(res => {
                 const records = res?.data?.records
-                const data = records ? Object.values(records) : []
+                const data = Array.isArray(records) ? records : Object.values(records || {})
                 setCities(data)
             })
             .catch(() => setCities([]))
     }, [])
 
-    const selectDisaster = (disaster) => {
-        setSelectedDisaster(disaster)
-        const nearbyCities = cities.filter(city => {
+    const findNearbyCities = (disaster) => {
+        if (!disaster) {
+            return []
+        }
+
+        return cities.filter(city => {
             return (
                 Math.abs(city.latitude - disaster.latitude) < affectedRadius &&
                 Math.abs(city.longitude - disaster.longitude) < affectedRadius
             )
         })
-        setSelectedCities(nearbyCities)
+    }
+
+    const selectDisaster = (disaster) => {
+        setSelectedDisaster(disaster)
+        setSelectedCities(findNearbyCities(disaster))
+    }
+
+    const closeSelectedDisaster = () => {
+        setSelectedDisaster(null)
+        setSelectedCities([])
+        setFocusedEventId(null)
+        setFocusedReports([])
+        setLoadingReports(false)
+    }
+
+    const showReports = async () => {
+        if (!selectedDisaster?._id) {
+            return
+        }
+
+        try {
+            setLoadingReports(true)
+            const res = await api.get(`/natural_disasters/${selectedDisaster._id}/reports`)
+            const reports = res?.data?.reports || []
+
+            setFocusedEventId(selectedDisaster._id)
+            setFocusedReports(reports)
+        } catch (error) {
+            setFocusedEventId(selectedDisaster._id)
+            setFocusedReports([])
+        } finally {
+            setLoadingReports(false)
+        }
+    }
+
+    const hideReports = () => {
+        setFocusedEventId(null)
+        setFocusedReports([])
     }
 
     // Render functions
     const renderMarkers = () => {
-        return filteredDisasters.flatMap(disaster => {
-            if (isNaN(disaster.latitude) || isNaN(disaster.longitude)) {
+        return visibleDisasters.flatMap(disaster => {
+            if (
+                disaster == null ||
+                isNaN(disaster.latitude) ||
+                isNaN(disaster.longitude)
+            ) {
                 return []
             }
+
             return [-360, 0, 360].map(offset => (
                 <MapMarker
                     position={[disaster.latitude, disaster.longitude + offset]}
@@ -100,8 +187,9 @@ function Home() {
 
     const renderAffectedCities = () => {
         if (selectedCities.length <= 0) {
-            return
+            return null
         }
+
         return (
             <p className="panel-cities">
                 Affected Cities: {selectedCities.map((city, index) => (
@@ -114,11 +202,72 @@ function Home() {
         )
     }
 
+    const renderReportControls = () => {
+        if (!selectedDisaster) {
+            return null
+        }
+
+        const hasReports = Array.isArray(selectedDisaster.reports) && selectedDisaster.reports.length > 0
+        if (!hasReports) {
+            return null
+        }
+
+        const isShowingReports = focusedEventId === selectedDisaster._id
+
+        return (
+            <div className="panel-report-controls">
+                {!isShowingReports ? (
+                    <button
+                        className="panel-reports-button"
+                        onClick={showReports}
+                        disabled={loadingReports}
+                    >
+                        {loadingReports ? "Loading Reports..." : `Show Reports (${selectedDisaster.reports.length})`}
+                    </button>
+                ) : (
+                    <button
+                        className="panel-reports-button"
+                        onClick={hideReports}
+                    >
+                        Hide Reports
+                    </button>
+                )}
+            </div>
+        )
+    }
+
+    const renderReportList = () => {
+        if (!selectedDisaster || focusedEventId !== selectedDisaster._id) {
+            return null
+        }
+
+        return (
+            <div className="panel-reports-list">
+                <h3 className="panel-reports-title">Reports</h3>
+                {focusedReports.length <= 0 ? (
+                    <p className="panel-report-empty">No linked reports found.</p>
+                ) : (
+                    focusedReports.map((report) => (
+                        <button
+                            key={report._id}
+                            className="panel-report-item"
+                            onClick={() => selectDisaster(report)}
+                        >
+                            <span className="panel-report-item-type">{report.type}</span>
+                            <span className="panel-report-item-name">{report.name}</span>
+                            <span className="panel-report-item-date">{report.date}</span>
+                        </button>
+                    ))
+                )}
+            </div>
+        )
+    }
+
     return (
         <div className="page">
             <h1 className="map-title">World Map</h1>
             <MapFilter
-                description={`Showing ${filteredDisasters.length} of ${disasters.length}`}
+                description={`Showing ${visibleDisasters.length} of ${focusedEventId ? visibleDisasters.length : filteredMainDisasters.length}`}
                 selectedTypes={selectedTypes}
                 dateStart={dateStart}
                 dateEnd={dateEnd}
@@ -128,7 +277,14 @@ function Home() {
                 setDateStart={setDateStart}
                 setDateEnd={setDateEnd}
             />
-            <MapContainer center={startPosition} zoom={3} minZoom={minMapZoom} maxZoom={maxMapZoom} scrollWheelZoom={true} worldCopyJump={true}>
+            <MapContainer
+                center={startPosition}
+                zoom={3}
+                minZoom={minMapZoom}
+                maxZoom={maxMapZoom}
+                scrollWheelZoom={true}
+                worldCopyJump={true}
+            >
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     minZoom={minMapZoom}
@@ -137,9 +293,10 @@ function Home() {
                 />
                 {renderMarkers()}
             </MapContainer>
+
             {selectedDisaster && (
                 <div className="disaster-panel">
-                    <button className="panel-close" onClick={() => selectDisaster(null)}>×</button>
+                    <button className="panel-close" onClick={closeSelectedDisaster}>×</button>
                     <span className="panel-type">{selectedDisaster.type}</span>
                     <h2 className="panel-name">{selectedDisaster.name}</h2>
                     {renderAffectedCities()}
@@ -147,6 +304,8 @@ function Home() {
                     <p className="panel-description">
                         {selectedDisaster.description}
                     </p>
+                    {renderReportControls()}
+                    {renderReportList()}
                 </div>
             )}
         </div>

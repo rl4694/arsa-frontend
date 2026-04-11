@@ -201,7 +201,6 @@ function Home() {
 
         return (
             <div className="panel-reports-list">
-                <h3 className="panel-reports-title">Reports</h3>
                 {focusedReports.length <= 0 ? (
                     <p className="panel-report-empty">No linked reports found.</p>
                 ) : (
@@ -211,9 +210,7 @@ function Home() {
                             className="panel-report-item"
                             onClick={() => selectDisaster(report)}
                         >
-                            <span className="panel-report-item-type">{report.type}</span>
-                            <span className="panel-report-item-name">{report.name}</span>
-                            <span className="panel-report-item-date">{report.date}</span>
+                            {report.name}, {report.date}
                         </button>
                     ))
                 )}

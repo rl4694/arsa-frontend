@@ -32,7 +32,7 @@ function Home() {
     const [disasters, setDisasters] = useState([])
     const [cities, setCities] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)
-    const [selectedCities, setSelectedCities] = useState([])
+    const [selectedCity, setSelectedCity] = useState(null)
     const [selectedTypes, setSelectedTypes] = useState(initialSelectedTypes)
     const [dateStart, setDateStart] = useState(dateMin)
     const [dateEnd, setDateEnd] = useState(dateMax)
@@ -96,43 +96,28 @@ function Home() {
     // Lifecycle functions
     useEffect(() => {
         api.get("/natural_disasters")
-            .then(res => {
-                const records = res?.data?.records
-                const data = Array.isArray(records) ? records : Object.values(records || {})
-                setDisasters(data)
-            })
+            .then(res => setDisasters(Object.values(res?.data?.records || {})))
             .catch(() => setDisasters([]))
 
         api.get("/cities")
-            .then(res => {
-                const records = res?.data?.records
-                const data = Array.isArray(records) ? records : Object.values(records || {})
-                setCities(data)
-            })
+            .then(res => setCities(Object.values(res?.data?.records || {})))
             .catch(() => setCities([]))
     }, [])
 
-    const findNearbyCities = (disaster) => {
-        if (!disaster) {
-            return []
-        }
-
-        return cities.filter(city => {
+    const selectDisaster = (disaster) => {
+        setSelectedDisaster(disaster)
+        const affectedCity = cities.find(city => {
             return (
                 Math.abs(city.latitude - disaster.latitude) < affectedRadius &&
                 Math.abs(city.longitude - disaster.longitude) < affectedRadius
             )
         })
-    }
-
-    const selectDisaster = (disaster) => {
-        setSelectedDisaster(disaster)
-        setSelectedCities(findNearbyCities(disaster))
+        setSelectedCity(affectedCity)
     }
 
     const closeSelectedDisaster = () => {
         setSelectedDisaster(null)
-        setSelectedCities([])
+        setSelectedCity(null)
         setFocusedEventId(null)
         setFocusedReports([])
         setLoadingReports(false)
@@ -150,7 +135,7 @@ function Home() {
 
             setFocusedEventId(selectedDisaster._id)
             setFocusedReports(reports)
-        } catch (error) {
+        } catch {
             setFocusedEventId(selectedDisaster._id)
             setFocusedReports([])
         } finally {
@@ -183,23 +168,6 @@ function Home() {
                 />
             ))
         })
-    }
-
-    const renderAffectedCities = () => {
-        if (selectedCities.length <= 0) {
-            return null
-        }
-
-        return (
-            <p className="panel-cities">
-                Affected Cities: {selectedCities.map((city, index) => (
-                    <span key={city._id}>
-                        {city.name}
-                        {index < selectedCities.length - 1 && ", "}
-                    </span>
-                ))}
-            </p>
-        )
     }
 
     const renderReportControls = () => {
@@ -299,7 +267,11 @@ function Home() {
                     <button className="panel-close" onClick={closeSelectedDisaster}>×</button>
                     <span className="panel-type">{selectedDisaster.type}</span>
                     <h2 className="panel-name">{selectedDisaster.name}</h2>
-                    {renderAffectedCities()}
+                    {selectedCity && 
+                        <p className="panel-cities">
+                            {selectedCity.name}, {selectedCity.state_name}, {selectedCity.nation_name}
+                        </p>
+                    }
                     <p className="panel-date">{selectedDisaster.date}</p>
                     <p className="panel-description">
                         {selectedDisaster.description}

@@ -1,12 +1,13 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect } from 'react'
 import Table from "../components/Table/Table"
 import UpsertForm from '../components/UpsertForm/UpsertForm'
 import api from '../api'
 import { useAuth } from '../Auth/AuthProvider/useAuth'
+import { useRecords } from '../hooks/useRecords'
 import "./RecordList.css";
 
 function RecordList({ title, api_path }) {
-    const [records, setRecords] = useState([])
+    const [records, setRecords] = useRecords(api_path)
     const [fields, setFields] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
@@ -16,39 +17,12 @@ function RecordList({ title, api_path }) {
     const { user } = auth
     const isLoggedIn = Boolean(user)
 
-    // Define useCallback functions that are used in useEffect and should not
-    // be re-rendered unnecessarily
-    const stripHTML = useCallback((record) => {
-        const htmlColumns = ["description"]
-        htmlColumns.forEach(col => {
-            if (Object.hasOwn(record, col)) {
-                // Remove any possible HTML tags in the format <...>
-                record[col] = record[col].replace(/<[^>]*>/g, '')
-            }
-        })
-        return record
-    }, [])
-
-    const fetchRecords = useCallback(() => {
-        api.get(api_path)
-            .then(res => {
-                if (!res.data.records) {
-                    return
-                }
-                setRecords(Object.values(res.data.records).map(stripHTML))
-            })
-            .catch(err => {
-                setError(err.response?.data?.error || 'Failed to load records')
-            })
-    }, [api_path, stripHTML])
-
     // Run fetchRecords on load
     useEffect(() => {
-        fetchRecords()
         api.get(`${api_path}/fields`)
             .then(res => setFields(res.data))
             .catch(err => setError(err.response?.data?.error || 'Failed to load fields'))
-    }, [api_path, fetchRecords])
+    }, [api_path])
 
     const clearMessages = () => {
         setSuccess('')

@@ -3,21 +3,15 @@
  */
 import axios from 'axios'
 
-// Use VITE_BACKEND_URL is provided. Otherwise, default to local API
-let backend_url = import.meta.env.VITE_BACKEND_URL
-if (!backend_url) {
-    backend_url = "http://127.0.0.1:8000"
-}
-
-// Create Axios client
+// Create Axios client for handling HTTP requests
 const api = axios.create({
-    baseURL: backend_url,
+    baseURL: import.meta.env.VITE_BACKEND_URL,
     headers: {
         "Content-Type": "application/json",
     },
 })
 
-// request interceptor
+// Before each request, add auth token to HTTP headers
 api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem("token")
@@ -29,6 +23,7 @@ api.interceptors.request.use(
     (error) => Promise.reject(error)
 )
 
+// After each response, handle errors
 api.interceptors.response.use(
     (response) => response,
     (error) => {
@@ -50,12 +45,3 @@ api.interceptors.response.use(
 )
 
 export default api
-
-export const loginUser = async (email, password) => {
-    const response = await api.post("/users/login", {
-        email: email,
-        password: password
-    })
-
-    return response.data
-}

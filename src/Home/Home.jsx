@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useDebounced } from '../hooks/useDebounced'
+import { useRecords } from '../hooks/useRecords'
 import { MapContainer, TileLayer } from 'react-leaflet'
 import MapMarker from '../components/Marker/MapMarker'
 import api from "../api"
@@ -29,8 +30,8 @@ function Home() {
     // Main state
     const dateMin = new Date("2000-01-01T00:00:00")
     const dateMax = new Date()
-    const [disasters, setDisasters] = useState([])
-    const [cities, setCities] = useState([])
+    const [disasters] = useRecords("/natural_disasters")
+    const [cities] = useRecords("/cities")
     const [selectedDisaster, setSelectedDisaster] = useState(null)
     const [selectedCity, setSelectedCity] = useState(null)
     const [selectedTypes, setSelectedTypes] = useState(initialSelectedTypes)
@@ -92,17 +93,6 @@ function Home() {
         dateStartDebounced,
         dateEndDebounced,
     ])
-
-    // Lifecycle functions
-    useEffect(() => {
-        api.get("/natural_disasters")
-            .then(res => setDisasters(Object.values(res?.data?.records || {})))
-            .catch(() => setDisasters([]))
-
-        api.get("/cities")
-            .then(res => setCities(Object.values(res?.data?.records || {})))
-            .catch(() => setCities([]))
-    }, [])
 
     const selectDisaster = (disaster) => {
         setSelectedDisaster(disaster)

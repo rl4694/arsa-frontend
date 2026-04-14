@@ -110,6 +110,12 @@
     background-color: transparent;
 }
 
+.panel-report-empty {
+    font-size: 0.9rem;
+    color: var(--color-text-inverted);
+    margin: 0;
+}
+
 .panel-reports-list {
     border-top: 1px solid var(--color-bg-off);
     margin-top: 0.5rem;

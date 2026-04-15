@@ -3,6 +3,8 @@ import './MapFilter.css'
 
 function MapFilter({
     description,
+    showConsolidatedOnly,
+    onConsolidatedChange,
     selectedTypes,
     dateStart,
     dateEnd,
@@ -96,6 +98,17 @@ function MapFilter({
             {filtersOpen && (
                 <>
                     <p className="filter-summary">{description}</p>
+
+                    <label className="filter-label">Data</label>
+                    <label className="type-checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={!!showConsolidatedOnly}
+                            onChange={(e) => onConsolidatedChange?.(e.target.checked)}
+                        />
+                        Show consolidated only
+                    </label>
+
                     <label className="filter-label">Type</label>
                     <div className="type-checkboxes">
                         {["earthquake", "landslide", "tsunami", "hurricane"].map(type => (

@@ -31,6 +31,20 @@ exports[`MapFilter > matches snapshot 1`] = `
     <label
       class="filter-label"
     >
+      Data
+    </label>
+    <label
+      class="type-checkbox-label"
+    >
+      <input
+        checked=""
+        type="checkbox"
+      />
+      Show consolidated only
+    </label>
+    <label
+      class="filter-label"
+    >
       Type
     </label>
     <div
@@ -105,11 +119,11 @@ exports[`MapFilter > matches snapshot 1`] = `
     </label>
     <input
       id="date-start-slider"
-      max="1767243600000"
-      min="946702800000"
+      max="1767225600000"
+      min="946684800000"
       step="8205408000"
       type="range"
-      value="946702800000"
+      value="946684800000"
     />
     <label
       class="filter-label"
@@ -135,11 +149,11 @@ exports[`MapFilter > matches snapshot 1`] = `
     </label>
     <input
       id="date-end-slider"
-      max="1767243600000"
-      min="946702800000"
+      max="1767225600000"
+      min="946684800000"
       step="8205408000"
       type="range"
-      value="1767243600000"
+      value="1767225600000"
     />
   </div>
 </div>

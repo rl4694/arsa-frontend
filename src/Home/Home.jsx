@@ -28,9 +28,11 @@ const initialSelectedTypes = {
 
 function Home() {
     // Main state
-    const dateMin = new Date("2000-01-01T00:00:00")
-    const dateMax = new Date()
-    const [disasters] = useRecords("/natural_disasters")
+    // Use UTC-midnight timestamps to avoid timezone-dependent slider values.
+    const dateMin = new Date(Date.UTC(2000, 0, 1))
+    const now = new Date()
+    const dateMax = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
+    const [disasters, refetchDisasters] = useRecords("/natural_disasters")
     const [cities] = useRecords("/cities")
     const [allDisasters, setAllDisasters] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)
@@ -137,6 +139,16 @@ function Home() {
         setFocusedEventId(null)
         setFocusedReports([])
         setLoadingReports(false)
+    }
+
+    const onConsolidatedChange = (checked) => {
+        setShowConsolidatedOnly(checked)
+        closeSelectedDisaster()
+        if (checked) {
+            // Ensure we immediately switch back to the consolidated source.
+            setAllDisasters([])
+            refetchDisasters?.()
+        }
     }
 
     const showReports = async () => {
@@ -318,41 +330,10 @@ function Home() {
         <div className="page">
             <h1 className="map-title">World Map</h1>
 
-            <div
-                style={{
-                    position: "absolute",
-                    top: "130px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 1000,
-                    background: "var(--color-overlay-dark-70)",
-                    color: "var(--color-text-inverted)",
-                    padding: "8px 14px",
-                    borderRadius: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                }}
-            >
-                <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-                    <input
-                        type="checkbox"
-                        checked={showConsolidatedOnly}
-                        onChange={(e) => {
-                            setShowConsolidatedOnly(e.target.checked)
-                            setSelectedDisaster(null)
-                            setSelectedCity(null)
-                            setFocusedEventId(null)
-                            setFocusedReports([])
-                            setLoadingReports(false)
-                        }}
-                    />
-                    Show consolidated only
-                </label>
-            </div>
-
             <MapFilter
                 description={`Showing ${visibleDisasters.length} of ${focusedEventId ? visibleDisasters.length : filteredMainDisasters.length}`}
+                showConsolidatedOnly={showConsolidatedOnly}
+                onConsolidatedChange={onConsolidatedChange}
                 selectedTypes={selectedTypes}
                 dateStart={dateStart}
                 dateEnd={dateEnd}

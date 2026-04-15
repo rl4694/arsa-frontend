@@ -4,12 +4,14 @@ import MapFilter from "./MapFilter";
 
 describe('MapFilter', () => {
     it('matches snapshot', () => {
-        const dateMin = new Date("2000-01-01T00:00:00")
-        const dateMax = new Date("2026-01-01T00:00:00")
+        const dateMin = new Date(Date.UTC(2000, 0, 1))
+        const dateMax = new Date(Date.UTC(2026, 0, 1))
         const { container } = render(
             <MapFilter
                 description={'test'}
                 selectedTypes={[]}
+                showConsolidatedOnly={true}
+                onConsolidatedChange={vi.fn()}
                 dateStart={dateMin}
                 dateEnd={dateMax}
                 dateMin={dateMin}

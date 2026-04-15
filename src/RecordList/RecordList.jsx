@@ -7,7 +7,7 @@ import { useRecords } from '../hooks/useRecords'
 import "./RecordList.css";
 
 function RecordList({ title, api_path }) {
-    const [records, setRecords] = useRecords(api_path)
+    const [records, refetch] = useRecords(api_path)
     const [fields, setFields] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
@@ -36,17 +36,15 @@ function RecordList({ title, api_path }) {
 
     const handleCreate = async (formData) => {
         clearMessages()
-        const res = await api.post(api_path, formData, { headers: getAuthHeader() })
-        const created = res.data.records
-        setRecords(prev => [...prev, created])
+        await api.post(api_path, formData, { headers: getAuthHeader() })
+        refetch()
         setSuccess('Successfully Created')
     }
 
     const handleUpdate = async (formData, record) => {
         clearMessages()
-        const res = await api.put(`${api_path}/${record._id}`, formData, { headers: getAuthHeader() })
-        const updated = res.data.records
-        setRecords(prev => prev.map(r => r._id === updated._id ? updated : r))
+        await api.put(`${api_path}/${record._id}`, formData, { headers: getAuthHeader() })
+        refetch()
         setSuccess('Successfully Updated')
     }
 
@@ -57,7 +55,7 @@ function RecordList({ title, api_path }) {
         clearMessages()
         try {
             await api.delete(`${api_path}/${record._id}`, { headers: getAuthHeader() })
-            setRecords(prev => prev.filter(r => r._id !== record._id))
+            refetch()
             setSuccess('Successfully Deleted')
         } catch (err) {
             setError(err.response?.data?.error || 'Failed to delete record')

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import api from '../api'
 
 // Columns that may include HTML
@@ -19,7 +19,7 @@ const stripHTML = (record) => {
 export function useRecords(api_path) {
     const [records, setRecords] = useState([])
 
-    useEffect(() => {
+    const refetch = useCallback(() => {
         api.get(api_path)
             .then(res => {
                 const data = Object.values(res?.data?.records || {})
@@ -28,5 +28,9 @@ export function useRecords(api_path) {
             .catch(() => setRecords([]))
     }, [api_path])
 
-    return [records, setRecords]
+    useEffect(() => {
+        refetch()
+    }, [api_path, refetch])
+
+    return [records, refetch]
 }

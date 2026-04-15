@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './UpsertForm.css'
+import '../../form.css'
 
 function UpsertForm({ title, record, fields, onSubmit, onClose }) {
     const initializeFormData = () => {
@@ -79,21 +80,21 @@ function UpsertForm({ title, record, fields, onSubmit, onClose }) {
     return (
         <div className="upsert-form-overlay" onClick={onClose}>
             <form
-                className="upsert-form"
+                className="form-card"
                 onSubmit={handleSubmit}
                 onClick={e => e.stopPropagation()}
             >
                 {title && <h2>{title}</h2>}
-                
-                {error && <p className="upsert-form-error">{error}</p>}
+
+                {error && <p className="form-card-error">{error}</p>}
 
                 {fields.map(field => (
-                    <div key={field.attribute} className="upsert-form-field">
+                    <div key={field.attribute} className="form-field">
                         <label htmlFor={field.attribute}>{field.display}</label>
                         {renderInput(field)}
                     </div>
                 ))}
-                <div className="upsert-form-actions">
+                <div className="form-actions">
                     <button type="button" onClick={onClose}>Cancel</button>
                     <button type="submit" disabled={loading}>
                         {loading ? 'Saving...' : 'Save'}

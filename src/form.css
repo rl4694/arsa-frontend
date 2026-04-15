@@ -1,0 +1,90 @@
+/* Shared styles for card-style forms (Login, Register, UpsertForm) */
+
+.auth-page-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 80px);
+    padding: 20px;
+}
+
+.form-card {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 360px;
+    padding: 24px;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border-muted);
+    border-radius: 4px;
+}
+
+.form-card h2 {
+    margin: 0 0 4px 0;
+    font-size: 22px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-field label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--color-surface);
+}
+
+.form-field input,
+.form-field select {
+    padding: 10px;
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.form-actions button {
+    padding: 8px 18px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.form-actions button[type="button"] {
+    background-color: var(--color-neutral-200);
+    color: var(--color-neutral-700);
+}
+
+.form-actions button[type="submit"] {
+    background-color: var(--color-surface);
+    color: var(--color-text-inverted);
+}
+
+.form-actions button[type="submit"]:hover {
+    background-color: var(--color-surface-hover);
+}
+
+.form-actions button[type="submit"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.form-card-error {
+    color: var(--color-error);
+    font-size: 14px;
+    margin: 0;
+    padding: 8px;
+    background: var(--color-error-bg);
+    border-radius: 4px;
+}

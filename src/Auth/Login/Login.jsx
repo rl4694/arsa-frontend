@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import api from '../../api'
 import { useAuth } from '../../Auth/AuthProvider/useAuth'
-import './Login.css'
+import '../../form.css'
 
 function Login() {
   const [email, setEmail] = useState('')
@@ -32,11 +32,11 @@ function Login() {
   }
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit} className="login-form">
+    <div className="auth-page-container">
+      <form onSubmit={handleSubmit} className="form-card">
         <h2>Login</h2>
-        {error && <p className="login-error">{error}</p>}
-        <div className="login-form-field">
+        {error && <p className="form-card-error">{error}</p>}
+        <div className="form-field">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -47,7 +47,7 @@ function Login() {
             required
           />
         </div>
-        <div className="login-form-field">
+        <div className="form-field">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -58,7 +58,7 @@ function Login() {
             required
           />
         </div>
-        <div className="login-form-actions">
+        <div className="form-actions">
           <button type="submit" disabled={isLoading}>
             {isLoading ? 'Signing In...' : 'Sign In'}
           </button>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../api'
-import './Register.css'
+import '../../form.css'
 
 function Register() {
   const [name, setName] = useState('')
@@ -22,11 +22,11 @@ function Register() {
   }
 
   return (
-    <div className="register-container">
-      <form onSubmit={handleSubmit} className="register-form">
+    <div className="auth-page-container">
+      <form onSubmit={handleSubmit} className="form-card">
         <h2>Sign Up</h2>
-        {error && <p className="register-error">{error}</p>}
-        <div className="register-form-field">
+        {error && <p className="form-card-error">{error}</p>}
+        <div className="form-field">
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -36,7 +36,7 @@ function Register() {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div className="register-form-field">
+        <div className="form-field">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -46,7 +46,7 @@ function Register() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="register-form-field">
+        <div className="form-field">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -56,7 +56,7 @@ function Register() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div className="register-form-actions">
+        <div className="form-actions">
           <button type="submit">Sign Up</button>
         </div>
       </form>

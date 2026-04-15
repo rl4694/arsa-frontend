@@ -1,7 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { useDebounced } from '../hooks/useDebounced'
 import { useRecords } from '../hooks/useRecords'
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, TileLayer, Circle } from 'react-leaflet'
 import MapMarker from '../components/Marker/MapMarker'
 import api from "../api"
 import "leaflet/dist/leaflet.css"
@@ -32,11 +32,13 @@ function Home() {
     const dateMax = new Date()
     const [disasters] = useRecords("/natural_disasters")
     const [cities] = useRecords("/cities")
+    const [allDisasters, setAllDisasters] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)
     const [selectedCity, setSelectedCity] = useState(null)
     const [selectedTypes, setSelectedTypes] = useState(initialSelectedTypes)
     const [dateStart, setDateStart] = useState(dateMin)
     const [dateEnd, setDateEnd] = useState(dateMax)
+    const [showConsolidatedOnly, setShowConsolidatedOnly] = useState(true)
 
     // Report focus state
     const [focusedEventId, setFocusedEventId] = useState(null)
@@ -47,11 +49,29 @@ function Home() {
     const dateStartDebounced = useDebounced(dateStart, 200)
     const dateEndDebounced = useDebounced(dateEnd, 200)
 
+    useEffect(() => {
+        if (showConsolidatedOnly) {
+            return
+        }
+
+        api.get("/natural_disasters/search")
+            .then((res) => {
+                const records = res?.data?.records
+                const data = Array.isArray(records) ? records : Object.values(records || {})
+                setAllDisasters(data)
+            })
+            .catch(() => setAllDisasters([]))
+    }, [showConsolidatedOnly])
+
+    const disasterSource = useMemo(() => {
+        return showConsolidatedOnly ? disasters : allDisasters
+    }, [showConsolidatedOnly, disasters, allDisasters])
+
     const filteredMainDisasters = useMemo(() => {
-        return disasters.filter((disaster) => {
+        return disasterSource.filter((disaster) => {
             const disasterDate = new Date(disaster.date)
             return (
-                disaster.show !== false &&
+                (!showConsolidatedOnly || disaster.show !== false) &&
                 selectedTypes[disaster.type] &&
                 disasterDate &&
                 !isNaN(disasterDate.getTime()) &&
@@ -59,7 +79,13 @@ function Home() {
                 disasterDate.getTime() <= dateEndDebounced.getTime()
             )
         })
-    }, [disasters, selectedTypes, dateStartDebounced, dateEndDebounced])
+    }, [
+        disasterSource,
+        selectedTypes,
+        dateStartDebounced,
+        dateEndDebounced,
+        showConsolidatedOnly,
+    ])
 
     const visibleDisasters = useMemo(() => {
         if (!focusedEventId) {
@@ -68,7 +94,7 @@ function Home() {
 
         const mainEvent = filteredMainDisasters.find(
             (disaster) => disaster._id === focusedEventId
-        ) || disasters.find(
+        ) || disasterSource.find(
             (disaster) => disaster._id === focusedEventId
         )
 
@@ -87,7 +113,7 @@ function Home() {
     }, [
         focusedEventId,
         filteredMainDisasters,
-        disasters,
+        disasterSource,
         focusedReports,
         selectedTypes,
         dateStartDebounced,
@@ -138,7 +164,48 @@ function Home() {
         setFocusedReports([])
     }
 
-    // Render functions
+    const getHaloRadiusMeters = (disaster) => {
+        const severity = Number(disaster?.severity)
+
+        if (!Number.isFinite(severity) || severity <= 0) {
+            return 0
+        }
+
+        switch (disaster.type) {
+            case "earthquake":
+                return Math.max(20000, severity * 25000)
+            case "hurricane":
+                return Math.max(40000, severity * 50000)
+            case "tsunami":
+                return Math.max(30000, severity * 30000)
+            case "landslide":
+                return Math.max(10000, severity * 15000)
+            default:
+                return severity * 20000
+        }
+    }
+
+    const getHaloOpacity = (disaster) => {
+        const severity = Number(disaster?.severity)
+
+        if (!Number.isFinite(severity) || severity <= 0) {
+            return 0
+        }
+
+        switch (disaster.type) {
+            case "earthquake":
+                return Math.min(0.35, 0.08 + severity * 0.03)
+            case "hurricane":
+                return Math.min(0.35, 0.10 + severity * 0.04)
+            case "tsunami":
+                return Math.min(0.30, 0.08 + severity * 0.025)
+            case "landslide":
+                return Math.min(0.28, 0.08 + severity * 0.02)
+            default:
+                return Math.min(0.30, 0.08 + severity * 0.02)
+        }
+    }
+
     const renderMarkers = () => {
         return visibleDisasters.flatMap(disaster => {
             if (
@@ -149,14 +216,43 @@ function Home() {
                 return []
             }
 
-            return [-360, 0, 360].map(offset => (
-                <MapMarker
-                    position={[disaster.latitude, disaster.longitude + offset]}
-                    color={colorCode[disaster.type]}
-                    key={`${disaster._id}_${offset}`}
-                    eventHandlers={{ click: () => selectDisaster(disaster) }}
-                />
-            ))
+            const haloRadius = getHaloRadiusMeters(disaster)
+            const haloOpacity = getHaloOpacity(disaster)
+            const color = colorCode[disaster.type]
+
+            return [-360, 0, 360].flatMap(offset => {
+                const position = [disaster.latitude, disaster.longitude + offset]
+                const keyBase = `${disaster._id}_${offset}`
+                const elements = []
+
+                if (haloRadius > 0) {
+                    elements.push(
+                        <Circle
+                            key={`${keyBase}_halo`}
+                            center={position}
+                            radius={haloRadius}
+                            pathOptions={{
+                                color,
+                                fillColor: color,
+                                fillOpacity: haloOpacity,
+                                opacity: 0.35,
+                                weight: 1,
+                            }}
+                        />
+                    )
+                }
+
+                elements.push(
+                    <MapMarker
+                        position={position}
+                        color={color}
+                        key={`${keyBase}_marker`}
+                        eventHandlers={{ click: () => selectDisaster(disaster) }}
+                    />
+                )
+
+                return elements
+            })
         })
     }
 
@@ -221,6 +317,40 @@ function Home() {
     return (
         <div className="page">
             <h1 className="map-title">World Map</h1>
+
+            <div
+                style={{
+                    position: "absolute",
+                    top: "130px",
+                    left: "50%",
+                    transform: "translateX(-50%)",
+                    zIndex: 1000,
+                    background: "var(--color-overlay-dark-70)",
+                    color: "var(--color-text-inverted)",
+                    padding: "8px 14px",
+                    borderRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                }}
+            >
+                <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+                    <input
+                        type="checkbox"
+                        checked={showConsolidatedOnly}
+                        onChange={(e) => {
+                            setShowConsolidatedOnly(e.target.checked)
+                            setSelectedDisaster(null)
+                            setSelectedCity(null)
+                            setFocusedEventId(null)
+                            setFocusedReports([])
+                            setLoadingReports(false)
+                        }}
+                    />
+                    Show consolidated only
+                </label>
+            </div>
+
             <MapFilter
                 description={`Showing ${visibleDisasters.length} of ${focusedEventId ? visibleDisasters.length : filteredMainDisasters.length}`}
                 selectedTypes={selectedTypes}
@@ -254,7 +384,7 @@ function Home() {
                     <button className="panel-close" onClick={closeSelectedDisaster}>×</button>
                     <span className="panel-type">{selectedDisaster.type}</span>
                     <h2 className="panel-name">{selectedDisaster.name}</h2>
-                    {selectedCity && 
+                    {selectedCity &&
                         <p className="panel-cities">
                             {selectedCity.name}, {selectedCity.state_name}, {selectedCity.nation_name}
                         </p>

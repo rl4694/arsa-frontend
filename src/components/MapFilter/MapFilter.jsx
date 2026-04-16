@@ -20,10 +20,20 @@ function MapFilter({
 
     // Convert a Date object into a string
     const dateToString = (d) => {
-        const y = d.getFullYear()
-        const m = String(d.getMonth() + 1).padStart(2, "0")
-        const day = String(d.getDate()).padStart(2, "0")
+        const y = d.getUTCFullYear()
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0")
+        const day = String(d.getUTCDate()).padStart(2, "0")
         return `${y}-${m}-${day}`
+    }
+
+    // Keep date labels stable across local timezones.
+    const dateToLabel = (d) => {
+        return d.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            timeZone: "UTC",
+        })
     }
 
     // Convert an input into a Date object
@@ -34,7 +44,7 @@ function MapFilter({
                 const parts = input.split("-").map(Number)
                 if (parts.length !== 3 || parts.some(Number.isNaN)) return null
                 const [y, m, d] = parts
-                return new Date(y, m - 1, d, 0, 0, 0, 0)
+                return new Date(Date.UTC(y, m - 1, d, 0, 0, 0, 0))
             }
             case 'range':
                 if (isNaN(input)) return
@@ -148,7 +158,7 @@ function MapFilter({
                     />
 
                     <label htmlFor="date-start-slider">
-                        Start: <strong>{dateStart.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
+                        Start: <strong>{dateToLabel(dateStart)}</strong>
                     </label>
                     <input
                         id="date-start-slider"
@@ -174,7 +184,7 @@ function MapFilter({
                     />
 
                     <label htmlFor="date-end-slider">
-                        End: <strong>{dateEnd.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
+                        End: <strong>{dateToLabel(dateEnd)}</strong>
                     </label>
                     <input
                         id="date-end-slider"

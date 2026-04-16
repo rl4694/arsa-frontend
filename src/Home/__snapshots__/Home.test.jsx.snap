@@ -51,6 +51,15 @@ exports[`Home > matches snapshot 1`] = `
         Show consolidated only
       </label>
       <label
+        class="type-checkbox-label"
+      >
+        <input
+          checked=""
+          type="checkbox"
+        />
+        Show markers
+      </label>
+      <label
         class="filter-label"
       >
         Type
@@ -117,23 +126,23 @@ exports[`Home > matches snapshot 1`] = `
         class="filter-date-input"
         id="date-start-input"
         max="2025-12-31"
-        min="2000-01-01"
+        min="1999-12-31"
         type="date"
-        value="2000-01-01"
+        value="1999-12-31"
       />
       <label
         for="date-start-slider"
       >
         Start: 
         <strong>
-          Jan 1, 2000
+          Dec 31, 1999
         </strong>
       </label>
       <input
         id="date-start-slider"
-        max="1767139200000"
+        max="1767225600000"
         min="946684800000"
-        step="8204544000"
+        step="8205408000"
         type="range"
         value="946684800000"
       />
@@ -147,7 +156,7 @@ exports[`Home > matches snapshot 1`] = `
         class="filter-date-input"
         id="date-end-input"
         max="2025-12-31"
-        min="2000-01-01"
+        min="1999-12-31"
         type="date"
         value="2025-12-31"
       />
@@ -161,11 +170,11 @@ exports[`Home > matches snapshot 1`] = `
       </label>
       <input
         id="date-end-slider"
-        max="1767139200000"
+        max="1767225600000"
         min="946684800000"
-        step="8204544000"
+        step="8205408000"
         type="range"
-        value="1767139200000"
+        value="1767225600000"
       />
     </div>
     <div

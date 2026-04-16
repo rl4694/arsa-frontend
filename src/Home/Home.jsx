@@ -220,10 +220,6 @@ function Home() {
     }
 
     const renderMarkers = () => {
-        if (!showMarkers) {
-            return []
-        }
-
         return visibleDisasters.flatMap(disaster => {
             if (
                 disaster == null ||
@@ -259,14 +255,16 @@ function Home() {
                     )
                 }
 
-                elements.push(
-                    <MapMarker
-                        position={position}
-                        color={color}
-                        key={`${keyBase}_marker`}
-                        eventHandlers={{ click: () => selectDisaster(disaster) }}
-                    />
-                )
+                if (showMarkers) {
+                    elements.push(
+                        <MapMarker
+                            position={position}
+                            color={color}
+                            key={`${keyBase}_marker`}
+                            eventHandlers={{ click: () => selectDisaster(disaster) }}
+                        />
+                    )
+                }
 
                 return elements
             })

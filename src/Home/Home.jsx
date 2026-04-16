@@ -41,6 +41,7 @@ function Home() {
     const [dateStart, setDateStart] = useState(dateMin)
     const [dateEnd, setDateEnd] = useState(dateMax)
     const [showConsolidatedOnly, setShowConsolidatedOnly] = useState(true)
+    const [showMarkers, setShowMarkers] = useState(true)
 
     // Report focus state
     const [focusedEventId, setFocusedEventId] = useState(null)
@@ -219,6 +220,10 @@ function Home() {
     }
 
     const renderMarkers = () => {
+        if (!showMarkers) {
+            return []
+        }
+
         return visibleDisasters.flatMap(disaster => {
             if (
                 disaster == null ||
@@ -334,6 +339,8 @@ function Home() {
                 description={`Showing ${visibleDisasters.length} of ${focusedEventId ? visibleDisasters.length : filteredMainDisasters.length}`}
                 showConsolidatedOnly={showConsolidatedOnly}
                 onConsolidatedChange={onConsolidatedChange}
+                showMarkers={showMarkers}
+                onMarkersChange={setShowMarkers}
                 selectedTypes={selectedTypes}
                 dateStart={dateStart}
                 dateEnd={dateEnd}

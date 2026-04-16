@@ -5,6 +5,8 @@ function MapFilter({
     description,
     showConsolidatedOnly,
     onConsolidatedChange,
+    showMarkers,
+    onMarkersChange,
     selectedTypes,
     dateStart,
     dateEnd,
@@ -107,6 +109,14 @@ function MapFilter({
                             onChange={(e) => onConsolidatedChange?.(e.target.checked)}
                         />
                         Show consolidated only
+                    </label>
+                    <label className="type-checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={showMarkers !== false}
+                            onChange={(e) => onMarkersChange?.(e.target.checked)}
+                        />
+                        Show markers
                     </label>
 
                     <label className="filter-label">Type</label>

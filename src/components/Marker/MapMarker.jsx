@@ -4,7 +4,7 @@ import './MapMarker.css'
 
 // Size configurations for icon anchor points
 const sizeConfig = {
-    small: { width: 24, height: 32 },
+    small: { width: 18, height: 24 },
     medium: { width: 32, height: 42 },
     large: { width: 40, height: 52 }
 }
@@ -30,7 +30,7 @@ const createCustomIcon = (color = 'red', size = 'medium') => {
 function MapMarker({ 
     position, 
     color = 'red',
-    size = 'medium',
+    size = 'small',
     children,
     popupContent,
     ...props 

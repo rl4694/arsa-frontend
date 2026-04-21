@@ -49,6 +49,24 @@ describe('Table', () => {
         expect(screen.getByText("Three")).toBeTruthy()
     })
 
+    it("sorts rows by clicking a column header", async () => {
+        const user = userEvent.setup()
+
+        // Initial order follows source data.
+        let rows = screen.getAllByRole("row")
+        expect(within(rows[1]).getByText("One")).toBeTruthy()
+
+        await user.click(screen.getByRole("button", { name: "Sort by First" }))
+
+        rows = screen.getAllByRole("row")
+        expect(within(rows[1]).getByText("Four")).toBeTruthy()
+
+        await user.click(screen.getByRole("button", { name: "Sort by First" }))
+
+        rows = screen.getAllByRole("row")
+        expect(within(rows[1]).getByText("One")).toBeTruthy()
+    })
+
     it("renders buttons on hover", async () => {
         const user = userEvent.setup()
         const dataRow = screen.getAllByRole("row")[1]

@@ -9,6 +9,22 @@ th, td {
     text-align: left;
 }
 
+th .sort-btn {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    padding: 0;
+}
+
+th .sort-btn:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
 .header {
     background-color: var(--color-surface);
     color: var(--color-text-inverted);

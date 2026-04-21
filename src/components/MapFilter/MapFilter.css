@@ -124,3 +124,50 @@
     outline: 2px solid rgba(255, 255, 255, 0.35);
     outline-offset: 1px;
 }
+
+/* react-datepicker overrides so the calendar stays readable in dark UI */
+.map-filter-datepicker {
+    background: rgba(20, 20, 20, 0.98);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    font-family: inherit;
+}
+
+.map-filter-datepicker .react-datepicker__month-container {
+    background: transparent;
+}
+
+.map-filter-datepicker .react-datepicker__header {
+    background: rgba(10, 10, 10, 0.98);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.map-filter-datepicker .react-datepicker__current-month,
+.map-filter-datepicker .react-datepicker__day-name {
+    color: #fff;
+}
+
+.map-filter-datepicker .react-datepicker__day {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.map-filter-datepicker .react-datepicker__navigation-icon::before {
+    border-color: rgba(255, 255, 255, 0.85);
+}
+
+.map-filter-datepicker .react-datepicker__triangle {
+    display: none;
+}
+
+.map-filter-datepicker .react-datepicker__day:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.map-filter-datepicker .react-datepicker__day--selected,
+.map-filter-datepicker .react-datepicker__day--keyboard-selected {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.map-filter-datepicker .react-datepicker__day--disabled {
+    color: rgba(255, 255, 255, 0.3);
+}

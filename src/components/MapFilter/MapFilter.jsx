@@ -1,4 +1,7 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
+import DatePicker from 'react-datepicker'
+import { enUS } from 'date-fns/locale'
+import 'react-datepicker/dist/react-datepicker.css'
 import './MapFilter.css'
 
 function MapFilter({
@@ -14,8 +17,6 @@ function MapFilter({
     setDateStart,
     setDateEnd
 }) {
-    const [filtersOpen, setFiltersOpen] = useState(true)
-
     // Convert a Date object into a string
     const dateToString = (d) => {
         const y = d.getFullYear()
@@ -23,6 +24,8 @@ function MapFilter({
         const day = String(d.getDate()).padStart(2, "0")
         return `${y}-${m}-${day}`
     }
+
+    const [filtersOpen, setFiltersOpen] = useState(true)
 
     // Convert an input into a Date object
     const inputToDate = (input, inputType) => {
@@ -52,6 +55,17 @@ function MapFilter({
         return d
     }
 
+    const minDatePicker = useMemo(
+        () => new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate()),
+        [dateMin]
+    )
+    const maxDatePicker = useMemo(
+        () => new Date(dateMax.getFullYear(), dateMax.getMonth(), dateMax.getDate()),
+        [dateMax]
+    )
+
+    const normalizePickerDate = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0)
+
     const onDisasterTypeChange = (type) => {
         setSelectedTypes(prev => ({ ...prev, [type]: !prev[type] }))
     }
@@ -78,6 +92,24 @@ function MapFilter({
                     setDateStart(next)
                 }
                 break
+        }
+    }
+
+    const onPickerDateChange = (picked, dateType) => {
+        if (!picked) return
+        const next = clampDate(normalizePickerDate(picked))
+
+        if (dateType === 'start') {
+            setDateStart(next)
+            if (next.getTime() > dateEnd.getTime()) {
+                setDateEnd(next)
+            }
+            return
+        }
+
+        setDateEnd(next)
+        if (next.getTime() < dateStart.getTime()) {
+            setDateStart(next)
         }
     }
 
@@ -127,14 +159,18 @@ function MapFilter({
                     <label className="filter-label" htmlFor="date-start-input">
                         Start date
                     </label>
-                    <input
+                    <DatePicker
                         id="date-start-input"
+                        selected={dateStart}
+                        onChange={(d) => onPickerDateChange(d, 'start')}
+                        minDate={minDatePicker}
+                        maxDate={maxDatePicker}
+                        locale={enUS}
+                        dateFormat="yyyy-MM-dd"
                         className="filter-date-input"
-                        type="date"
-                        min={dateToString(dateMin)}
-                        max={dateToString(dateMax)}
-                        value={dateToString(dateStart)}
-                        onChange={(e) => onDateChange(e.target.value, 'date', 'start')}
+                        calendarClassName="map-filter-datepicker"
+                        popperClassName="map-filter-datepicker-popper"
+                        showPopperArrow={false}
                     />
 
                     <label htmlFor="date-start-slider">
@@ -153,14 +189,18 @@ function MapFilter({
                     <label className="filter-label" htmlFor="date-end-input">
                         End date
                     </label>
-                    <input
+                    <DatePicker
                         id="date-end-input"
+                        selected={dateEnd}
+                        onChange={(d) => onPickerDateChange(d, 'end')}
+                        minDate={minDatePicker}
+                        maxDate={maxDatePicker}
+                        locale={enUS}
+                        dateFormat="yyyy-MM-dd"
                         className="filter-date-input"
-                        type="date"
-                        min={dateToString(dateMin)}
-                        max={dateToString(dateMax)}
-                        value={dateToString(dateEnd)}
-                        onChange={(e) => onDateChange(e.target.value, 'date', 'end')}
+                        calendarClassName="map-filter-datepicker"
+                        popperClassName="map-filter-datepicker-popper"
+                        showPopperArrow={false}
                     />
 
                     <label htmlFor="date-end-slider">

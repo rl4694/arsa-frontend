@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useRef } from 'react'
 import DatePicker from 'react-datepicker'
 import { enUS } from 'date-fns/locale'
 import 'react-datepicker/dist/react-datepicker.css'
@@ -28,6 +28,8 @@ function MapFilter({
     }
 
     const [filtersOpen, setFiltersOpen] = useState(true)
+    const [dateWarning, setDateWarning] = useState(null)
+    const rawWasInvalid = useRef(false)
 
     // Keep date labels stable across local timezones.
     const dateToLabel = (d) => {
@@ -78,6 +80,31 @@ function MapFilter({
 
     const normalizePickerDate = (d) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0))
 
+    const checkRawDateInput = (rawValue) => {
+        if (!rawValue || rawValue.length !== 10) return
+        const parts = rawValue.split('-').map(Number)
+        if (parts.length !== 3 || parts.some(Number.isNaN)) return
+        const [y, m, d] = parts
+        const parsed = new Date(Date.UTC(y, m - 1, d))
+        if (
+            parsed.getUTCFullYear() !== y ||
+            parsed.getUTCMonth() + 1 !== m ||
+            parsed.getUTCDate() !== d
+        ) {
+            rawWasInvalid.current = true
+            setDateWarning(`"${rawValue}" is not a valid date — date was adjusted.`)
+            return
+        }
+        const clamped = clampDate(parsed)
+        if (clamped.getTime() !== parsed.getTime()) {
+            rawWasInvalid.current = true
+            setDateWarning(`"${rawValue}" is outside the available range — date was adjusted.`)
+            return
+        }
+        rawWasInvalid.current = false
+        setDateWarning(null)
+    }
+
     const onDisasterTypeChange = (type) => {
         setSelectedTypes(prev => ({ ...prev, [type]: !prev[type] }))
     }
@@ -109,7 +136,16 @@ function MapFilter({
 
     const onPickerDateChange = (picked, dateType) => {
         if (!picked) return
-        const next = clampDate(normalizePickerDate(picked))
+        const normalized = normalizePickerDate(picked)
+        const next = clampDate(normalized)
+
+        if (next.getTime() !== normalized.getTime()) {
+            rawWasInvalid.current = false
+            setDateWarning(`"${dateToString(normalized)}" is outside the available range — date was adjusted.`)
+        } else if (!rawWasInvalid.current) {
+            setDateWarning(null)
+        }
+        rawWasInvalid.current = false
 
         if (dateType === 'start') {
             setDateStart(next)
@@ -187,6 +223,7 @@ function MapFilter({
                         id="date-start-input"
                         selected={dateStart}
                         onChange={(d) => onPickerDateChange(d, 'start')}
+                        onChangeRaw={(e) => checkRawDateInput(e.target.value)}
                         minDate={minDatePicker}
                         maxDate={maxDatePicker}
                         locale={enUS}
@@ -217,6 +254,7 @@ function MapFilter({
                         id="date-end-input"
                         selected={dateEnd}
                         onChange={(d) => onPickerDateChange(d, 'end')}
+                        onChangeRaw={(e) => checkRawDateInput(e.target.value)}
                         minDate={minDatePicker}
                         maxDate={maxDatePicker}
                         locale={enUS}
@@ -239,6 +277,9 @@ function MapFilter({
                         value={dateEnd.getTime()}
                         onChange={(e) => onDateChange(e.target.value, 'range', 'end')}
                     />
+                    {dateWarning && (
+                        <p className="filter-warning">{dateWarning}</p>
+                    )}
                 </>
             )}
         </div>

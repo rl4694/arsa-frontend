@@ -18,19 +18,24 @@ const stripHTML = (record) => {
 
 export function useRecords(api_path) {
     const [records, setRecords] = useState([])
+    const [error, setError] = useState(null)
 
     const refetch = useCallback(() => {
         api.get(api_path)
             .then(res => {
                 const data = Object.values(res?.data?.records || {})
                 setRecords(data.map(stripHTML))
+                setError(null)
             })
-            .catch(() => setRecords([]))
+            .catch(() => {
+                setRecords([])
+                setError('Failed to load records.')
+            })
     }, [api_path])
 
     useEffect(() => {
         refetch()
     }, [api_path, refetch])
 
-    return [records, refetch]
+    return [records, refetch, error]
 }

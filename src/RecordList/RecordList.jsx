@@ -7,7 +7,7 @@ import { useRecords } from '../hooks/useRecords'
 import "./RecordList.css";
 
 function RecordList({ title, api_path }) {
-    const [records, refetch] = useRecords(api_path)
+    const [records, refetch, fetchError] = useRecords(api_path)
     const [fields, setFields] = useState([])
     const [showCreate, setShowCreate] = useState(false)
     const [selectedRecord, setSelectedRecord] = useState(null)
@@ -66,6 +66,7 @@ function RecordList({ title, api_path }) {
         <div className="background">
             <div className="title">{title}</div>
             {isLoggedIn && <button className="create-btn" onClick={() => setShowCreate(true)}>+ Create</button>}
+            {fetchError && <p className="form-error">{fetchError}</p>}
             {success && <p className="form-success">{success}</p>}
             {error && <p className="form-error">{error}</p>}
             <Table data={records} cols={fields} onEdit={setSelectedRecord} onDelete={handleDelete} isLoggedIn={isLoggedIn} />

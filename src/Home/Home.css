@@ -116,6 +116,35 @@
     margin: 0;
 }
 
+.map-error-banner {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 1000;
+    background: rgba(198, 40, 40, 0.92);
+    color: var(--color-text-inverted);
+    padding: 0.65rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    max-width: 260px;
+    box-shadow: 0 4px 12px var(--color-shadow-40);
+}
+
+.map-error-retry {
+    margin-top: 0.25rem;
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-inverted);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 4px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
 .panel-reports-list {
     border-top: 1px solid var(--color-bg-off);
     margin-top: 0.5rem;

@@ -8,6 +8,8 @@ function MapFilter({
     description,
     showConsolidatedOnly,
     onConsolidatedChange,
+    showMarkers,
+    onMarkersChange,
     selectedTypes,
     dateStart,
     dateEnd,
@@ -19,13 +21,23 @@ function MapFilter({
 }) {
     // Convert a Date object into a string
     const dateToString = (d) => {
-        const y = d.getFullYear()
-        const m = String(d.getMonth() + 1).padStart(2, "0")
-        const day = String(d.getDate()).padStart(2, "0")
+        const y = d.getUTCFullYear()
+        const m = String(d.getUTCMonth() + 1).padStart(2, "0")
+        const day = String(d.getUTCDate()).padStart(2, "0")
         return `${y}-${m}-${day}`
     }
 
     const [filtersOpen, setFiltersOpen] = useState(true)
+
+    // Keep date labels stable across local timezones.
+    const dateToLabel = (d) => {
+        return d.toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+            timeZone: "UTC",
+        })
+    }
 
     // Convert an input into a Date object
     const inputToDate = (input, inputType) => {
@@ -35,7 +47,7 @@ function MapFilter({
                 const parts = input.split("-").map(Number)
                 if (parts.length !== 3 || parts.some(Number.isNaN)) return null
                 const [y, m, d] = parts
-                return new Date(y, m - 1, d, 0, 0, 0, 0)
+                return new Date(Date.UTC(y, m - 1, d, 0, 0, 0, 0))
             }
             case 'range':
                 if (isNaN(input)) return
@@ -56,15 +68,15 @@ function MapFilter({
     }
 
     const minDatePicker = useMemo(
-        () => new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate()),
+        () => new Date(Date.UTC(dateMin.getUTCFullYear(), dateMin.getUTCMonth(), dateMin.getUTCDate())),
         [dateMin]
     )
     const maxDatePicker = useMemo(
-        () => new Date(dateMax.getFullYear(), dateMax.getMonth(), dateMax.getDate()),
+        () => new Date(Date.UTC(dateMax.getUTCFullYear(), dateMax.getUTCMonth(), dateMax.getUTCDate())),
         [dateMax]
     )
 
-    const normalizePickerDate = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0)
+    const normalizePickerDate = (d) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0))
 
     const onDisasterTypeChange = (type) => {
         setSelectedTypes(prev => ({ ...prev, [type]: !prev[type] }))
@@ -140,6 +152,14 @@ function MapFilter({
                         />
                         Show consolidated only
                     </label>
+                    <label className="type-checkbox-label">
+                        <input
+                            type="checkbox"
+                            checked={showMarkers !== false}
+                            onChange={(e) => onMarkersChange?.(e.target.checked)}
+                        />
+                        Show markers
+                    </label>
 
                     <label className="filter-label">Type</label>
                     <div className="type-checkboxes">
@@ -174,7 +194,7 @@ function MapFilter({
                     />
 
                     <label htmlFor="date-start-slider">
-                        Start: <strong>{dateStart.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
+                        Start: <strong>{dateToLabel(dateStart)}</strong>
                     </label>
                     <input
                         id="date-start-slider"
@@ -204,7 +224,7 @@ function MapFilter({
                     />
 
                     <label htmlFor="date-end-slider">
-                        End: <strong>{dateEnd.toLocaleDateString("en-US", {month: "short", day: "numeric", year: "numeric"})}</strong>
+                        End: <strong>{dateToLabel(dateEnd)}</strong>
                     </label>
                     <input
                         id="date-end-slider"

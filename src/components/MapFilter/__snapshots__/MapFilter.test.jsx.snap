@@ -43,6 +43,15 @@ exports[`MapFilter > matches snapshot 1`] = `
       Show consolidated only
     </label>
     <label
+      class="type-checkbox-label"
+    >
+      <input
+        checked=""
+        type="checkbox"
+      />
+      Show markers
+    </label>
+    <label
       class="filter-label"
     >
       Type

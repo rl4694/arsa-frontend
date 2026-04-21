@@ -1,3 +1,4 @@
+import { memo, useMemo } from 'react'
 import { Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import './MapMarker.css'
@@ -35,7 +36,7 @@ function MapMarker({
     popupContent,
     ...props 
 }) {
-    const icon = createCustomIcon(color, size)
+    const icon = useMemo(() => createCustomIcon(color, size), [color, size])
     
     return (
         <Marker position={position} icon={icon} {...props}>
@@ -48,4 +49,4 @@ function MapMarker({
     )
 }
 
-export default MapMarker
+export default memo(MapMarker)

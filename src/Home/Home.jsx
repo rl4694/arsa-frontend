@@ -255,16 +255,16 @@ function Home() {
                     )
                 }
 
-                if (showMarkers) {
-                    elements.push(
-                        <MapMarker
-                            position={position}
-                            color={color}
-                            key={`${keyBase}_marker`}
-                            eventHandlers={{ click: () => selectDisaster(disaster) }}
-                        />
-                    )
-                }
+                elements.push(
+                    <MapMarker
+                        position={position}
+                        color={color}
+                        key={`${keyBase}_marker`}
+                        opacity={showMarkers ? 1 : 0}
+                        interactive={showMarkers}
+                        eventHandlers={showMarkers ? { click: () => selectDisaster(disaster) } : undefined}
+                    />
+                )
 
                 return elements
             })

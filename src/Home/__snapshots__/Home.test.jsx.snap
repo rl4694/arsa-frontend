@@ -122,14 +122,20 @@ exports[`Home > matches snapshot 1`] = `
       >
         Start date
       </label>
-      <input
-        class="filter-date-input"
-        id="date-start-input"
-        max="2026-01-01"
-        min="2000-01-01"
-        type="date"
-        value="2000-01-01"
-      />
+      <div
+        class="react-datepicker-wrapper"
+      >
+        <div
+          class="react-datepicker__input-container"
+        >
+          <input
+            class="filter-date-input"
+            id="date-start-input"
+            type="text"
+            value="2000-01-01"
+          />
+        </div>
+      </div>
       <label
         for="date-start-slider"
       >
@@ -140,9 +146,9 @@ exports[`Home > matches snapshot 1`] = `
       </label>
       <input
         id="date-start-slider"
-        max="1767225600000"
+        max="1767139200000"
         min="946684800000"
-        step="8205408000"
+        step="8204544000"
         type="range"
         value="946684800000"
       />
@@ -152,29 +158,35 @@ exports[`Home > matches snapshot 1`] = `
       >
         End date
       </label>
-      <input
-        class="filter-date-input"
-        id="date-end-input"
-        max="2026-01-01"
-        min="2000-01-01"
-        type="date"
-        value="2026-01-01"
-      />
+      <div
+        class="react-datepicker-wrapper"
+      >
+        <div
+          class="react-datepicker__input-container"
+        >
+          <input
+            class="filter-date-input"
+            id="date-end-input"
+            type="text"
+            value="2025-12-31"
+          />
+        </div>
+      </div>
       <label
         for="date-end-slider"
       >
         End: 
         <strong>
-          Jan 1, 2026
+          Dec 31, 2025
         </strong>
       </label>
       <input
         id="date-end-slider"
-        max="1767225600000"
+        max="1767139200000"
         min="946684800000"
-        step="8205408000"
+        step="8204544000"
         type="range"
-        value="1767225600000"
+        value="1767139200000"
       />
     </div>
     <div

@@ -149,9 +149,13 @@ function MapFilter({
                             type="checkbox"
                             checked={!!showConsolidatedOnly}
                             onChange={(e) => onConsolidatedChange?.(e.target.checked)}
+                            aria-describedby="consolidated-help"
                         />
                         Show consolidated only
                     </label>
+                    <p id="consolidated-help" className="filter-help">
+                        Shows one merged event per incident instead of all individual reports.
+                    </p>
                     <label className="type-checkbox-label">
                         <input
                             type="checkbox"

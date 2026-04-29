@@ -69,16 +69,12 @@ function MapFilter({
         return d
     }
 
-    const minDatePicker = useMemo(
-        () => new Date(Date.UTC(dateMin.getUTCFullYear(), dateMin.getUTCMonth(), dateMin.getUTCDate())),
-        [dateMin]
-    )
-    const maxDatePicker = useMemo(
-        () => new Date(Date.UTC(dateMax.getUTCFullYear(), dateMax.getUTCMonth(), dateMax.getUTCDate())),
-        [dateMax]
-    )
+    const toPickerDate = (d) => new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
 
-    const normalizePickerDate = (d) => new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0))
+    const minDatePicker = useMemo(() => toPickerDate(dateMin), [dateMin])
+    const maxDatePicker = useMemo(() => toPickerDate(dateMax), [dateMax])
+
+    const normalizePickerDate = (d) => new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate(), 0, 0, 0, 0))
 
     const checkRawDateInput = (rawValue) => {
         if (!rawValue || rawValue.length !== 10) return
@@ -221,7 +217,7 @@ function MapFilter({
                     </label>
                     <DatePicker
                         id="date-start-input"
-                        selected={dateStart}
+                        selected={toPickerDate(dateStart)}
                         onChange={(d) => onPickerDateChange(d, 'start')}
                         onChangeRaw={(e) => checkRawDateInput(e.target.value)}
                         minDate={minDatePicker}
@@ -252,7 +248,7 @@ function MapFilter({
                     </label>
                     <DatePicker
                         id="date-end-input"
-                        selected={dateEnd}
+                        selected={toPickerDate(dateEnd)}
                         onChange={(d) => onPickerDateChange(d, 'end')}
                         onChangeRaw={(e) => checkRawDateInput(e.target.value)}
                         minDate={minDatePicker}

@@ -139,7 +139,7 @@ exports[`Home > matches snapshot 1`] = `
             class="filter-date-input"
             id="date-start-input"
             type="text"
-            value="1999-12-31"
+            value="2000-01-01"
           />
         </div>
       </div>
@@ -154,8 +154,8 @@ exports[`Home > matches snapshot 1`] = `
       <input
         id="date-start-slider"
         max="1767225600000"
-        min="1706745600000"
-        step="604800000"
+        min="946684800000"
+        step="8205408000"
         type="range"
         value="946684800000"
       />
@@ -175,7 +175,7 @@ exports[`Home > matches snapshot 1`] = `
             class="filter-date-input"
             id="date-end-input"
             type="text"
-            value="2025-12-31"
+            value="2026-01-01"
           />
         </div>
       </div>
@@ -190,8 +190,8 @@ exports[`Home > matches snapshot 1`] = `
       <input
         id="date-end-slider"
         max="1767225600000"
-        min="1706745600000"
-        step="604800000"
+        min="946684800000"
+        step="8205408000"
         type="range"
         value="1767225600000"
       />

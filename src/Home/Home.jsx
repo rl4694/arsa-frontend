@@ -30,23 +30,10 @@ function Home() {
     // Main state
     // Use UTC-midnight timestamps to avoid timezone-dependent slider values.
     const now = new Date()
+    const dateMin = new Date(Date.UTC(2000, 0, 1))
     const dateMax = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()))
     const [disasters, refetchDisasters, disastersError] = useRecords("/natural_disasters")
     const [cities, refetchCities, citiesError] = useRecords("/cities")
-
-    // Compute slider lower bound from actual data so historical records are accessible.
-    // Falls back to 2000-01-01 while data is loading.
-    const dateMin = useMemo(() => {
-        if (disasters.length === 0) return new Date(Date.UTC(2000, 0, 1))
-        let minMs = Infinity
-        for (const r of disasters) {
-            const t = new Date(r.date).getTime()
-            if (!isNaN(t)) minMs = Math.min(minMs, t)
-        }
-        if (!isFinite(minMs)) return new Date(Date.UTC(2000, 0, 1))
-        const d = new Date(minMs)
-        return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()))
-    }, [disasters])
 
     const [allDisasters, setAllDisasters] = useState([])
     const [selectedDisaster, setSelectedDisaster] = useState(null)

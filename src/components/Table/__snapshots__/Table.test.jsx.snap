@@ -7,15 +7,42 @@ exports[`Table > matches snapshot 1`] = `
       <tr
         class="header"
       >
-        <td>
-          First
-        </td>
-        <td>
-          Second
-        </td>
-        <td>
-          Third
-        </td>
+        <th
+          aria-sort="none"
+          scope="col"
+        >
+          <button
+            aria-label="Sort by First"
+            class="sort-btn"
+            type="button"
+          >
+            First
+          </button>
+        </th>
+        <th
+          aria-sort="none"
+          scope="col"
+        >
+          <button
+            aria-label="Sort by Second"
+            class="sort-btn"
+            type="button"
+          >
+            Second
+          </button>
+        </th>
+        <th
+          aria-sort="none"
+          scope="col"
+        >
+          <button
+            aria-label="Sort by Third"
+            class="sort-btn"
+            type="button"
+          >
+            Third
+          </button>
+        </th>
       </tr>
     </thead>
     <tbody>

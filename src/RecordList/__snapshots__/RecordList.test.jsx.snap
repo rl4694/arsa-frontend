@@ -15,12 +15,30 @@ exports[`RecordList > matches snapshot 1`] = `
         <tr
           class="header"
         >
-          <td>
-            State Name
-          </td>
-          <td>
-            Nation Name
-          </td>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              aria-label="Sort by State Name"
+              class="sort-btn"
+              type="button"
+            >
+              State Name
+            </button>
+          </th>
+          <th
+            aria-sort="none"
+            scope="col"
+          >
+            <button
+              aria-label="Sort by Nation Name"
+              class="sort-btn"
+              type="button"
+            >
+              Nation Name
+            </button>
+          </th>
         </tr>
       </thead>
       <tbody>

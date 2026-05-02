@@ -110,6 +110,7 @@
 .type-dot-landslide  { background: var(--color-marker-purple-start); }
 .type-dot-tsunami    { background: var(--color-marker-blue-start); }
 .type-dot-hurricane  { background: var(--color-marker-orange-start); }
+.type-dot-other      { background: var(--color-marker-teal-start); }
 
 .filter-warning {
     font-size: 0.75rem;

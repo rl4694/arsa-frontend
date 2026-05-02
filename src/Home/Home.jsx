@@ -18,12 +18,14 @@ const colorCode = {
     tsunami: "blue",
     landslide: "purple",
     hurricane: "orange",
+    other: "teal",
 }
 const initialSelectedTypes = {
     earthquake: true,
     landslide: true,
     tsunami: true,
     hurricane: true,
+    other: true,
 }
 
 function Home() {

@@ -199,7 +199,7 @@ function MapFilter({
 
                     <label className="filter-label">Type</label>
                     <div className="type-checkboxes">
-                        {["earthquake", "landslide", "tsunami", "hurricane"].map(type => (
+                        {["earthquake", "landslide", "tsunami", "hurricane", "other"].map(type => (
                             <label key={type} className="type-checkbox-label">
                                 <input
                                     type="checkbox"

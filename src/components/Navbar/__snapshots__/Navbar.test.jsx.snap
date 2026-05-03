@@ -25,6 +25,13 @@ exports[`Navbar > matches snapshot 1`] = `
           ▼
         </span>
       </div>
+      <a
+        class="item"
+        data-discover="true"
+        href="/stats"
+      >
+        Stats
+      </a>
     </div>
     <div
       class="right"

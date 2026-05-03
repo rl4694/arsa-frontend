@@ -1,0 +1,118 @@
+.stats-page {
+    flex: 1;
+    padding: 1.5rem 2rem 3rem;
+    color: var(--color-text-inverted);
+    overflow-y: auto;
+}
+
+.stats-title {
+    font-size: 1.8rem;
+    margin: 0.25rem 0 1.25rem;
+}
+
+.stats-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.stats-kpi {
+    background-color: var(--color-surface);
+    border-radius: 0.6rem;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 2px 6px var(--color-shadow-15);
+}
+
+.stats-kpi-value {
+    font-size: 1.7rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.stats-kpi-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.75;
+    margin-top: 0.2rem;
+}
+
+.stats-kpi-hint {
+    font-size: 0.7rem;
+    opacity: 0.55;
+    margin-top: 0.15rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1rem;
+}
+
+.stats-card {
+    background-color: var(--color-surface);
+    border-radius: 0.6rem;
+    padding: 1rem 1.1rem 1.2rem;
+    box-shadow: 0 2px 6px var(--color-shadow-15);
+}
+
+.stats-card-title {
+    font-size: 1rem;
+    margin: 0 0 0.6rem;
+    opacity: 0.95;
+}
+
+.stats-chart-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.stats-chart-label {
+    font-size: 11px;
+    fill: var(--color-text-inverted);
+    opacity: 0.85;
+}
+
+.stats-chart-value {
+    font-size: 11px;
+    fill: var(--color-text-inverted);
+    opacity: 0.85;
+    font-variant-numeric: tabular-nums;
+}
+
+.stats-empty {
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin: 0.5rem 0 0;
+}
+
+.stats-error {
+    background: rgba(198, 40, 40, 0.92);
+    color: var(--color-text-inverted);
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.stats-error-retry {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-inverted);
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 4px;
+    padding: 0.2rem 0.65rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.stats-footnote {
+    margin-top: 1.25rem;
+    font-size: 0.75rem;
+    opacity: 0.55;
+}

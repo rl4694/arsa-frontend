@@ -7,6 +7,7 @@ import Login from './Auth/Login/Login'
 import Register from './Auth/Register/Register'
 import Navbar from './components/Navbar/Navbar'
 import RecordList from './RecordList/RecordList'
+import Stats from './Stats/Stats'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path='/states' element={<RecordList title="States" api_path="/states" />} />
             <Route path='/nations' element={<RecordList title="Nations" api_path="/nations" />} />
             <Route path='/disasters' element={<RecordList title="Disasters" api_path="/natural_disasters" />} />
+            <Route path='/stats' element={<Stats />} />
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
         </Routes>

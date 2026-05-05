@@ -5,7 +5,6 @@ import {
     countByType,
     countByYear,
     avgSeverityByType,
-    topNations,
     DISASTER_TYPES,
 } from "./compute"
 import "./Stats.css"
@@ -92,7 +91,7 @@ function KpiCard({ label, value, hint }) {
 
 function Stats() {
     const [disasters, refetchDisasters, disastersError] = useRecords("/natural_disasters")
-    const [cities, refetchCities, citiesError] = useRecords("/cities")
+    const [_, refetchCities, citiesError] = useRecords("/cities")
 
     const summary = useMemo(() => totals(disasters), [disasters])
     const byType = useMemo(() => countByType(disasters), [disasters])

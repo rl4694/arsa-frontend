@@ -30,7 +30,7 @@ exports[`Navbar > matches snapshot 1`] = `
         data-discover="true"
         href="/stats"
       >
-        Stats
+        Statistics
       </a>
     </div>
     <div

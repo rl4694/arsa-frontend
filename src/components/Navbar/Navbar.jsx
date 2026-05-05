@@ -40,7 +40,7 @@ function Navbar() {
                     <span className="down-caret">&#9660;</span>
                     {renderDropdown()}
                 </div>
-                <Link to="/stats" className="item">Stats</Link>
+                <Link to="/stats" className="item">Statistics</Link>
             </div>
             <div className="right">
                 {user ? (

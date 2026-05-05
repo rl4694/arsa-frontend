@@ -98,7 +98,7 @@ function Stats() {
     const byType = useMemo(() => countByType(disasters), [disasters])
     const byYear = useMemo(() => countByYear(disasters), [disasters])
     const avgSeverity = useMemo(() => avgSeverityByType(disasters), [disasters])
-    const nations = useMemo(() => topNations(disasters, cities), [disasters, cities])
+    // const nations = useMemo(() => topNations(disasters, cities), [disasters, cities])
 
     const formatInt = (n) => Math.round(n).toLocaleString()
     const formatDecimal = (n) => (n > 0 ? n.toFixed(2) : "—")
@@ -160,7 +160,8 @@ function Stats() {
                     />
                 </article>
 
-                <article className="stats-card">
+                {/* Not showing top nations because its calculation is flawed and hard to interpret */}
+                {/* <article className="stats-card">
                     <h2 className="stats-card-title">Top nations affected</h2>
                     {nations.length > 0 ? (
                         <BarChart
@@ -173,7 +174,7 @@ function Stats() {
                             Need city data with coordinates to attribute events to nations.
                         </p>
                     )}
-                </article>
+                </article> */}
             </section>
 
             <p className="stats-footnote">

@@ -230,6 +230,8 @@ function Home() {
         return visibleDisasters.flatMap(disaster => {
             if (
                 disaster == null ||
+                disaster.latitude == null ||
+                disaster.longitude == null ||
                 isNaN(disaster.latitude) ||
                 isNaN(disaster.longitude)
             ) {

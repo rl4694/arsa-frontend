@@ -37,14 +37,14 @@ function RecordList({ title, api_path }) {
     const handleCreate = async (formData) => {
         clearMessages()
         await api.post(api_path, formData, { headers: getAuthHeader() })
-        refetch()
+        await refetch()
         setSuccess('Successfully Created')
     }
 
     const handleUpdate = async (formData, record) => {
         clearMessages()
         await api.put(`${api_path}/${record._id}`, formData, { headers: getAuthHeader() })
-        refetch()
+        await refetch()
         setSuccess('Successfully Updated')
     }
 
@@ -55,7 +55,7 @@ function RecordList({ title, api_path }) {
         clearMessages()
         try {
             await api.delete(`${api_path}/${record._id}`, { headers: getAuthHeader() })
-            refetch()
+            await refetch()
             setSuccess('Successfully Deleted')
         } catch (err) {
             setError(err.response?.data?.error || 'Failed to delete record')

@@ -21,7 +21,7 @@ export function useRecords(api_path) {
     const [error, setError] = useState(null)
 
     const refetch = useCallback(() => {
-        api.get(api_path)
+        return api.get(api_path)
             .then(res => {
                 const data = Object.values(res?.data?.records || {})
                 setRecords(data.map(stripHTML))
